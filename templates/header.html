@@ -1,0 +1,328 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+    /* Base styles */
+    :root {
+        --primary-color: #4A90E2;
+        --secondary-color: #50E3C2;
+        --accent-color: #FFC94B;
+        --background-color: #F4F7F9;
+        --card-background: #FFFFFF;
+        --text-color: #333333;
+        --light-text-color: #6A6A6A;
+        --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.08);
+        --shadow-medium: 0 8px 24px rgba(0, 0, 0, 0.12);
+    }
+
+    body.dark-mode {
+        --background-color: #121212;
+        --card-background: #1e1e1e;
+        --text-color: #e0e0e0;
+        --light-text-color: #b0b0b0;
+        --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.5);
+        --shadow-medium: 0 8px 24px rgba(0, 0, 0, 0.6);
+        --primary-color: #72B9EF;
+    }
+
+    /* Main Header Styling */
+    .main-header {
+        background-color: var(--card-background);
+        box-shadow: var(--shadow-light);
+        padding: 10px 0;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        transition: background-color 0.3s, box-shadow 0.3s;
+    }
+
+    .header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    .logo a {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: var(--text-color);
+    }
+
+    .logo img {
+        height: 40px;
+        margin-right: 10px;
+    }
+
+    .logo span {
+        font-size: 1.5rem;
+        font-weight: 700;
+        transition: color 0.3s;
+    }
+
+    /* Navigation Links */
+    .nav-links ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        align-items: center;
+    }
+
+    .nav-links li {
+        position: relative;
+        margin-left: 25px;
+    }
+
+    .nav-links a {
+        text-decoration: none;
+        color: var(--light-text-color);
+        font-weight: 600;
+        padding: 10px 15px;
+        border-radius: 8px;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .nav-links a:hover, .nav-links .active-link {
+        background-color: var(--primary-color);
+        color: #FFFFFF;
+    }
+
+    /* Dropdown Menu */
+    .dropdown {
+        position: relative;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: var(--card-background);
+        box-shadow: var(--shadow-medium);
+        border-radius: 8px;
+        min-width: 160px;
+        z-index: 1;
+        padding: 10px 0;
+        top: 100%;
+        left: 0;
+        margin-top: 10px;
+        transition: all 0.3s ease;
+    }
+    
+    .dropdown-content a {
+        color: var(--text-color);
+        padding: 12px 16px;
+        display: block;
+        text-align: left;
+        transition: background-color 0.3s;
+    }
+
+    .dropdown-content a:hover {
+        background-color: var(--primary-color);
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    /* Utility Switchers */
+    .language-switcher, .mode-switcher {
+        padding: 8px;
+        border: 1px solid var(--light-text-color);
+        border-radius: 50%;
+        width: 35px;
+        height: 35px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+    }
+    
+    .language-switcher:hover, .mode-switcher:hover {
+        background-color: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+    }
+
+    /* Hamburger Menu Icon */
+    .hamburger-menu {
+        display: none;
+        font-size: 1.8rem;
+        cursor: pointer;
+        color: var(--text-color);
+        margin-left: 20px;
+    }
+
+    /* Mobile Responsiveness */
+    @media (max-width: 768px) {
+        .header-container {
+            padding: 0 15px;
+        }
+
+        .nav-links {
+            display: none;
+            width: 100%;
+            background-color: var(--card-background);
+            box-shadow: var(--shadow-light);
+            flex-direction: column;
+            padding-bottom: 10px;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            transition: all 0.3s ease-in-out;
+            transform: translateY(-10px);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .nav-links.active {
+            display: flex;
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .nav-links ul {
+            flex-direction: column;
+            width: 100%;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .nav-links li {
+            margin: 10px 0;
+            width: 100%;
+        }
+
+        .nav-links a {
+            padding: 12px 20px;
+            display: block;
+            width: 80%;
+            margin: auto;
+        }
+
+        .dropdown-content {
+            position: static;
+            box-shadow: none;
+            background-color: transparent;
+            padding: 10px 0 0 20px;
+            border-radius: 0;
+            width: 100%;
+            display: none; /* Hide by default on mobile */
+        }
+        
+        .dropdown.active .dropdown-content {
+            display: block;
+        }
+        
+        .dropdown-content a {
+            color: var(--light-text-color);
+            padding: 8px 16px;
+        }
+
+        .dropdown-content a:hover {
+            background-color: var(--background-color);
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: none; /* Hide on hover for mobile */
+        }
+        
+        .hamburger-menu {
+            display: block;
+        }
+    }
+</style>
+
+<header class="main-header">
+    <div class="header-container">
+        <div class="logo">
+            <a href="/">
+                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo">
+                <span>Ml to Mg Conversion</span>
+            </a>
+        </div>
+        <div class="header-right">
+            <nav class="nav-links" id="navLinks">
+                <ul>
+                    <li><a href="/" class="active-link">Home</a></li>
+                    <li class="dropdown" onclick="toggleDropdown(event)">
+                        <a href="#">Converters ▾</a>
+                        <div class="dropdown-content">
+                            <a href="https://mltomg.info/mg-to-ml">Mg to Ml</a>
+                            <a href="https://mltomg.info/g-to-l">G to L</a>
+                            <a href="https://mltomg.info/kg-to-l">Kg to L</a>
+                            <a href="https://mltomg.info/l-to-g">L to G</a>
+                            <a href="https://mltomg.info/l-to-kg">L to Kg</a>
+                            <a href="https://mltomg.info/ml-to-g">Ml to G</a>
+                            <a href="https://mltomg.info/ml-to-oz">Ml to Oz</a>
+                            <a href="https://mltomg.info/oz-to-ml">Oz to Ml</a>
+                        </div>
+                    </li>
+                    <li><a href="/blogs">Blogs</a></li>
+                    <li><a href="/contact">Contact Us</a></li>
+                    <li>
+                        <a href="#" class="language-switcher">EN</a>
+                    </li>
+                    <li>
+                        <a href="#" class="mode-switcher" onclick="toggleDarkMode()">☀️</a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="hamburger-menu" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </div>
+</header>
+
+<script>
+    function toggleDarkMode() {
+        const body = document.body;
+        body.classList.toggle('dark-mode');
+
+        const modeSwitcher = document.querySelector('.mode-switcher');
+        if (body.classList.contains('dark-mode')) {
+            modeSwitcher.innerHTML = '<i class="fas fa-moon"></i>';
+        } else {
+            modeSwitcher.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+    }
+
+    function toggleMenu() {
+        const navLinks = document.getElementById('navLinks');
+        navLinks.classList.toggle('active');
+    }
+    
+    function toggleDropdown(event) {
+        // Stop event propagation to prevent it from affecting parent elements
+        event.stopPropagation();
+        
+        const dropdown = event.currentTarget;
+        const screenWidth = window.innerWidth;
+        
+        // Check if the screen is mobile-sized (768px or less)
+        if (screenWidth <= 768) {
+            dropdown.classList.toggle('active');
+        } else {
+            // For desktop, just let the CSS :hover work
+            // If the user clicks, open/close the dropdown
+            dropdown.classList.toggle('active');
+        }
+    }
+
+    // Close dropdown when clicking outside of it
+    document.addEventListener('click', function(event) {
+        const dropdowns = document.querySelectorAll('.dropdown');
+        dropdowns.forEach(dropdown => {
+            if (!dropdown.contains(event.target)) {
+                dropdown.classList.remove('active');
+            }
+        });
+    });
+</script>
