@@ -1,0 +1,144 @@
+ml-to-mg-main
+│── app.py
+│── Procfile
+│── requirements.txt
+│── robots.txt
+│── Sample.txt
+│── sitemap.xml
+│
+├── static
+│   ├── css
+│   │   └── style.css
+│   │
+│   ├── img
+│   │   ├── favicon.png
+│   │   └── logo.png
+│   │
+│   └── js
+│       └── script.js
+│
+├── templates
+│   ├── footer.html
+│   ├── header.html
+│   │
+│   ├── blogs
+│   │   ├── blog_index.html
+│   │   ├── density-guide.html
+│   │   ├── how-to-convert-ml-to-mg.html
+│   │   └── what-is-ml-to-mg.html
+│   │
+│   ├── g-to-l
+│   │   ├── g-to-l.html
+│   │   ├── g-to-l_ar.html
+│   │   ├── g-to-l_de.html
+│   │   ├── g-to-l_es.html
+│   │   ├── g-to-l_fr.html
+│   │   ├── g-to-l_it.html
+│   │   ├── g-to-l_pt.html
+│   │   ├── g-to-l_ru.html
+│   │   └── g-to-l_tr.html
+│   │
+│   ├── g-to-ml
+│   │   ├── g-to-ml.html
+│   │   ├── g-to-ml_ar.html
+│   │   ├── g-to-ml_de.html
+│   │   ├── g-to-ml_es.html
+│   │   ├── g-to-ml_fr.html
+│   │   ├── g-to-ml_it.html
+│   │   ├── g-to-ml_pt.html
+│   │   ├── g-to-ml_ru.html
+│   │   └── g-to-ml_tr.html
+│   │
+│   ├── kg-to-l
+│   │   ├── kg-to-l.html
+│   │   ├── kg-to-l_ar.html
+│   │   ├── kg-to-l_de.html
+│   │   ├── kg-to-l_es.html
+│   │   ├── kg-to-l_fr.html
+│   │   ├── kg-to-l_it.html
+│   │   ├── kg-to-l_pt.html
+│   │   ├── kg-to-l_ru.html
+│   │   └── kg-to-l_tr.html
+│   │
+│   ├── l-to-g
+│   │   ├── l-to-g.html
+│   │   ├── l-to-g_ar.html
+│   │   ├── l-to-g_de.html
+│   │   ├── l-to-g_es.html
+│   │   ├── l-to-g_fr.html
+│   │   ├── l-to-g_it.html
+│   │   ├── l-to-g_pt.html
+│   │   ├── l-to-g_ru.html
+│   │   └── l-to-g_tr.html
+│   │
+│   ├── l-to-kg
+│   │   ├── l-to-kg.html
+│   │   ├── l-to-kg_ar.html
+│   │   ├── l-to-kg_de.html
+│   │   ├── l-to-kg_es.html
+│   │   ├── l-to-kg_fr.html
+│   │   ├── l-to-kg_it.html
+│   │   ├── l-to-kg_pt.html
+│   │   ├── l-to-kg_ru.html
+│   │   └── l-to-kg_tr.html
+│   │
+│   ├── mg-to-ml
+│   │   ├── mg-to-ml.html
+│   │   ├── mg-to-ml_ar.html
+│   │   ├── mg-to-ml_de.html
+│   │   ├── mg-to-ml_es.html
+│   │   ├── mg-to-ml_fr.html
+│   │   ├── mg-to-ml_it.html
+│   │   ├── mg-to-ml_pt.html
+│   │   ├── mg-to-ml_ru.html
+│   │   └── mg-to-ml_tr.html
+│   │
+│   ├── ml-to-g
+│   │   ├── ml-to-g.html
+│   │   ├── ml-to-g_ar.html
+│   │   ├── ml-to-g_de.html
+│   │   ├── ml-to-g_es.html
+│   │   ├── ml-to-g_fr.html
+│   │   ├── ml-to-g_it.html
+│   │   ├── ml-to-g_pt.html
+│   │   ├── ml-to-g_ru.html
+│   │   └── ml-to-g_tr.html
+│   │
+│   ├── ml-to-mg        <----------------- This will be on the home page
+│   │   ├── ml-to-mg.html
+│   │   ├── ml-to-mg_ar.html
+│   │   ├── ml-to-mg_de.html
+│   │   ├── ml-to-mg_es.html
+│   │   ├── ml-to-mg_fr.html
+│   │   ├── ml-to-mg_it.html
+│   │   ├── ml-to-mg_pt.html
+│   │   ├── ml-to-mg_ru.html
+│   │   └── ml-to-mg_tr.html
+│   │
+│   ├── ml-to-oz
+│   │   ├── ml-to-oz.html
+│   │   ├── ml-to-oz_ar.html
+│   │   ├── ml-to-oz_de.html
+│   │   ├── ml-to-oz_es.html
+│   │   ├── ml-to-oz_fr.html
+│   │   ├── ml-to-oz_it.html
+│   │   ├── ml-to-oz_pt.html
+│   │   ├── ml-to-oz_ru.html
+│   │   └── ml-to-oz_tr.html
+│   │
+│   ├── oz-to-ml
+│   │   ├── oz-to-ml.html
+│   │   ├── oz-to-ml_ar.html
+│   │   ├── oz-to-ml_de.html
+│   │   ├── oz-to-ml_es.html
+│   │   ├── oz-to-ml_fr.html
+│   │   ├── oz-to-ml_it.html
+│   │   ├── oz-to-ml_pt.html
+│   │   ├── oz-to-ml_ru.html
+│   │   └── oz-to-ml_tr.html
+│   │
+│   ├── pages
+│   │   ├── about-us.html
+│   │   ├── contact.html
+│   │   ├── privacy-policy.html
+│   │   └── terms-conditions.html
