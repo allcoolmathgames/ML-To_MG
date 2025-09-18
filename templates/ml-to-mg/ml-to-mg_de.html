@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <link rel="icon" href="{{ url_for('static', filename='img/favicon.png') }}" type="image/png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
-    <title>ML To MG Converter | mL to Mg Conversion</title>
-    <meta name="description" content="Use this ml to mg converter to make conversions from milliliters to milligrams by just making a single click." />
-    <meta name="keywords" content="ml to mg converter, ml to mg conversion, mL to mg table, water conversion, milk conversion, cooking oil conversion, flour conversion, sugar conversion, kitchen measurement chart, baking conversions, ingredient weight chart" />
-    <link rel="canonical" href="https://mltomg.info/" />
+    <title>ML zu MG Konverter | mL zu Mg Konvertierung</title>
+    <meta name="description" content="Verwenden Sie diesen ml mg Konverter, um mit nur einem Klick Milliliter in Milligramm umzurechnen." />
+    <meta name="keywords" content="Umrechner von ml in mg, Umrechnung von ml in mg, Tabelle von ml in mg, Umrechnung von Wasser, Umrechnung von Milch, Umrechnung von Speiseöl, Umrechnung von Mehl, Umrechnung von Zucker, Tabelle mit Küchenmaßen, Umrechnung von Backwaren, Tabelle mit Gewichtsangaben von Zutaten" />
+    <link rel="canonical" href="https://mltomg.info/de" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
@@ -53,37 +53,37 @@
     {% include 'header.html' %}
     <header class="secondary-header">
         <div class="container">
-            <h1>Ml to Mg Converter</h1>
-            <p>Enter the volume in milliliters below to calculate the weight in milligrams.</p>
+            <h1>Ml in Mg Umrechner</h1>
+            <p>Geben Sie unten das Volumen in Millilitern ein, um das Gewicht in Milligramm zu berechnen.</p>
         </div>
     </header>
     <div class="container main-content">
         <section class="card" id="tool">
-            <h2>Convert Ml To Mg</h2>
+            <h2>Konvertieren Sie ml in mg</h2>
             <div class="tool-container">
                 <div class="form-group">
-                    <label for="mlInput"><b>Volume (in ml):</b></label>
+                    <label for="mlInput"><b>Volumen (in ml):</b></label>
                     <input type="number" id="mlInput" placeholder="Enter volume in ml" required>
                 </div>
                 <div class="form-group">
-                    <label for="mainSelect"><b>Select Item:</b></label>
+                    <label for="mainSelect"><b>Artikel auswählen:</b></label>
                     <select id="mainSelect">
-                        <option value="">-- Select an Item --</option>
-                        <option value="water" data-density="1000">Water</option>
+                        <option value="">-- Wählen Sie einen Artikel aus --</option>
+                        <option value="water" data-density="1000">Wasser</option>
                         <option value="ethanol" data-density="789">Ethanol</option>
-                        <option value="olive-oil" data-density="918">Olive Oil</option>
-                        <option value="milk" data-density="1030">Milk</option>
-                        <option value="honey" data-density="1300">Honey</option>
-                        <option value="glycerin" data-density="1800">Glycerin</option>
-                        <option value="medication">Medications</option>
-                        <option value="custom-liquid">Custom Density</option>
+                        <option value="olive-oil" data-density="918">Olivenöl</option>
+                        <option value="milk" data-density="1030">Milch</option>
+                        <option value="honey" data-density="1300">Honig</option>
+                        <option value="glycerin" data-density="1800">Glyzerin</option>
+                        <option value="medication">Medikamente</option>
+                        <option value="custom-liquid">Benutzerdefinierte Dichte</option>
                     </select>
                 </div>
 
                 <div class="form-group hidden" id="medicationGroup">
-                    <label for="medicationSelect"><b>Select Medication:</b></label>
+                    <label for="medicationSelect"><b>Medikament auswählen:</b></label>
                     <select id="medicationSelect">
-                        <option value="">-- Select a Medication --</option>
+                        <option value="">-- Medikament auswählen --</option>
                         <option value="acetaminophen" data-concentration="10">Acetaminophen (Tylenol) 10 mg/mL</option>
                         <option value="amoxicillin" data-concentration="80">Amoxicillin suspension 400 mg/5 mL</option>
                         <option value="benadryl-oral" data-concentration="12.5">Benadryl (Oral liquid, 12.5 mg/5 mL)</option>
@@ -95,116 +95,116 @@
                         <option value="ibuprofen-injection-2" data-concentration="100">Ibuprofen (Injection, 800 mg/8 mL)</option>
                         <option value="morphine" data-concentration="20">Morphine sulfate soln 20 mg/mL</option>
                         <option value="testosterone" data-concentration="200">Testosterone 200 mg/mL</option>
-                        <option value="custom-medication">Custom Concentration</option>
+                        <option value="custom-medication">Benutzerdefinierte Konzentration</option>
                     </select>
                 </div>
 
                 <div class="form-group hidden" id="densityGroup">
-                    <label for="densityInput"><b>Density (mg/mL):</b></label>
+                    <label for="densityInput"><b>Dichte (mg/ml):</b></label>
                     <input type="number" id="densityInput" placeholder="Enter density in mg/mL" required>
                 </div>
 
-                <div class="form-group hidden" id="concentrationGroup">
-                    <label for="concentrationInput"><b>Concentration (mg/mL):</b></label>
-                    <input type="number" id="concentrationInput" placeholder="Enter concentration in mg/mL" required>
-                </div>
+<div class="form-group hidden" id="concentrationGroup">
+    <label for="concentrationInput"><b>Konzentration (mg/mL):</b></label>
+    <input type="number" id="concentrationInput" placeholder="Konzentration in mg/mL eingeben" required>
+</div>
 
-                <button class="btn" onclick="convertMlToMg()">Convert to mg</button>
+<button class="btn" onclick="convertMlToMg()">In mg umrechnen</button>
+</div>
+</section>
+<div id="result-section">
+    <div class="result-heading">Ergebnis:</div>
+    <div class="result-value" id="result-value">Ihr Ergebnis wird hier angezeigt</div>
+</div>
+<section class="card" id="why-choose-us">
+    <p>Geben Sie einfach die Gesamtanzahl der Milliliter (mL) in den mL-zu-mg-Rechner ein, um mL in mg entsprechend Ihrer Dichte umzurechnen. Sie können auch <a href="https://mltomg.info/mg-to-ml">mg in ml</a> auf mltomg.info umrechnen.</p>
+</section>
+<section class="card" id="formula">
+    <h2>mL in mg Formel:</h2>
+    <p><b>Mg = mL × d (mg/mL)</b></p>
+    <p>Wo;</p>
+    <p>1. <b>mg</b> = Milligramm</p>
+    <p>2. <b>ml</b> = Milliliter</p>
+    <p>3. <b>d</b> = Dichte (mg/ml)</p>
+    <p>Um von ml in mg umzurechnen, muss die Dichte in mg/ml angegeben sein. Wenn die Dichte in g/ml angegeben ist, dann muss sie zuerst in mg/ml umgerechnet werden, indem man die Dichte mit 1000 multipliziert.</p>
+</section>
+<section class="card" id="why-choose-us">
+    <h2>Wie macht man die Umrechnung von mL in mg?</h2>
+    <ul>
+        <li><b>Volumen finden:</b> Bestimmen Sie das Gesamtvolumen in ml für die gegebene Substanz.</li>
+        <li><b>Dichte finden:</b> Messen Sie die Dichte der gegebenen Substanz. Produktetiketten oder wissenschaftliche Literatur enthalten normalerweise diesen Wert.</li>
+        <li><b>Masse bestimmen:</b> Setzen Sie die bekannten Werte in die Formel ein, um die Masse zu berechnen.</li>
+    </ul>
+</section>
+<section class="card" id="example">
+    <h3>Beispiel:</h3>
+    <p>Verstehen wir dies anhand eines Beispiels:</p>
+    <p>Angenommen, Sie haben <b>10 ml</b> einer Flüssigkeit mit einer Dichte von <b>1,5 g/ml</b>. Die Umrechnung wäre:</p>
+    <p><b>Milligramm (mg)</b> = 10 ml × 1.000 × 1,5 g/ml = <b>15.000 mg</b></p>
+</section>
+<section class="card more-tools" id="more-tools">
+    <h2>Weitere Tools</h2>
+    <div class="tool-cards-container">
+        <a href="/mg-to-ml" class="tool-card">
+            <div class="tool-icon">⚖️</div>
+            <div class="tool-info">
+                <h3>Mg in Ml</h3>
+                <p>Milligramm in Milliliter umrechnen.</p>
             </div>
-        </section>
-        <div id="result-section">
-            <div class="result-heading">Result:</div>
-            <div class="result-value" id="result-value">Your result will appear here</div>
-        </div>
-        <section class="card" id="why-choose-us">
-            <p>Just enter the total number of milliliters (mL) into the ml to mg converter to convert ml to mg according to your density. You can also convert <a href="https://mltomg.info/mg-to-ml">mg to ml</a> on mltomg.info.</p>
-        </section>
-        <section class="card" id="formula">
-            <h2>mL to mg formula:</h2>
-            <p><b>Mg = mL × d (mg/mL)</b></p>
-            <p>Where;</p>
-            <p>1. <b>mg</b> = Milligrams</p>
-            <p>2. <b>ml</b> = Milliliters</p>
-            <p>3. <b>d</b> = density (mg/ml)</p>
-            <p>To convert from ml to mg, the density must be in mg/ml. If the density is in g/ml, then first convert it into mg/ml by multiplying density with 1000.</p>
-        </section>
-        <section class="card" id="why-choose-us">
-            <h2>How To Make mL to mg Conversion?</h2>
-            <ul>
-                <li><b>Find the Volume:</b> Determine the total volume of ml for the given substance.</li>
-                <li><b>Find the Density:</b> Measure the density of the given substance. Product labels or scientific literature typically include this value.</li>
-                <li><b>Determine the Mass:</b> Insert the known values into the formula to calculate the mass.</li>
-            </ul>
-        </section>
-        <section class="card" id="example">
-            <h3>Example:</h3>
-            <p>Let’s understand this by solving an example:</p>
-            <p>Suppose you have <b>10 ml</b> of a liquid with a density of <b>1.5 g/ml</b>. The conversion would be:</p>
-            <p><b>Milligrams (mg)</b> = 10 ml × 1,000 × 1.5 g/ml = <b>15,000 mg</b></p>
-        </section>
-        <section class="card more-tools" id="more-tools">
-            <h2>More Tools</h2>
-            <div class="tool-cards-container">
-                <a href="/mg-to-ml" class="tool-card">
-                    <div class="tool-icon">⚖️</div>
-                    <div class="tool-info">
-                        <h3>Mg to Ml</h3>
-                        <p>Convert milligrams to milliliters.</p>
-                    </div>
-                </a>
-                <a href="/g-to-l" class="tool-card">
-                    <div class="tool-icon">💧</div>
-                    <div class="tool-info">
-                        <h3>G to L</h3>
-                        <p>Convert grams to liters.</p>
-                    </div>
-                </a>
-                <a href="/kg-to-l" class="tool-card">
-                    <div class="tool-icon">🫙</div>
-                    <div class="tool-info">
-                        <h3>Kg to L</h3>
-                        <p>Convert kilograms to liters.</p>
-                    </div>
-                </a>
-                <a href="/l-to-g" class="tool-card">
-                    <div class="tool-icon">🧪</div>
-                    <div class="tool-info">
-                        <h3>L to G</h3>
-                        <p>Convert liters to grams.</p>
-                    </div>
-                </a>
-                <a href="/l-to-kg" class="tool-card">
-                    <div class="tool-icon">⚖️</div>
-                    <div class="tool-info">
-                        <h3>L to Kg</h3>
-                        <p>Convert liters to kilograms.</p>
-                    </div>
-                </a>
-                <a href="/ml-to-g" class="tool-card">
-                    <div class="tool-icon">💧</div>
-                    <div class="tool-info">
-                        <h3>Ml to G</h3>
-                        <p>Convert milliliters to grams.</p>
-                    </div>
-                </a>
-                <a href="/ml-to-oz" class="tool-card">
-                    <div class="tool-icon">🧪</div>
-                    <div class="tool-info">
-                        <h3>Ml to Oz</h3>
-                        <p>Convert milliliters to ounces.</p>
-                    </div>
-                </a>
-                <a href="/oz-to-ml" class="tool-card">
-                    <div class="tool-icon">🫙</div>
-                    <div class="tool-info">
-                        <h3>Oz to Ml</h3>
-                        <p>Convert ounces to milliliters.</p>
-                    </div>
-                </a>
+        </a>
+        <a href="/g-to-l" class="tool-card">
+            <div class="tool-icon">💧</div>
+            <div class="tool-info">
+                <h3>G in L</h3>
+                <p>Gramm in Liter umrechnen.</p>
             </div>
-        </section>
+        </a>
+        <a href="/kg-to-l" class="tool-card">
+            <div class="tool-icon">🫙</div>
+            <div class="tool-info">
+                <h3>Kg in L</h3>
+                <p>Kilogramm in Liter umrechnen.</p>
+            </div>
+        </a>
+        <a href="/l-to-g" class="tool-card">
+            <div class="tool-icon">🧪</div>
+            <div class="tool-info">
+                <h3>L in G</h3>
+                <p>Liter in Gramm umrechnen.</p>
+            </div>
+        </a>
+        <a href="/l-to-kg" class="tool-card">
+            <div class="tool-icon">⚖️</div>
+            <div class="tool-info">
+                <h3>L in Kg</h3>
+                <p>Liter in Kilogramm umrechnen.</p>
+            </div>
+        </a>
+        <a href="/ml-to-g" class="tool-card">
+            <div class="tool-icon">💧</div>
+            <div class="tool-info">
+                <h3>Ml in G</h3>
+                <p>Milliliter in Gramm umrechnen.</p>
+            </div>
+        </a>
+        <a href="/ml-to-oz" class="tool-card">
+            <div class="tool-icon">🧪</div>
+            <div class="tool-info">
+                <h3>Ml in Oz</h3>
+                <p>Milliliter in Unzen umrechnen.</p>
+            </div>
+        </a>
+        <a href="/oz-to-ml" class="tool-card">
+            <div class="tool-icon">🫙</div>
+            <div class="tool-info">
+                <h3>Oz in Ml</h3>
+                <p>Unzen in Milliliter umrechnen.</p>
+            </div>
+        </a>
+    </div>
+</section>
         <section class="card" id="Table">
-            <h2>Milliliters to Milligrams Conversion Table</h2>
+            <h2>Umrechnungstabelle von Millilitern in Milligramm</h2>
             <style>
                 :root {
                     --bg: #ffffff;
@@ -232,18 +232,17 @@
                 caption { caption-side: bottom; padding: 10px; font-size: 0.875rem; color: var(--muted); }
             </style>
             <div class="wrap">
-                <h1>Volume to Mass Reference (mg)</h1>
                 <div class="table-card">
                     <div class="table-scroll">
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Volume (mL)</th>
-                                    <th>Water (mg)</th>
-                                    <th>Milk (mg)</th>
+                                    <th>Volumen (ml)</th>
+                                    <th>Wasser (mg)</th>
+                                    <th>Milch (mg)</th>
                                     <th>Cooking Oil (mg)</th>
-                                    <th>All Purpose Flour (mg)</th>
-                                    <th>Granulated Sugar (mg)</th>
+                                    <th>Allzweckmehl (mg)</th>
+                                    <th>Kristallzucker (mg)</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -294,42 +293,42 @@
                 </div>
             </div>
         </section>
-        <section class="card" id="faq">
-            <h2>Frequently Asked Questions</h2>
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFAQ(this)">
-                    <h4>Q: Does 1 ml equal 1 mg??</h4>
-                    <span class="toggle-icon">-</span>
-                </div>
-                <div class="faq-answer">
-                    <p>A: No, 1 ml is not equal to 1 mg. Conversion from ml to mg entirely depends upon the density of the substance.</p>
-                </div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFAQ(this)">
-                    <h4>Q: Is it possible to convert milliliters (mL) to milligrams (mg)?</h4>
-                    <span class="toggle-icon">-</span>
-                </div>
-                <div class="faq-answer">
-                    <p>A: Yes, you can easily convert ml to mg by using the above formula. Or, use our ml to mg converter to make conversion quick and easy.</p>
-                </div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFAQ(this)">
-                    <h4>Q: What is 50 ml in mg?</h4>
-                </div>
-                <div class="faq-answer">
-                    <p>A: 50 ml to mg for a substance with a density of 0.7 g/mL is as follows:</p>
-                    <p><b>milligrams</b> = 50 mL × 1,000 × 0.7 g/mL = <b>35,000 mg</b></p>
-                </div>
-            </div>
-        </section>
-        <section class="card" id="reference">
-            <h2>Reference:</h2>
-            <p>For milk density:- <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7466286/">visit</a></p>
-            <p>For cooking oil density:- <a href="https://hypertextbook.com/facts/2000/IngaDorfman.shtml">visit</a></p>
-        </section>
+      <section class="card" id="faq">
+    <h2>Häufig gestellte Fragen</h2>
+    <div class="faq-item">
+        <div class="faq-question" onclick="toggleFAQ(this)">
+            <h4>F: Entspricht 1 ml 1 mg?</h4>
+            <span class="toggle-icon">-</span>
+        </div>
+        <div class="faq-answer">
+            <p>A: Nein, 1 ml entspricht nicht 1 mg. Die Umrechnung von ml in mg hängt vollständig von der Dichte der Substanz ab.</p>
+        </div>
     </div>
+    <div class="faq-item">
+        <div class="faq-question" onclick="toggleFAQ(this)">
+            <h4>F: Ist es möglich, Milliliter (mL) in Milligramm (mg) umzurechnen?</h4>
+            <span class="toggle-icon">-</span>
+        </div>
+        <div class="faq-answer">
+            <p>A: Ja, Sie können ml leicht in mg umrechnen, indem Sie die obige Formel verwenden. Oder nutzen Sie unseren ml-zu-mg-Rechner, um die Umrechnung schnell und einfach zu machen.</p>
+        </div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-question" onclick="toggleFAQ(this)">
+            <h4>F: Was sind 50 ml in mg?</h4>
+        </div>
+        <div class="faq-answer">
+            <p>A: 50 ml in mg für eine Substanz mit einer Dichte von 0,7 g/ml ergibt:</p>
+            <p><b>Milligramm</b> = 50 mL × 1.000 × 0,7 g/ml = <b>35.000 mg</b></p>
+        </div>
+    </div>
+</section>
+<section class="card" id="reference">
+    <h2>Referenz:</h2>
+    <p>Für Milchdichte:- <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7466286/">besuchen</a></p>
+    <p>Für Kochöl-Dichte:- <a href="https://hypertextbook.com/facts/2000/IngaDorfman.shtml">besuchen</a></p>
+</section>
+</div>
     {% include 'footer.html' %}
     <script>
         const mainSelect = document.getElementById('mainSelect');
