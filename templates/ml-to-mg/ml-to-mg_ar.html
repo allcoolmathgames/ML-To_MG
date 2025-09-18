@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar">
 <head>
     <meta charset="UTF-8">
     <link rel="icon" href="{{ url_for('static', filename='img/favicon.png') }}" type="image/png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex, nofollow">
-    <title>ML To MG Converter | mL to Mg Conversion</title>
-    <meta name="description" content="Use this ml to mg converter to make conversions from milliliters to milligrams by just making a single click." />
-    <meta name="keywords" content="ml to mg converter, ml to mg conversion, mL to mg table, water conversion, milk conversion, cooking oil conversion, flour conversion, sugar conversion, kitchen measurement chart, baking conversions, ingredient weight chart" />
-    <link rel="canonical" href="https://mltomg.info/" />
+    <meta name="robots" content="index, follow">
+    <title>محول مل إلى ملغ | تحويل مل إلى ملغ</title>
+    <meta name="description" content="استخدم محول مل إلى ملجم هذا لإجراء تحويلات من ملليلتر إلى ملليجرام بمجرد النقر مرة واحدة." />
+    <meta name="keywords" content="محول مل إلى ملجم، تحويل مل إلى ملجم، جدول مل إلى ملجم، تحويل الماء، تحويل الحليب، تحويل زيت الطهي، تحويل الدقيق، تحويل السكر، جدول قياسات المطبخ، تحويلات الخبز، جدول وزن المكونات" />
+    <link rel="canonical" href="https://mltomg.info/ar />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
@@ -53,37 +53,37 @@
     {% include 'header.html' %}
     <header class="secondary-header">
         <div class="container">
-            <h1>Ml to Mg Converter</h1>
-            <p>Enter the volume in milliliters below to calculate the weight in milligrams.</p>
+            <h1>محول مل إلى ملغ</h1>
+            <p>أدخل الحجم بالمليلترات أدناه لحساب الوزن بالمليجرام.</p>
         </div>
     </header>
     <div class="container main-content">
         <section class="card" id="tool">
-            <h2>Convert Ml To Mg</h2>
+            <h2>تحويل مل إلى ملغ</h2>
             <div class="tool-container">
                 <div class="form-group">
-                    <label for="mlInput"><b>Volume (in ml):</b></label>
+                    <label for="mlInput"><b>الحجم (بالمل):</b></label>
                     <input type="number" id="mlInput" placeholder="Enter volume in ml" required>
                 </div>
                 <div class="form-group">
-                    <label for="mainSelect"><b>Select Item:</b></label>
+                    <label for="mainSelect"><b>حدد العنصر:</b></label>
                     <select id="mainSelect">
-                        <option value="">-- Select an Item --</option>
-                        <option value="water" data-density="1000">Water</option>
-                        <option value="ethanol" data-density="789">Ethanol</option>
-                        <option value="olive-oil" data-density="918">Olive Oil</option>
-                        <option value="milk" data-density="1030">Milk</option>
-                        <option value="honey" data-density="1300">Honey</option>
-                        <option value="glycerin" data-density="1800">Glycerin</option>
-                        <option value="medication">Medications</option>
-                        <option value="custom-liquid">Custom Density</option>
+                        <option value="">-- حدد عنصرًا --</option>
+                        <option value="water" data-density="1000">ماء</option>
+                        <option value="ethanol" data-density="789">الإيثانول</option>
+                        <option value="olive-oil" data-density="918">زيت الزيتون</option>
+                        <option value="milk" data-density="1030">لبن</option>
+                        <option value="honey" data-density="1300">عسل</option>
+                        <option value="glycerin" data-density="1800">الجلسرين</option>
+                        <option value="medication">الأدوية</option>
+                        <option value="custom-liquid">كثافة مخصصة</option>
                     </select>
                 </div>
 
                 <div class="form-group hidden" id="medicationGroup">
-                    <label for="medicationSelect"><b>Select Medication:</b></label>
+                    <label for="medicationSelect"><b>اختر الدواء</b></label>
                     <select id="medicationSelect">
-                        <option value="">-- Select a Medication --</option>
+                        <option value="">-- اختر الدواء --</option>
                         <option value="acetaminophen" data-concentration="10">Acetaminophen (Tylenol) 10 mg/mL</option>
                         <option value="amoxicillin" data-concentration="80">Amoxicillin suspension 400 mg/5 mL</option>
                         <option value="benadryl-oral" data-concentration="12.5">Benadryl (Oral liquid, 12.5 mg/5 mL)</option>
@@ -95,116 +95,116 @@
                         <option value="ibuprofen-injection-2" data-concentration="100">Ibuprofen (Injection, 800 mg/8 mL)</option>
                         <option value="morphine" data-concentration="20">Morphine sulfate soln 20 mg/mL</option>
                         <option value="testosterone" data-concentration="200">Testosterone 200 mg/mL</option>
-                        <option value="custom-medication">Custom Concentration</option>
+                        <option value="custom-medication">التركيز المخصص</option>
                     </select>
                 </div>
 
                 <div class="form-group hidden" id="densityGroup">
-                    <label for="densityInput"><b>Density (mg/mL):</b></label>
+                    <label for="densityInput"><b>الكثافة (ملغ/مل):</b></label>
                     <input type="number" id="densityInput" placeholder="Enter density in mg/mL" required>
                 </div>
 
                 <div class="form-group hidden" id="concentrationGroup">
-                    <label for="concentrationInput"><b>Concentration (mg/mL):</b></label>
+                    <label for="concentrationInput"><b>التركيز (ملغ/مل):</b></label>
                     <input type="number" id="concentrationInput" placeholder="Enter concentration in mg/mL" required>
                 </div>
 
-                <button class="btn" onclick="convertMlToMg()">Convert to mg</button>
+                <button class="btn" onclick="convertMlToMg()">تحويل إلى ملغ</button>
             </div>
         </section>
         <div id="result-section">
-            <div class="result-heading">Result:</div>
-            <div class="result-value" id="result-value">Your result will appear here</div>
+            <div class="result-heading">نتيجة:</div>
+            <div class="result-value" id="result-value">ستظهر نتيجتك هنا</div>
         </div>
         <section class="card" id="why-choose-us">
-            <p>Just enter the total number of milliliters (mL) into the ml to mg converter to convert ml to mg according to your density. You can also convert <a href="https://mltomg.info/mg-to-ml">mg to ml</a> on mltomg.info.</p>
+            <p>أدخل إجمالي عدد المليلترات (مل) في محول مل إلى ملجم لتحويل مل إلى ملجم حسب كثافتك. يمكنك أيضًا تحويل <a href="https://mltomg.info/mg-to-ml">ملجم إلى مل</a> على mltomg.info.</p>
         </section>
         <section class="card" id="formula">
-            <h2>mL to mg formula:</h2>
+            <h2>صيغة مل إلى ملغ:</h2>
             <p><b>Mg = mL × d (mg/mL)</b></p>
             <p>Where;</p>
             <p>1. <b>mg</b> = Milligrams</p>
             <p>2. <b>ml</b> = Milliliters</p>
             <p>3. <b>d</b> = density (mg/ml)</p>
-            <p>To convert from ml to mg, the density must be in mg/ml. If the density is in g/ml, then first convert it into mg/ml by multiplying density with 1000.</p>
+            <p>للتحويل من مل إلى ملغ، يجب أن تكون الكثافة بوحدة ملغ/مل. إذا كانت الكثافة بوحدة غ/مل، فحوّلها أولًا إلى ملغ/مل بضرب الكثافة في ١٠٠٠.</p>
         </section>
         <section class="card" id="why-choose-us">
-            <h2>How To Make mL to mg Conversion?</h2>
+            <h2>كيفية تحويل مل إلى ملغ؟</h2>
             <ul>
-                <li><b>Find the Volume:</b> Determine the total volume of ml for the given substance.</li>
-                <li><b>Find the Density:</b> Measure the density of the given substance. Product labels or scientific literature typically include this value.</li>
-                <li><b>Determine the Mass:</b> Insert the known values into the formula to calculate the mass.</li>
+                <li><b>العثور على الحجم:</b> تحديد الحجم الإجمالي مل للمادة المعطاة.</li>
+                <li><b>إيجاد الكثافة:</b> قِس كثافة المادة المُعطاة. عادةً ما تتضمن ملصقات المنتجات أو المراجع العلمية هذه القيمة.</li>
+                <li><b>تحديد الكتلة:</b> أدخل القيم المعروفة في الصيغة لحساب الكتلة.</li>
             </ul>
         </section>
         <section class="card" id="example">
-            <h3>Example:</h3>
-            <p>Let’s understand this by solving an example:</p>
-            <p>Suppose you have <b>10 ml</b> of a liquid with a density of <b>1.5 g/ml</b>. The conversion would be:</p>
+            <h3>مثال:</h3>
+            <p>دعونا نفهم هذا من خلال حل مثال:</p>
+            <p>لنفترض أن لديك 10 مل من سائل بكثافة 1.5 جم/مل. التحويل سيكون:</p>
             <p><b>Milligrams (mg)</b> = 10 ml × 1,000 × 1.5 g/ml = <b>15,000 mg</b></p>
         </section>
         <section class="card more-tools" id="more-tools">
-            <h2>More Tools</h2>
+            <h2>المزيد من الأدوات</h2>
             <div class="tool-cards-container">
                 <a href="/mg-to-ml" class="tool-card">
                     <div class="tool-icon">⚖️</div>
                     <div class="tool-info">
-                        <h3>Mg to Ml</h3>
-                        <p>Convert milligrams to milliliters.</p>
+                        <h3>ملغ إلى مل</h3>
+                        <p>تحويل المليغرام إلى ملليلتر.</p>
                     </div>
                 </a>
                 <a href="/g-to-l" class="tool-card">
                     <div class="tool-icon">💧</div>
                     <div class="tool-info">
-                        <h3>G to L</h3>
-                        <p>Convert grams to liters.</p>
+                        <h3>من G إلى L</h3>
+                        <p>تحويل الجرام إلى لتر.</p>
                     </div>
                 </a>
                 <a href="/kg-to-l" class="tool-card">
                     <div class="tool-icon">🫙</div>
                     <div class="tool-info">
-                        <h3>Kg to L</h3>
-                        <p>Convert kilograms to liters.</p>
+                        <h3>كجم إلى لتر</h3>
+                        <p>تحويل الكيلوجرامات إلى لترات.</p>
                     </div>
                 </a>
                 <a href="/l-to-g" class="tool-card">
                     <div class="tool-icon">🧪</div>
                     <div class="tool-info">
-                        <h3>L to G</h3>
-                        <p>Convert liters to grams.</p>
+                        <h3>من L إلى G</h3>
+                        <p>تحويل اللترات إلى جرامات.</p>
                     </div>
                 </a>
                 <a href="/l-to-kg" class="tool-card">
                     <div class="tool-icon">⚖️</div>
                     <div class="tool-info">
-                        <h3>L to Kg</h3>
-                        <p>Convert liters to kilograms.</p>
+                        <h3>ل إلى كجم</h3>
+                        <p>تحويل اللترات إلى الكيلوجرامات.</p>
                     </div>
                 </a>
                 <a href="/ml-to-g" class="tool-card">
                     <div class="tool-icon">💧</div>
                     <div class="tool-info">
-                        <h3>Ml to G</h3>
-                        <p>Convert milliliters to grams.</p>
+                        <h3>مل إلى ج</h3>
+                        <p>تحويل الملليلترات إلى جرامات</p>
                     </div>
                 </a>
                 <a href="/ml-to-oz" class="tool-card">
                     <div class="tool-icon">🧪</div>
                     <div class="tool-info">
-                        <h3>Ml to Oz</h3>
-                        <p>Convert milliliters to ounces.</p>
+                        <h3>مل إلى أونصة</h3>
+                        <p>تحويل الملليلترات إلى أونصات.</p>
                     </div>
                 </a>
                 <a href="/oz-to-ml" class="tool-card">
                     <div class="tool-icon">🫙</div>
                     <div class="tool-info">
-                        <h3>Oz to Ml</h3>
-                        <p>Convert ounces to milliliters.</p>
+                        <h3>أونصة إلى مل</h3>
+                        <p>تحويل الأونصات إلى ملليلترات.</p>
                     </div>
                 </a>
             </div>
         </section>
         <section class="card" id="Table">
-            <h2>Milliliters to Milligrams Conversion Table</h2>
+            <h2>جدول تحويل الملليلترات إلى الملليغرامات</h2>
             <style>
                 :root {
                     --bg: #ffffff;
@@ -232,18 +232,17 @@
                 caption { caption-side: bottom; padding: 10px; font-size: 0.875rem; color: var(--muted); }
             </style>
             <div class="wrap">
-                <h1>Volume to Mass Reference (mg)</h1>
                 <div class="table-card">
                     <div class="table-scroll">
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Volume (mL)</th>
-                                    <th>Water (mg)</th>
-                                    <th>Milk (mg)</th>
-                                    <th>Cooking Oil (mg)</th>
-                                    <th>All Purpose Flour (mg)</th>
-                                    <th>Granulated Sugar (mg)</th>
+                                    <th>الحجم (مل)</th>
+                                    <th>الماء (ملغ)</th>
+                                    <th>الحليب (ملغ)</th>
+                                    <th>زيت الطهي (ملغ)</th>
+                                    <th>دقيق متعدد الاستخدامات (ملغ)</th>
+                                    <th>سكر محبب (ملغ)</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -295,39 +294,39 @@
             </div>
         </section>
         <section class="card" id="faq">
-            <h2>Frequently Asked Questions</h2>
+            <h2>الأسئلة الشائعة</h2>
             <div class="faq-item">
                 <div class="faq-question" onclick="toggleFAQ(this)">
-                    <h4>Q: Does 1 ml equal 1 mg??</h4>
+                    <h4>س: هل 1 مل يساوي 1 ملغ؟</h4>
                     <span class="toggle-icon">-</span>
                 </div>
                 <div class="faq-answer">
-                    <p>A: No, 1 ml is not equal to 1 mg. Conversion from ml to mg entirely depends upon the density of the substance.</p>
+                    <p>ج: لا، ١ مل لا يساوي ١ ملغ. يعتمد التحويل من مل إلى ملغ كليًا على كثافة المادة.</p>
                 </div>
             </div>
             <div class="faq-item">
                 <div class="faq-question" onclick="toggleFAQ(this)">
-                    <h4>Q: Is it possible to convert milliliters (mL) to milligrams (mg)?</h4>
+                    <h4>س: هل من الممكن تحويل الملليلترات (مل) إلى مليجرام (مجم)؟</h4>
                     <span class="toggle-icon">-</span>
                 </div>
                 <div class="faq-answer">
-                    <p>A: Yes, you can easily convert ml to mg by using the above formula. Or, use our ml to mg converter to make conversion quick and easy.</p>
+                    <p>ج: نعم، يمكنك بسهولة تحويل مل إلى ملغ باستخدام الصيغة أعلاه. أو استخدم محول مل إلى ملغ الخاص بنا لتسهيل عملية التحويل.</p>
                 </div>
             </div>
             <div class="faq-item">
                 <div class="faq-question" onclick="toggleFAQ(this)">
-                    <h4>Q: What is 50 ml in mg?</h4>
+                    <h4>س: ما هو 50 مل بالملغ؟</h4>
                 </div>
                 <div class="faq-answer">
-                    <p>A: 50 ml to mg for a substance with a density of 0.7 g/mL is as follows:</p>
+                    <p>ج: 50 مل إلى ملغ لمادة ذات كثافة 0.7 جم / مل على النحو التالي:</p>
                     <p><b>milligrams</b> = 50 mL × 1,000 × 0.7 g/mL = <b>35,000 mg</b></p>
                 </div>
             </div>
         </section>
         <section class="card" id="reference">
-            <h2>Reference:</h2>
-            <p>For milk density:- <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7466286/">visit</a></p>
-            <p>For cooking oil density:- <a href="https://hypertextbook.com/facts/2000/IngaDorfman.shtml">visit</a></p>
+            <h2>مرجع:</h2>
+            <p>لكثافة الحليب:- <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7466286/">visit</a></p>
+            <p>لكثافة زيت الطهي:- <a href="https://hypertextbook.com/facts/2000/IngaDorfman.shtml">visit</a></p>
         </section>
     </div>
     {% include 'footer.html' %}
