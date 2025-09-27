@@ -374,7 +374,7 @@
                         </div>
                     </li>
                     <li>
-                        <a href="/" class="mode-switcher" onclick="toggleDarkMode()">☀️</a>
+                        <div class="mode-switcher" onclick="toggleDarkMode(event)">☀️</div>
                     </li>
                 </ul>
             </nav>
@@ -386,13 +386,46 @@
 </header>
 
 <script>
-    function toggleDarkMode() {
+    // Theme ko page load hone par check aur apply karne ka function
+    function applySavedTheme() {
+        const savedTheme = localStorage.getItem('theme');
         const body = document.body;
-        body.classList.toggle('dark-mode');
         const modeSwitcher = document.querySelector('.mode-switcher');
+        
+        if (savedTheme === 'dark-mode') {
+            body.classList.add('dark-mode');
+            // Ensure the correct icon is shown on load
+            if (modeSwitcher) {
+                modeSwitcher.innerHTML = '<i class="fas fa-moon"></i>';
+            }
+        } else {
+            body.classList.remove('dark-mode');
+            // Ensure the correct icon is shown on load (default is light)
+            if (modeSwitcher) {
+                modeSwitcher.innerHTML = '☀️';
+            }
+        }
+    }
+
+    // Toggle Dark Mode function ko update kiya gaya hai
+    function toggleDarkMode(event) {
+        // Prevent default action of an <a> tag if it was one, but we changed it to <div>, 
+        // still good practice to check if it was clicked via an event listener
+        if (event) {
+            event.preventDefault(); // Roke ga agar kisi link/form se call hua.
+            event.stopPropagation(); // Hamburger/Nav link close hone se roke ga.
+        }
+
+        const body = document.body;
+        const modeSwitcher = document.querySelector('.mode-switcher');
+
+        body.classList.toggle('dark-mode');
+
         if (body.classList.contains('dark-mode')) {
+            localStorage.setItem('theme', 'dark-mode'); // Theme save karein
             modeSwitcher.innerHTML = '<i class="fas fa-moon"></i>';
         } else {
+            localStorage.setItem('theme', 'light-mode'); // Theme save karein
             modeSwitcher.innerHTML = '☀️';
         }
     }
@@ -438,4 +471,7 @@
         }
     });
 
+    // Page load hone par theme apply karein
+    document.addEventListener('DOMContentLoaded', applySavedTheme);
+    
 </script>
