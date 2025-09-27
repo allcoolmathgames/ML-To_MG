@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.png') }}" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Mg to mL Converter | Mg to ML Conversion Chart</title>
+    <meta name="description" content="Easily convert milligrams (mg) to milliliters (mL) with our online mg to mL converter. Accurate, simple, and fast conversions for water, milk, oil, flour, sugar, and more.">
+    <link rel="canonical" href="https://mltomg.info/mg-to-ml" />
+    <meta name="keywords" content="mg to ml, mg to ml converter, milligrams to milliliters, convert mg to ml, mg in ml, mg ml calculator, mg conversion tool, mg to ml online converter, mg to ml chart, mg to ml formula">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+</head>
+<body>
+    {% include 'header.html' %}
+    <header class="secondary-header">
+        <div class="container">
+            <h1>Mg to Ml Converter</h1>
+            <p>Enter the weight in milligrams below to find out the volume in milliliters.</p>
+        </div>
+    </header>
+
+    <div class="container main-content">
+        <section class="card" id="tool">
+            <h2>MG TO ML Conversion</h2>
+            <div class="tool-container">
+                <div class="form-group">
+                    <label for="mgInput"><b>Mass (in mg):</b></label>
+                    <input type="number" id="mgInput" placeholder="Enter mass in mg" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="liquidSelect"><b>Select Liquid:</b></label>
+                    <select id="liquidSelect">
+                        <option value="">-- Select a Liquid --</option>
+                        <option value="1000">Water</option>
+                        <option value="789">Ethanol</option>
+                        <option value="918">Olive Oil</option>
+                        <option value="1030">Milk</option>
+                        <option value="1300">Honey</option>
+                        <option value="1800">Glycerin</option>
+                    </select>
+                </div>
+
+                <button class="btn" onclick="convertMgToMl()">Convert to ml</button>
+                <div id="result"></div>
+            </div>
+        </section>
+
+        <section class="card" id="intention"
+            <p>Use our mg to mL converter to easily convert milligrams (mg) into milliliters (mL). Whether you’re working in medicine, cooking, or science, accurate measurement conversions are essential. This mg to mL calculator helps you convert the weight of a liquid into its volume in seconds. You can also perform the reverse conversion with our mL to mg calculator.</p>
+        </section>
+
+        <section class="card" id="how-to-us">
+            <h2>How to Convert Milligrams to Milliliters</h2>
+            <p>Milligram is a unit of mass and milliliter is unit of volume, both units have different physical quantities so we have to know one more physical quantity of the substance to perform mg to ml conversion. </p>
+        <h3>Mg to mL Formula:</h3>
+            <p>To convert measurement from milligrams to milliliters, you have to divide the weight by the density of the substance. Note that density must be in milligrams per milliliter (mg/mL).</p>
+
+            <p>If the density is given in grams per milliliter (g/mL), just multiply it by 1,000 to change it into milligrams per milliliter (mg/mL).</p>
+
+            <p>For a density given in g/mL, you can use this simple formula to convert:</p>
+
+            <p style="text-align: center; color: red; font-weight: bold;">milliliters = milligrams / 1,000 × density</p>
+
+            <h4>Example:</h4>
+            <p>Let’s understand the formula by solving an example:</p>
+
+            <p>Convert 1000 milligrams to milliliters for a substance with a density of 0.7 g/mL.</p>
+
+            <ul>
+                <li>milliliters = 1000 mg / 1,000 × 0.7 g/mL</li>
+                <li>Milliliters = 1.42 mL</li>
+            </ul>
+            <p>So, 1000 mg of substance which has density 0.7 g/ml is equal to 1.42 mL.</p>
+        </section>
+
+        <section class="card" id="mg-in-ml">
+            <h2>How many MG in a ML?</h2>
+            <p>How many milligrams (mg) are in a milliliter (mL) depends on the substance’s density. For water, and any liquid with a density of 1 g/mL, the conversion is simple and direct.</p>
+        <ul>
+            <li>1 mL of water = 1000 mg</li>
+        </ul>
+        </section>
+      <section class="card" id="drug-conversion">
+            <h2>Mg to mL Drug/Medication Conversion:</h2>
+          <p>To make drug conversion from milligrams to milliliters density or concentration of the drug solution is a very important factor. Unlike water (which has 1 g/mL = 1000 mg/mL), medicines are usually made in specific concentrations. Here’s a simple breakdown:</p>
+          <h3>Formula:</h3>
+            <p style="text-align: center; color: red; font-weight: bold;">Volume (mL) = Dose (mg)​ ÷ Concentration (mg/mL)</p>
+          <h4>Example:</h4>
+          <p>If a drug has a concentration of 50 mg/mL and you need 100 mg, then:</p>
+          <p><b>100 ÷ 50 = 2mL</b></p>
+
+          <p><b>⚠️Disclaimer:</b> Drug mg to mL conversions depend on concentration, always follow the prescription label or consult a healthcare professional.</p>
+      </section>
+  <section class="card" id="table">
+            <h2>Milligrams to Milliliters Conversion Table:</h2>
+        <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: center;
+    }
+    th, td {
+      border: 1px solid #333;
+      padding: 6px;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+    caption {
+      font-weight: bold;
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+
+<table>
+  <caption>Weight in Milligrams to Volume in Milliliters</caption>
+  <tr>
+    <th>Weight (mg)</th>
+    <th>Water (mL)</th>
+    <th>Milk (mL)</th>
+    <th>Cooking Oil (mL)</th>
+    <th>All Purpose Flour (mL)</th>
+    <th>Granulated Sugar (mL)</th>
+  </tr>
+  <tr><td>10</td><td>0.01</td><td>0.009709</td><td>0.011364</td><td>0.018904</td><td>0.014184</td></tr>
+  <tr><td>20</td><td>0.02</td><td>0.019417</td><td>0.022727</td><td>0.037807</td><td>0.028369</td></tr>
+  <tr><td>30</td><td>0.03</td><td>0.029126</td><td>0.034091</td><td>0.056711</td><td>0.042553</td></tr>
+  <tr><td>40</td><td>0.04</td><td>0.038835</td><td>0.045455</td><td>0.075614</td><td>0.056738</td></tr>
+  <tr><td>50</td><td>0.05</td><td>0.048544</td><td>0.056818</td><td>0.094518</td><td>0.070922</td></tr>
+  <tr><td>60</td><td>0.06</td><td>0.058252</td><td>0.068182</td><td>0.113422</td><td>0.085106</td></tr>
+  <tr><td>70</td><td>0.07</td><td>0.067961</td><td>0.079545</td><td>0.132325</td><td>0.099291</td></tr>
+  <tr><td>80</td><td>0.08</td><td>0.07767</td><td>0.090909</td><td>0.151229</td><td>0.113475</td></tr>
+  <tr><td>90</td><td>0.09</td><td>0.087379</td><td>0.102273</td><td>0.170132</td><td>0.12766</td></tr>
+  <tr><td>100</td><td>0.1</td><td>0.097087</td><td>0.113636</td><td>0.189036</td><td>0.141844</td></tr>
+  <tr><td>110</td><td>0.11</td><td>0.106796</td><td>0.125</td><td>0.20794</td><td>0.156028</td></tr>
+  <tr><td>120</td><td>0.12</td><td>0.116505</td><td>0.136364</td><td>0.226843</td><td>0.170213</td></tr>
+  <tr><td>130</td><td>0.13</td><td>0.126214</td><td>0.147727</td><td>0.245747</td><td>0.184397</td></tr>
+  <tr><td>140</td><td>0.14</td><td>0.135922</td><td>0.159091</td><td>0.26465</td><td>0.198582</td></tr>
+  <tr><td>150</td><td>0.15</td><td>0.145631</td><td>0.170455</td><td>0.283554</td><td>0.212766</td></tr>
+  <tr><td>160</td><td>0.16</td><td>0.15534</td><td>0.181818</td><td>0.302457</td><td>0.22695</td></tr>
+  <tr><td>170</td><td>0.17</td><td>0.165049</td><td>0.193182</td><td>0.321361</td><td>0.241135</td></tr>
+  <tr><td>180</td><td>0.18</td><td>0.174757</td><td>0.204545</td><td>0.340265</td><td>0.255319</td></tr>
+  <tr><td>190</td><td>0.19</td><td>0.184466</td><td>0.215909</td><td>0.359168</td><td>0.269504</td></tr>
+  <tr><td>200</td><td>0.2</td><td>0.194175</td><td>0.227273</td><td>0.378072</td><td>0.283688</td></tr>
+  <tr><td>210</td><td>0.21</td><td>0.203883</td><td>0.238636</td><td>0.396975</td><td>0.297872</td></tr>
+  <tr><td>220</td><td>0.22</td><td>0.213592</td><td>0.25</td><td>0.415879</td><td>0.312057</td></tr>
+  <tr><td>230</td><td>0.23</td><td>0.223301</td><td>0.261364</td><td>0.434783</td><td>0.326241</td></tr>
+  <tr><td>240</td><td>0.24</td><td>0.23301</td><td>0.272727</td><td>0.453686</td><td>0.340426</td></tr>
+  <tr><td>250</td><td>0.25</td><td>0.242718</td><td>0.284091</td><td>0.47259</td><td>0.35461</td></tr>
+  <tr><td>260</td><td>0.26</td><td>0.252427</td><td>0.295455</td><td>0.491493</td><td>0.368794</td></tr>
+  <tr><td>270</td><td>0.27</td><td>0.262136</td><td>0.306818</td><td>0.510397</td><td>0.382979</td></tr>
+  <tr><td>280</td><td>0.28</td><td>0.271845</td><td>0.318182</td><td>0.529301</td><td>0.397163</td></tr>
+  <tr><td>290</td><td>0.29</td><td>0.281553</td><td>0.329545</td><td>0.548204</td><td>0.411348</td></tr>
+  <tr><td>300</td><td>0.3</td><td>0.291262</td><td>0.340909</td><td>0.567108</td><td>0.425532</td></tr>
+  <tr><td>310</td><td>0.31</td><td>0.300971</td><td>0.352273</td><td>0.586011</td><td>0.439716</td></tr>
+  <tr><td>320</td><td>0.32</td><td>0.31068</td><td>0.363636</td><td>0.604915</td><td>0.453901</td></tr>
+  <tr><td>330</td><td>0.33</td><td>0.320388</td><td>0.375</td><td>0.623819</td><td>0.468085</td></tr>
+  <tr><td>340</td><td>0.34</td><td>0.330097</td><td>0.386364</td><td>0.642722</td><td>0.48227</td></tr>
+  <tr><td>350</td><td>0.35</td><td>0.339806</td><td>0.397727</td><td>0.661626</td><td>0.496454</td></tr>
+  <tr><td>360</td><td>0.36</td><td>0.349515</td><td>0.409091</td><td>0.680529</td><td>0.510638</td></tr>
+  <tr><td>370</td><td>0.37</td><td>0.359223</td><td>0.420455</td><td>0.699433</td><td>0.524823</td></tr>
+  <tr><td>380</td><td>0.38</td><td>0.368932</td><td>0.431818</td><td>0.718336</td><td>0.539007</td></tr>
+  <tr><td>390</td><td>0.39</td><td>0.378641</td><td>0.443182</td><td>0.73724</td><td>0.553191</td></tr>
+  <tr><td>400</td><td>0.4</td><td>0.38835</td><td>0.454545</td><td>0.756144</td><td>0.567376</td></tr>
+</table>
+</body>
+  </section>
+        
+          
+          <section class="card more-tools" id="more-tools">
+            <h2>More Tools</h2>
+            <div class="tool-cards-container">
+                <a href="/mg-to-ml" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>Mg to Ml</h3>
+                        <p>Convert milligrams to milliliters.</p>
+                    </div>
+                </a>
+                <a href="/g-to-l" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>G to L</h3>
+                        <p>Convert grams to liters.</p>
+                    </div>
+                </a>
+                <a href="/kg-to-l" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Kg to L</h3>
+                        <p>Convert kilograms to liters.</p>
+                    </div>
+                </a>
+                <a href="/l-to-g" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>L to G</h3>
+                        <p>Convert liters to grams.</p>
+                    </div>
+                </a>
+                <a href="/l-to-kg" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>L to Kg</h3>
+                        <p>Convert liters to kilograms.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-g" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>Ml to G</h3>
+                        <p>Convert milliliters to grams.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-oz" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>Ml to Oz</h3>
+                        <p>Convert milliliters to ounces.</p>
+                    </div>
+                </a>
+                <a href="/oz-to-ml" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Oz to Ml</h3>
+                        <p>Convert ounces to milliliters.</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <section class="card" id="faq">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>Q: What is 50 mg converted to ml?</h4>
+                    <span class="toggle-icon">-</span>
+                </div>
+                <div class="faq-answer">
+                    <p>A: 50 mg converted to ml is 0.05 ml. This result is correct for any substance that has a density of 1000 mg/mL.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>Q: How much is 20 mg of cooking oil converted to ml?</h4>
+                    <span class="toggle-icon">-</span>
+                </div>
+                <div class="faq-answer">
+                    <p>A: To convert 20 milligrams of cooking oil into milliliters you have to know the density of cooking oil. Cooking oil has an average density of about 0.92 g/mL (or 920 mg/mL). So, by using the above formula: </p>
+                    <p><b>20 mg</b> of cooking oil is equal to <b>0.021 mL.</b></p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    {% include 'footer.html' %}
+</body>
+</html>

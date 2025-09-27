@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.png') }}" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Gram To Milliliter Converter | G to mL Conversion</title>
+    <meta name="description" content="Use this gram to milliliter converter to make conversions from mass (grams) to volume (milliliters) for various substances based on their density." />
+    <meta name="keywords" content="gram to ml converter, g to ml conversion, g to ml table, density calculator, mass to volume conversion, kitchen measurement" />
+    <link rel="canonical" href="https://kgtoL.info/g-to-ml" />
+    <link rel="alternate" hreflang="x-default" href="https://kgtoL.info/g-to-ml" />
+    <link rel="alternate" hreflang="en" href="https://kgtoL.info/g-to-ml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <meta name="google-site-verification" content="49KC3Wnkoo8QxBc56Q5dkx-LVqsbPxtgJTBs_MG7WBU" />
+    <style>
+        #result-section {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #e9ecef;
+            min-height: 60px;
+            position: relative;
+        }
+        #result-section .result-heading {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-weight: 600;
+            color: var(--primary-color);
+            border-left: 3px solid var(--secondary-color);
+            padding-left: 10px;
+            font-size: 1.1rem;
+        }
+        #result-section .result-value {
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 10px;
+            padding-top: 20px;
+            color: var(--light-text-color);
+            width: 100%;
+        }
+        .hidden {
+            display: none !important;
+        }
+        
+        /* Table styles */
+        :root {
+            --bg: #ffffff;
+            --text: #1f2937;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+            --stripe: #f9fafb;
+        }
+        body {
+            font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+            color: var(--text);
+            background: var(--bg);
+            margin: 0;
+        }
+        h1 { font-size: 1.25rem; margin: 0 0 12px; }
+        .wrap { max-width: 1100px; margin: 0 auto; }
+        .table-card { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+        .table-scroll { max-height: 70vh; overflow: auto; }
+        table { border-collapse: separate; border-spacing: 0; width: 100%; }
+        thead th { position: sticky; top: 0; background: var(--border); color: #111827; font-weight: 600; text-align: center; padding: 10px 12px; border-bottom: 1px solid var(--border); }
+        tbody td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; text-align: center; }
+        tbody tr:nth-child(even) td { background: var(--stripe); }
+        th, td.num { text-align: right; }
+        th:first-child, td:first-child { text-align: center; }
+        caption { caption-side: bottom; padding: 10px; font-size: 0.875rem; color: var(--muted); }
+    </style>
+</head>
+<body>
+    {% include 'header.html' %}
+    <header class="secondary-header">
+        <div class="container">
+            <h1>Gram to Milliliter Converter</h1>
+            <p>Enter the mass in grams below to calculate the volume in milliliters based on the substance's density.</p>
+        </div>
+    </header>
+    <div class="container main-content">
+        <section class="card" id="tool">
+            <h2>Convert Grams To Milliliters</h2>
+            <div class="tool-container">
+                <div class="form-group">
+                    <label for="gInput"><b>Mass (in grams):</b></label>
+                    <input type="number" id="gInput" placeholder="Enter mass in grams" required>
+                </div>
+                <div class="form-group">
+                    <label for="mainSelect"><b>Select Item:</b></label>
+                    <select id="mainSelect">
+                        <option value="">-- Select an Item --</option>
+                        <option value="custom-density">Custom Density (g/mL)</option> 
+                        <option value="water" data-density="1.000">Water</option>
+                        <option value="granulated-sugar" data-density="0.845">Granulated Sugar</option>
+                        <option value="powdered-sugar" data-density="0.560">Powdered Sugar</option>
+                        <option value="brown-sugar" data-density="0.850">Brown Sugar</option>
+                        <option value="raw-sugar" data-density="0.900">Raw Sugar</option>
+                        <option value="corn-syrup" data-density="1.380">Corn Syrup</option>
+                        <option value="honey" data-density="1.420">Honey</option>
+                        <option value="nutella" data-density="1.200">Nutella</option>
+                        <option value="jelly" data-density="1.300">Jelly</option>
+                        <option value="all-purpose-flour" data-density="0.529">All Purpose Flour</option>
+                        <option value="wheat-flour" data-density="0.529">Wheat Flour</option>
+                        <option value="bread-flour" data-density="0.529">Bread Flour</option>
+                        <option value="type-00-flour" data-density="0.600">Type 00 Flour</option>
+                        <option value="cake-flour" data-density="0.480">Cake Flour</option>
+                        <option value="rye-flour" data-density="0.460">Rye Flour</option>
+                        <option value="baking-soda" data-density="0.960">Baking Soda</option>
+                        <option value="baking-powder" data-density="0.800">Baking Powder</option>
+                        <option value="cream-of-tartar" data-density="0.750">Cream of Tartar</option>
+                        <option value="cooking-oil" data-density="0.918">Cooking Oil</option>
+                        <option value="olive-oil" data-density="0.918">Olive Oil</option>
+                        <option value="vegetable-oil" data-density="0.918">Vegetable Oil</option>
+                        <option value="butter" data-density="0.911">Butter</option>
+                        <option value="margarine" data-density="0.940">Margarine</option>
+                        <option value="lard" data-density="0.920">Lard</option>
+                        <option value="mayonnaise" data-density="0.920">Mayonnaise</option>
+                        <option value="peanut-butter" data-density="1.060">Peanut Butter</option>
+                        <option value="milk" data-density="1.030">Milk</option>
+                        <option value="buttermilk" data-density="1.030">Buttermilk</option>
+                        <option value="light-cream" data-density="1.009">Light Cream</option>
+                        <option value="heavy-cream" data-density="0.994">Heavy Cream</option>
+                        <option value="whipped-cream" data-density="0.480">Whipped Cream</option>
+                        <option value="ice-cream" data-density="0.560">Ice Cream</option>
+                        <option value="sour-cream" data-density="1.030">Sour Cream</option>
+                        <option value="cottage-cheese" data-density="1.060">Cottage Cheese</option>
+                        <option value="cream-cheese" data-density="1.040">Cream Cheese</option>
+                        <option value="yogurt" data-density="1.030">Yogurt</option>
+                        <option value="cinnamon" data-density="0.540">Cinnamon</option>
+                        <option value="garlic-powder" data-density="0.550">Garlic Powder</option>
+                        <option value="salt" data-density="2.160">Salt</option>
+                        <option value="spice-blends" data-density="0.550">Spice Blends</option>
+                        <option value="cocoa-powder" data-density="0.480">Cocoa Powder</option>
+                        <option value="vanilla" data-density="1.200">Vanilla Extract</option>
+                        <option value="almonds" data-density="0.600">Almonds</option>
+                        <option value="cashews" data-density="0.600">Cashews</option>
+                        <option value="peanuts" data-density="0.600">Peanuts</option>
+                        <option value="sunflower-seeds" data-density="0.500">Sunflower Seeds</option>
+                        <option value="dried-apple-slices" data-density="0.200">Dried Apple Slices</option>
+                        <option value="carrots" data-density="0.500">Carrots (shredded)</option>
+                        <option value="corn" data-density="0.750">Corn (kernels)</option>
+                        <option value="kidney-beans" data-density="0.850">Kidney Beans (dried)</option>
+                        <option value="onions" data-density="0.700">Onions (chopped)</option>
+                        <option value="potatoes" data-density="0.750">Potatoes (diced)</option>
+                        <option value="yams" data-density="0.750">Yams (diced)</option>
+                        <option value="barley" data-density="0.700">Barley</option>
+                        <option value="bran" data-density="0.300">Bran</option>
+                        <option value="bread" data-density="0.250">Bread (sliced)</option>
+                        <option value="breadcrumbs" data-density="0.420">Breadcrumbs</option>
+                        <option value="corn-flakes" data-density="0.150">Corn Flakes</option>
+                        <option value="cornstarch" data-density="0.500">Cornstarch</option>
+                        <option value="cake-mix" data-density="0.800">Cake Mix</option>
+                        <option value="oats" data-density="0.450">Oats</option>
+                        <option value="rice" data-density="0.850">Rice (uncooked)</option>
+                        <option value="rice-krispies" data-density="0.110">Rice Krispies</option>
+                        <option value="rye" data-density="0.700">Rye</option>
+                        <option value="wheat" data-density="0.800">Wheat</option>
+                    </select>
+                </div>
+                <div class="form-group hidden" id="densityGroup">
+                    <label for="densityInput"><b>Density (g/mL):</b></label>
+                    <input type="number" id="densityInput" placeholder="Enter custom density in g/mL" required>
+                </div>
+                <button class="btn" onclick="convertGToMl()">Convert to Milliliters</button>
+            </div>
+        </section>
+        <div id="result-section">
+            <div class="result-heading">Result:</div>
+            <div class="result-value" id="result-value">Your result will appear here</div>
+        </div>
+        <section class="card" id="why-choose-us">
+            <p>This grams to milliliters ( G to mL ) converter helps you to quickly convert mass into volume based on the density of the substance or material.</p>
+        </section>
+
+        <section class="card more-tools" id="more-tools">
+            <h2>More Tools</h2>
+            <div class="tool-cards-container">
+                <a href="/mg-to-ml" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>Mg to Ml</h3>
+                        <p>Convert milligrams to milliliters.</p>
+                    </div>
+                </a>
+                <a href="/g-to-l" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>G to L</h3>
+                        <p>Convert grams to liters.</p>
+                    </div>
+                </a>
+                <a href="/kg-to-l" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Kg to L</h3>
+                        <p>Convert kilograms to liters.</p>
+                    </div>
+                </a>
+                <a href="/l-to-g" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>L to G</h3>
+                        <p>Convert liters to grams.</p>
+                    </div>
+                </a>
+                <a href="/l-to-kg" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>L to Kg</h3>
+                        <p>Convert liters to kilograms.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-g" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>Ml to G</h3>
+                        <p>Convert milliliters to grams.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-oz" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>Ml to Oz</h3>
+                        <p>Convert milliliters to ounces.</p>
+                    </div>
+                </a>
+                <a href="/oz-to-ml" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Oz to Ml</h3>
+                        <p>Convert ounces to milliliters.</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <section class="card" id="how-to-convert">
+            <h2>How to Convert Grams to Milliliters</h2>
+            <p>To convert grams (mass) to milliliters (volume), you need the density of the substance, measured in grams per milliliter ($\mathbf{g/mL}$).</p>
+            <h3>Formula:</h3>
+            <p style="text-align: center; color: red; font-weight: bold;">Milliliters (mL) = Grams (G) ÷ Density (g/mL)</p>
+            <h4>Example:</h4>
+            <p>Let’s convert 200 grams of cooking oil into milliliters (Density of cooking oil is approximately $\mathbf{0.918\ \text{g/mL}}$):</p>
+            <ul>
+                <li>Milliliters = 200 G ÷ 0.918 g/mL</li>
+                <li>Milliliters ≈ 217.865</li>
+            </ul>
+            <p>So, 200 grams of cooking oil is approximately equal to **217.865** milliliters.</p>
+            
+        </section>
+        
+        <section class="card" id="definition-gram">
+            <h2>Definition Of Gram:</h2>
+            <p>A **gram (g)** is a unit of mass in the metric system. It is commonly used to measure the weight of objects and substances. One gram is equal to $\mathbf{1/1000}$ of a kilogram (kg).</p>
+        </section>
+        <section class="card" id="definition-milliliter">
+            <h2>Definition Of Milliliter:</h2>
+            <p>A **milliliter (mL)** is a metric unit of volume equal to one thousandth of a liter ($\mathbf{1/1000\ \text{L}}$). It is the base unit for small metric volume measurements.</p>
+        </section>
+
+        <section class="card" id="Table">
+        <h2>Grams to Milliliters Conversion Table</h2>
+        <div class="wrap">
+            <div class="table-card">
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Mass (Grams)</th>
+                                <th>Water (mL)</th>
+                                <th>Milk (mL)</th>
+                                <th>Cooking Oil (mL)</th>
+                                <th>All Purpose Flour (mL)</th>
+                                <th>Granulated Sugar (mL)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>1 G</td><td>1.00 mL</td><td>0.97 mL</td><td>1.09 mL</td><td>1.89 mL</td><td>1.18 mL</td></tr>
+                            <tr><td>5 G</td><td>5.00 mL</td><td>4.85 mL</td><td>5.45 mL</td><td>9.45 mL</td><td>5.92 mL</td></tr>
+                            <tr><td>10 G</td><td>10.00 mL</td><td>9.71 mL</td><td>10.89 mL</td><td>18.90 mL</td><td>11.83 mL</td></tr>
+                            <tr><td>25 G</td><td>25.00 mL</td><td>24.27 mL</td><td>27.23 mL</td><td>47.26 mL</td><td>29.59 mL</td></tr>
+                            <tr><td>50 G</td><td>50.00 mL</td><td>48.54 mL</td><td>54.47 mL</td><td>94.52 mL</td><td>59.17 mL</td></tr>
+                            <tr><td>100 G</td><td>100.00 mL</td><td>97.09 mL</td><td>108.93 mL</td><td>189.04 mL</td><td>118.34 mL</td></tr>
+                            <tr><td>250 G</td><td>250.00 mL</td><td>242.72 mL</td><td>272.33 mL</td><td>472.60 mL</td><td>295.86 mL</td></tr>
+                            <tr><td>500 G</td><td>500.00 mL</td><td>485.44 mL</td><td>544.66 mL</td><td>945.20 mL</td><td>591.72 mL</td></tr>
+                            <tr><td>1000 G (1 Kg)</td><td>1000.00 mL</td><td>970.87 mL</td><td>1089.32 mL</td><td>1890.40 mL</td><td>1183.43 mL</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        </section>
+
+
+        <section class="card" id="faq">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFAQ(this)">
+                <h4>Q: Is 1 gram always equal to 1 milliliter?</h4>
+                <span class="toggle-icon">-</span>
+            </div>
+            <div class="faq-answer">
+                <p>A: Only for pure **water** at ($4^{\circ}\text{C}$), where its density is $1.0\ \text{g/mL}$. For any other substance, the weight in grams will result in a different volume in milliliters, depending on its density.</p>
+            </div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFAQ(this)">
+                <h4>Q: How does the density affect the conversion?</h4>
+                <span class="toggle-icon">-</span>
+            </div>
+            <div class="faq-answer">
+                <p>A: Density is mass per volume. If a substance is **denser** (like salt, density $\approx 2.16\ \text{g/mL}$), 100 grams of it will occupy a **smaller** volume (fewer milliliters). If a substance is **less dense** (like flour, density $\approx 0.53\ \text{g/mL}$), 100 grams of it will occupy a **larger** volume (more milliliters).</p>
+            </div>
+        </div>
+        </section>
+
+    </div>
+    {% include 'footer.html' %}
+    <script>
+        const mainSelect = document.getElementById('mainSelect');
+        const densityGroup = document.getElementById('densityGroup');
+        const densityInput = document.getElementById('densityInput');
+        const gInput = document.getElementById('gInput'); // Mass in Grams
+        const resultValue = document.getElementById('result-value');
+
+        // Event listener for dropdown change
+        mainSelect.addEventListener('change', () => {
+            const selectedValue = mainSelect.value;
+            densityGroup.classList.add('hidden');
+            densityInput.value = '';
+
+            if (selectedValue === 'custom-density') {
+                densityGroup.classList.remove('hidden');
+                densityInput.placeholder = 'Enter custom density (g/mL)';
+                densityInput.focus();
+            } else if (selectedValue !== '') {
+                densityGroup.classList.remove('hidden');
+                // Density data attribute se uthaya ja raha hai, jo ki ab g/mL mein hai.
+                densityInput.value = mainSelect.options[mainSelect.selectedIndex].dataset.density;
+            }
+        });
+
+        // Conversion function: Grams to Milliliters
+        function convertGToMl() {
+            const G = parseFloat(gInput.value); // Mass in Grams
+            const density = parseFloat(densityInput.value); // Density in g/mL
+            
+            if (mainSelect.value === '') {
+                resultValue.innerHTML = 'Please select an item or enter a custom density.';
+                resultValue.style.color = 'red';
+                return;
+            }
+
+            if (isNaN(G) || isNaN(density) || G < 0 || density <= 0) {
+                resultValue.innerHTML = `Please enter valid positive numbers for mass and density.`;
+                resultValue.style.color = 'red';
+                return;
+            }
+
+            // Formula: Volume (mL) = Mass (G) ÷ Density (g/mL)
+            const mL = G / density; 
+            
+            resultValue.innerHTML = `${G} g = ${mL.toFixed(4)} mL`;
+            resultValue.style.color = 'green';
+            document.getElementById('result-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // Add event listeners to input field
+        gInput.addEventListener('input', convertGToMl);
+        // densityInput.addEventListener('input', convertGToMl); // Ya phir sirf button press par run karein
+    </script>
+    <script>
+        // FAQ toggle function ko yahaan add kar diya hai
+        function toggleFAQ(element) {
+            const answer = element.nextElementSibling;
+            const icon = element.querySelector('.toggle-icon');
+            if (answer.style.maxHeight) {
+                answer.style.maxHeight = null;
+                icon.textContent = '+';
+            } else {
+                answer.style.maxHeight = answer.scrollHeight + "px";
+                icon.textContent = '-';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.png') }}" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Milliliter To Gram Converter | mL to G Conversion</title>
+    <meta name="description" content="Use this milliliter to gram converter to make conversions from milliliters to grams for various substances based on their density." />
+    <meta name="keywords" content="milliliter to gram converter, ml to g conversion, ml to g table, water conversion, milk conversion, cooking oil conversion, flour conversion, kitchen measurement chart, baking conversions, ingredient mass chart" />
+    <link rel="canonical" href="https://kgtoL.info/ml-to-g" />
+    <link rel="alternate" hreflang="x-default" href="https://kgtoL.info/ml-to-g" />
+    <link rel="alternate" hreflang="en" href="https://kgtoL.info/ml-to-g" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <meta name="google-site-verification" content="49KC3Wnkoo8QxBc56Q5dkx-LVqsbPxtgJTBs_MG7WBU" />
+    <style>
+        /* Jo styles aapne diye the woh yahan hain, isko external CSS mein bhi move kar sakte hain */
+        #result-section {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #e9ecef;
+            min-height: 60px;
+            position: relative;
+        }
+        #result-section .result-heading {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-weight: 600;
+            color: var(--primary-color);
+            border-left: 3px solid var(--secondary-color);
+            padding-left: 10px;
+            font-size: 1.1rem;
+        }
+        #result-section .result-value {
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 10px;
+            padding-top: 20px;
+            color: var(--light-text-color);
+            width: 100%;
+        }
+        .hidden {
+            display: none !important;
+        }
+        
+        /* Table styles from the original code */
+        :root {
+            --bg: #ffffff;
+            --text: #1f2937;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+            --stripe: #f9fafb;
+        }
+        body {
+            font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+            color: var(--text);
+            background: var(--bg);
+            margin: 0;
+        }
+        h1 { font-size: 1.25rem; margin: 0 0 12px; }
+        .wrap { max-width: 1100px; margin: 0 auto; }
+        .table-card { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+        .table-scroll { max-height: 70vh; overflow: auto; }
+        table { border-collapse: separate; border-spacing: 0; width: 100%; }
+        thead th { position: sticky; top: 0; background: var(--border); color: #111827; font-weight: 600; text-align: center; padding: 10px 12px; border-bottom: 1px solid var(--border); }
+        tbody td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; text-align: center; }
+        tbody tr:nth-child(even) td { background: var(--stripe); }
+        th, td.num { text-align: right; }
+        th:first-child, td:first-child { text-align: center; }
+        caption { caption-side: bottom; padding: 10px; font-size: 0.875rem; color: var(--muted); }
+    </style>
+</head>
+<body>
+    {% include 'header.html' %}
+    <header class="secondary-header">
+        <div class="container">
+            <h1>Milliliter to Gram Converter</h1>
+            <p>Enter the volume in milliliters below to calculate the mass in grams.</p>
+        </div>
+    </header>
+    <div class="container main-content">
+        <section class="card" id="tool">
+            <h2>Convert Milliliters To Grams</h2>
+            <div class="tool-container">
+                <div class="form-group">
+                    <label for="mlInput"><b>Volume (in milliliters):</b></label>
+                    <input type="number" id="mlInput" placeholder="Enter volume in milliliters" required>
+                </div>
+                <div class="form-group">
+                    <label for="mainSelect"><b>Select Item:</b></label>
+                    <select id="mainSelect">
+                        <option value="">-- Select an Item --</option>
+                        
+                        <option value="water" data-density="1.00">Water</option>
+                        <option value="milk" data-density="1.03">Milk</option>
+                        <option value="flour" data-density="0.53">Flour</option>
+                        <option value="sugar" data-density="0.85">Sugar</option>
+                        <option value="salt" data-density="2.16">Salt</option>
+                        <option value="honey" data-density="1.42">Honey</option>
+                        <option value="butter" data-density="0.91">Butter</option>
+                        <option value="oil" data-density="0.92">Oil</option>
+                        <option value="nuts-and-seeds" data-density="0.60">Nuts and seeds</option>
+                        <option value="cacao" data-density="0.48">Cacao</option>
+                        <option value="rice-raw" data-density="0.85">Rice (raw)</option>
+                        <option value="oats" data-density="0.45">Oats</option>
+                        <option value="jam" data-density="1.30">Jam</option>
+                        <option value="nutella" data-density="1.20">Nutella</option>
+                        <option value="maple-syrup" data-density="1.32">Maple syrup</option>
+                        <option value="cream-38-fat" data-density="0.99">Cream 38% fat</option>
+                        <option value="cream-13-fat" data-density="1.02">Cream 13% fat</option>
+                        <option value="ice-cream-less-air" data-density="0.65">Ice cream (less air, more expensive)</option>
+                        <option value="ice-cream-more-air" data-density="0.45">Ice cream (more air, cheaper)</option>
+                        <option value="custom-liquid">Custom ingredient (g/mL)</option>
+                        </select>
+                </div>
+                <div class="form-group hidden" id="densityGroup">
+                    <label for="densityInput"><b>Density (g/mL):</b></label>
+                    <input type="number" id="densityInput" placeholder="Enter density in g/mL" required>
+                </div>
+                <button class="btn" onclick="convertMlToG()">Convert to Grams</button>
+            </div>
+        </section>
+        <div id="result-section">
+            <div class="result-heading">Result:</div>
+            <div class="result-value" id="result-value">Your result will appear here</div>
+        </div>
+        <section class="card" id="how-to-use">
+            <h2>How to Use</h2>
+            <p>1. <b>Enter Volume:</b> Enter your value in the "Volume (in ml)" field.</p>
+            <p>2. <b>Select Liquid:</b> Choose your liquid from the "Select Liquid" drop-down menu. The density for each liquid is pre-defined.</p>
+            <p>3. <b>Click Convert:</b> Click on the "Convert" button to see the result. The result will appear in the **Result** section.</p>
+        </section>
+
+        <section class="card" id="why-choose-us">
+            <h2>Why Choose Us?</h2>
+            <p>Our tool uses specific density values for <b>highly accurate conversions</b>. This gives you <b>reliable and precise results</b>. Its clean and modern interface also provides a superior user experience.</p>
+        </section>
+
+        <section class="card" id="how-it-works">
+            <h2>How Our Tool Works</h2>
+            <p>The conversion formula is: $$Mass (g) = Volume (ml) \times Density (g/ml)$$</p>
+            <p>This tool calculates the <b>mass</b> by applying your input volume and the pre-defined density of the selected liquid to this formula. For example, if you enter <b>1 ml</b> of water (density 1 g/ml), the result will be <b>1 g</b>.</p>
+        </section>
+
+        <section class="card more-tools" id="more-tools">
+            <h2>More Tools</h2>
+            <div class="tool-cards-container">
+                <a href="/mg-to-ml" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>Mg to Ml</h3>
+                        <p>Convert milligrams to milliliters.</p>
+                    </div>
+                </a>
+                <a href="/g-to-l" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>G to L</h3>
+                        <p>Convert grams to liters.</p>
+                    </div>
+                </a>
+                <a href="/kg-to-l" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Kg to L</h3>
+                        <p>Convert kilograms to liters.</p>
+                    </div>
+                </a>
+                <a href="/l-to-g" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>L to G</h3>
+                        <p>Convert liters to grams.</p>
+                    </div>
+                </a>
+                <a href="/l-to-kg" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>L to Kg</h3>
+                        <p>Convert liters to kilograms.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-g" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>Ml to G</h3>
+                        <p>Convert milliliters to grams.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-oz" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>Ml to Oz</h3>
+                        <p>Convert milliliters to ounces.</p>
+                    </div>
+                </a>
+                <a href="/oz-to-ml" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Oz to Ml</h3>
+                        <p>Convert ounces to milliliters.</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <section class="card" id="faq">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>Q: Can I use this tool for both liquids and solids?</h4>
+                    <span class="toggle-icon">-</span>
+                </div>
+                <div class="faq-answer">
+                    <p>A: Yes, as long as you know the substance's density, you can use this tool. We have provided densities for some common liquids to make it easier.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>Q: What if my liquid is not on the list?</h4>
+                    <span class="toggle-icon">-</span>
+                </div>
+                <div class="faq-answer">
+                    <p>A: Currently, this tool includes only the listed liquids. If you need another liquid, you can search for its density online and update the code for your own use.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    {% include 'footer.html' %}
+    <script>
+        const mainSelect = document.getElementById('mainSelect');
+        const densityGroup = document.getElementById('densityGroup');
+        const densityInput = document.getElementById('densityInput');
+        const mlInput = document.getElementById('mlInput'); // Volume in Milliliters
+        const resultValue = document.getElementById('result-value');
+
+        // Event listener for dropdown changeq
+        mainSelect.addEventListener('change', () => {
+            const selectedValue = mainSelect.value;
+            densityGroup.classList.add('hidden');
+            densityInput.value = '';
+
+            if (selectedValue === 'custom-liquid') {
+                densityGroup.classList.remove('hidden');
+                densityInput.placeholder = 'Enter custom density (g/mL)';
+                densityInput.focus(); // Focus on the custom input field
+            } else if (selectedValue !== '') {
+                densityGroup.classList.remove('hidden');
+                // Density data attribute se uthaya ja raha hai, jo ki ab g/mL mein hai.
+                densityInput.value = mainSelect.options[mainSelect.selectedIndex].dataset.density;
+            }
+        });
+
+        // Conversion function: Milliliters to Grams
+        function convertMlToG() {
+            const mL = parseFloat(mlInput.value); // Volume in Milliliters
+            const density = parseFloat(densityInput.value); // Density in g/mL
+            
+            if (mainSelect.value === '') {
+                resultValue.innerHTML = 'Please select an item or enter a custom density.';
+                resultValue.style.color = 'red';
+                return;
+            }
+
+            if (isNaN(mL) || isNaN(density) || mL <= 0 || density <= 0) {
+                resultValue.innerHTML = `Please enter valid positive numbers for volume and density.`;
+                resultValue.style.color = 'red';
+                return;
+            }
+
+            // Formula: Mass (g) = Volume (mL) × Density (g/mL)
+            const G = mL * density; 
+            
+            resultValue.innerHTML = `${mL} mL = ${G.toFixed(4)} g`;
+            resultValue.style.color = 'green';
+            document.getElementById('result-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    </script>
+    <script>
+        // FAQ toggle function ko yahaan add kar diya hai
+        function toggleFAQ(element) {
+            const answer = element.nextElementSibling;
+            const icon = element.querySelector('.toggle-icon');
+            if (answer.style.maxHeight) {
+                answer.style.maxHeight = null;
+                icon.textContent = '+';
+            } else {
+                answer.style.maxHeight = answer.scrollHeight + "px";
+                icon.textContent = '-';
+            }
+        }
+    </script>
+</body>
+</html>
