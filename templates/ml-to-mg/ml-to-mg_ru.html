@@ -16,7 +16,39 @@
 <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
 <meta name="google-site-verification" content="49KC3Wnkoo8QxBc56Q5dkx-LVqsbPxtgJTBs_MG7WBU" />
 <style>
-...
+    <style>
+        #result-section {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #e9ecef;
+            min-height: 60px;
+            position: relative;
+        }
+        #result-section .result-heading {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-weight: 600;
+            color: var(--primary-color);
+            border-left: 3px solid var(--secondary-color);
+            padding-left: 10px;
+            font-size: 1.1rem;
+        }
+        #result-section .result-value {
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 10px;
+            padding-top: 20px;
+            color: var(--light-text-color);
+            width: 100%;
+        }
+        .hidden {
+            display: none !important;
+        }
+    </style>
 </style>
 </head>
 <body>
