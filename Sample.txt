@@ -147,296 +147,70 @@ ml-to-mg-main
 
 
 
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link rel="icon" href="{{ url_for('static', filename='img/favicon.png') }}" type="image/png">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="index, follow">
-    <title>Liter to KG Converter (L To KG)</title>
-    <meta name="description" content="Our liter to kg converter helps our users to convert litre to kg based on the density of a substance or material quickly and accurately." />
-    <meta name="keywords" content="liter to kg, liter to kilogram converter, L to Kg, convert liters to kg, liter to kg calculator, milk liter to kilogram, cooking oil liter to kilogram, volume to weight conversion" />
-    <link rel="canonical" href="https://mltomg.info/l-to-kg"/>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
-</head>
-<body>
-    {% include 'header.html' %}
-
-    <header class="secondary-header">
-        <div class="container">
-            <h1>Liter to KG Converter</h1>
-            <p>Enter the volume in liters below to find out the weight in kilograms.</p>
-        </div>
-    </header>
-
-    <div class="container main-content">
-        <section class="card" id="tool">
-            <h2>Convert Litre to KG</h2>
-            <div class="tool-container">
-                <div class="form-group">
-                    <label for="lInput"><b>Volume (in L):</b></label>
-                    <input type="number" id="lInput" placeholder="Enter volume in L" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="liquidSelect"><b>Select Liquid:</b></label>
-                    <select id="liquidSelect">
-                        <option value="">-- Select a Liquid --</option>
-                        <option value="1">Water</option>
-                        <option value="0.789">Ethanol</option>
-                        <option value="0.918">Olive Oil</option>
-                        <option value="1.03">Milk</option>
-                        <option value="1.3">Honey</option>
-                        <option value="1.8">Glycerin</option>
-                    </select>
-                </div>
-
-                <button class="btn" onclick="convertLToKg()">Convert to kg</button>
-                <div id="result"></div>
-            </div>
-        </section>
-
-        <section class="card" id="how-to-use">
-            <p>Liter to kg Converter is a useful tool for converting the volume of substance or material from liters to an equivalent weight in kilograms. Our L to Kg converter also shows you the density of the selected substance or material to make sure the accuracy and efficiency of the conversion. You can also use our <a href="https://mltomg.info/kg-to-l">kilogram to liter converter</a> for reverse calculations</p>
-        </section>
-          <section class="card more-tools" id="more-tools">
-            <h2>More Tools</h2>
-            <div class="tool-cards-container">
-                <a href="/mg-to-ml" class="tool-card">
-                    <div class="tool-icon">⚖️</div>
-                    <div class="tool-info">
-                        <h3>Mg to Ml</h3>
-                        <p>Convert milligrams to milliliters.</p>
-                    </div>
-                </a>
-                <a href="/g-to-l" class="tool-card">
-                    <div class="tool-icon">💧</div>
-                    <div class="tool-info">
-                        <h3>G to L</h3>
-                        <p>Convert grams to liters.</p>
-                    </div>
-                </a>
-                <a href="/kg-to-l" class="tool-card">
-                    <div class="tool-icon">🫙</div>
-                    <div class="tool-info">
-                        <h3>Kg to L</h3>
-                        <p>Convert kilograms to liters.</p>
-                    </div>
-                </a>
-                <a href="/l-to-g" class="tool-card">
-                    <div class="tool-icon">🧪</div>
-                    <div class="tool-info">
-                        <h3>L to G</h3>
-                        <p>Convert liters to grams.</p>
-                    </div>
-                </a>
-                <a href="/l-to-kg" class="tool-card">
-                    <div class="tool-icon">⚖️</div>
-                    <div class="tool-info">
-                        <h3>L to Kg</h3>
-                        <p>Convert liters to kilograms.</p>
-                    </div>
-                </a>
-                <a href="/ml-to-g" class="tool-card">
-                    <div class="tool-icon">💧</div>
-                    <div class="tool-info">
-                        <h3>Ml to G</h3>
-                        <p>Convert milliliters to grams.</p>
-                    </div>
-                </a>
-                <a href="/ml-to-oz" class="tool-card">
-                    <div class="tool-icon">🧪</div>
-                    <div class="tool-info">
-                        <h3>Ml to Oz</h3>
-                        <p>Convert milliliters to ounces.</p>
-                    </div>
-                </a>
-                <a href="/oz-to-ml" class="tool-card">
-                    <div class="tool-icon">🫙</div>
-                    <div class="tool-info">
-                        <h3>Oz to Ml</h3>
-                        <p>Convert ounces to milliliters.</p>
-                    </div>
-                </a>
-            </div>
-        </section>
-
-        <section class="card" id="why-choose-us">
-            <h2>Liter to KG Conversion:</h2>
-            <p>A liter (ℓ) measures volume, while a kilogram (kg) measures mass. Both represent different units so direct conversions are not possible. To make conversion density of the substance or material is compulsory.</p>
-            <h3>Formula:</h3>
-            <p style="text-align: center; color: red;"> Kilograms = Liters × Density</p>
-            <p>You need to know the density of the substance to apply the formula.</p>
-            <h4>Examples:</h4>
-            <ul>
-            <li>Convert 1 litre to kg for a substance which has density 1 kg per liter.</li>
-            </ul>
-            <p><b>Solution:</b></p>
-            <p>By using the above formula we will solve this example:</p>
-            <p style="text-align: center; color: red;"> Kilograms = 1 x 1</p>
-            <p style="text-align: center; color: red;"> Kilograms = 1</p>
-            <p>Where</p>
-            <ul>
-                <li>1 = Liters of the substance</li>
-                <li>1 = Density of the substance</li>
-            </ul>
-            <p>So, the 1 litre of substance which has a density of 1 kg per liter is equal to 1 kilogram. </p>
-            <ul>
-                <li>Convert 5 liter to kg for substance which have density of 1.38 kg per liter</li>
-            
-            </ul>
-            <p><b>Solution:</b></p>
-            <p>By using the above formula we will solve this example:</p>
-            <p style="text-align: center; color: red;"> Kilograms = 5 x 1.38</p>
-            <p style="text-align: center; color: red;"> Kilograms = 6.90</p>
-            <p>Where;</p>
-            <ul>
-                <li>5 = Liters of the substance</li>
-                <li>1.38 = Density of the substance</li>
-            </ul>
-            <p>So, the 5 litre of substance which has a density of 1.38 kg per liter is equal to 6.90 kilogram. </p>
-        </section>
-
-        <section class="card" id="how-it-works">
-            <h2>Use Cases Of Litre to KG Converter Of Mltomg.info</h2>
-            <p>Here are some use cases of the liter to kg converter:</p>
-           <h3>Shipping and Transportation</h3>
-            <p>Converting litre to kg helps vehicles stay within safe weight limits and follow the rules. For example, if a tanker truck carries 1000 liters of chemicals, the weight must be converted to kilograms to check it meets safety and legal requirements for the trip.</p>
-            <h3>Cooking and baking</h3>
-            <p>Liters are usually used for liquids like water, milk, or oil, while kilograms are used for dry items like flour and sugar. Converting liters to kilograms is important to get the right proportions, especially in recipes that need exact measurements.</p>
-            <h3>Science & Education</h3>
-            <p>To perform lab experiments or classroom exercises where volume (liters) must be converted into mass (kilograms).</p>
-            <h3>Shopping and purchasing</h3>
-            <p>Suppose you’re at the grocery store comparing two cooking oil brands. Brand 1 comes in a 2-liter bottle for $5, while Brand 2 is sold in a 2.5-kilogram container for $7. To find which one gives you the better deal, you need to convert liters into kilograms so both options can be compared fairly.</p>
-        </section>
-        <section class="card" id="table">
-            <h2>L To KG Conversion Table</h2>
-            <table border="1" cellpadding="8" cellspacing="0">
-  <thead>
-    <tr>
-      <th>Substance</th>
-      <th>Density (kg/L)</th>
-      <th>0.5 L (kg)</th>
-      <th>1 L (kg)</th>
-      <th>2 L (kg)</th>
-      <th>5 L (kg)</th>
-      <th>10 L (kg)</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Water</td>
-      <td>1.00</td>
-      <td>0.50</td>
-      <td>1.00</td>
-      <td>2.00</td>
-      <td>5.00</td>
-      <td>10.00</td>
-    </tr>
-    <tr>
-      <td>Milk</td>
-      <td>1.03</td>
-      <td>0.52</td>
-      <td>1.03</td>
-      <td>2.06</td>
-      <td>5.15</td>
-      <td>10.30</td>
-    </tr>
-    <tr>
-      <td>Cooking Oil</td>
-      <td>0.92</td>
-      <td>0.46</td>
-      <td>0.92</td>
-      <td>1.84</td>
-      <td>4.60</td>
-      <td>9.20</td>
-    </tr>
-    <tr>
-      <td>Honey</td>
-      <td>1.42</td>
-      <td>0.71</td>
-      <td>1.42</td>
-      <td>2.84</td>
-      <td>7.10</td>
-      <td>14.20</td>
-    </tr>
-    <tr>
-      <td>Flour (liquid form/slurry)</td>
-      <td>0.59</td>
-      <td>0.30</td>
-      <td>0.59</td>
-      <td>1.18</td>
-      <td>2.95</td>
-      <td>5.90</td>
-    </tr>
-    <tr>
-      <td>Sugar Solution</td>
-      <td>0.85</td>
-      <td>0.43</td>
-      <td>0.85</td>
-      <td>1.70</td>
-      <td>4.25</td>
-      <td>8.50</td>
-    </tr>
-    <tr>
-      <td>Olive Oil</td>
-      <td>0.91</td>
-      <td>0.46</td>
-      <td>0.91</td>
-      <td>1.82</td>
-      <td>4.55</td>
-      <td>9.10</td>
-    </tr>
-    <tr>
-      <td>Gasoline</td>
-      <td>0.74</td>
-      <td>0.37</td>
-      <td>0.74</td>
-      <td>1.48</td>
-      <td>3.70</td>
-      <td>7.40</td>
-    </tr>
-    <tr>
-      <td>Diesel</td>
-      <td>0.83</td>
-      <td>0.42</td>
-      <td>0.83</td>
-      <td>1.66</td>
-      <td>4.15</td>
-      <td>8.30</td>
-    </tr>
-  </tbody>
-</table>
-        </section>
-        <section class="card" id="faq">
-            <h2>Frequently Asked Questions</h2>
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFAQ(this)">
-                    <h4>Q: Can 1 liter always equal 1 kilogram?</h4>
-                    <span class="toggle-icon">-</span>
-                </div>
-                <div class="faq-answer">
-                    <p>A: No. Only pure water at standard conditions (4°C) has 1 liter = 1 kilogram. Other liquids, like milk, oil, or honey, have different densities, so their weights will vary.</p>
-                </div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFAQ(this)">
-                    <h4>Q: Is the L to KG converter of mltomg.info accurate for all substances?</h4>
-                    <span class="toggle-icon">-</span>
-                </div>
-                <div class="faq-answer">
-                    <p>A: Yes, as long as the correct density of the substance is used. Since density can change with temperature, results are approximate in some cases. But our team make sure of the accuracy of this converter with the help of experts. </p>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    {% include 'footer.html' %}
-</body>
-</html>
+| Ingredient         | Density (g/mL) |
+| ------------------ | -------------- |
+| Water              | 1.00           |
+| Granulated Sugar   | 0.70           |
+| Powdered Sugar     | 0.56           |
+| Brown Sugar        | 0.93           |
+| Raw Sugar          | 0.62           |
+| Corn Syrup         | 1.48           |
+| Honey              | 1.42           |
+| Nutella            | 1.20           |
+| Jelly              | 1.40           |
+| All Purpose Flour  | 0.53           |
+| Wheat Flour        | 0.59           |
+| Bread Flour        | 0.59           |
+| Type 00 Flour      | 0.57           |
+| Cake Flour         | 0.46           |
+| Rye Flour          | 0.54           |
+| Baking Soda        | 2.20           |
+| Baking Powder      | 2.20           |
+| Cream of Tartar    | 2.71           |
+| Cooking Oil        | 0.92           |
+| Olive Oil          | 0.92           |
+| Vegetable Oil      | 0.92           |
+| Butter             | 0.91           |
+| Margarine          | 0.91           |
+| Lard               | 0.92           |
+| Mayonnaise         | 0.90           |
+| Peanut Butter      | 1.10           |
+| Milk               | 1.03           |
+| Buttermilk         | 1.04           |
+| Light Cream        | 1.02           |
+| Heavy Cream        | 0.994          |
+| Whipped Cream      | 0.51           |
+| Ice Cream          | 0.56           |
+| Sour Cream         | 0.99           |
+| Cottage Cheese     | 1.00           |
+| Cream Cheese       | 1.03           |
+| Yogurt             | 1.03           |
+| Cinnamon           | 0.56           |
+| Garlic Powder      | 0.71           |
+| Salt               | 1.20           |
+| Spice Blends       | 0.56           |
+| Cocoa Powder       | 0.52           |
+| Vanilla            | 1.03           |
+| Almonds            | 0.46           |
+| Cashews            | 0.50           |
+| Peanuts            | 0.58           |
+| Sunflower Seeds    | 0.46           |
+| Dried Apple Slices | 0.31           |
+| Carrots            | 0.64           |
+| Corn               | 0.72           |
+| Kidney Beans       | 0.75           |
+| Onions             | 0.59           |
+| Potatoes           | 0.71           |
+| Yams               | 0.72           |
+| Barley             | 0.61           |
+| Bran               | 0.16           |
+| Bread              | 0.27           |
+| Breadcrumbs        | 0.26           |
+| Corn Flakes        | 0.14           |
+| Cornstarch         | 0.54           |
+| Cake Mix           | 0.56           |
+| Oats               | 0.41           |
+| Rice               | 0.85           |
+| Rice Krispies      | 0.14           |
+| Rye                | 0.72           |
+| Wheat              | 0.77           |

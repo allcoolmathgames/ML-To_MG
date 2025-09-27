@@ -113,16 +113,17 @@ def render_page(lang_code, page):
         'terms-conditions': 'pages/terms-conditions',
         
         # --- TOOL PAGES ---
-        'ml-to-mg': 'ml-to-mg/ml-to-mg',  # <-- Yeh naya page add kiya gaya hai
+        'ml-to-mg': 'ml-to-mg/ml-to-mg',
         'mg-to-ml': 'mg-to-ml/mg-to-ml',
         'ml-to-g': 'ml-to-g/ml-to-g',
-        'g-to-ml': 'g-to-ml/g-to-ml',    # <-- Yeh page bhi add kiya gaya hai
+        'g-to-ml': 'g-to-ml/g-to-ml',
         'g-to-l': 'g-to-l/g-to-l',
         'kg-to-l': 'kg-to-l/kg-to-l',
         'l-to-g': 'l-to-g/l-to-g',
         'l-to-kg': 'l-to-kg/l-to-kg',
         'ml-to-oz': 'ml-to-oz/ml-to-oz',
         'oz-to-ml': 'oz-to-ml/oz-to-ml',
+        'mg-to-tsp': 'mg-to-tbsp/mg-to-tbsp',
     }
     
     base_path = page_map.get(page)
