@@ -123,7 +123,8 @@ def render_page(lang_code, page):
         'l-to-kg': 'l-to-kg/l-to-kg',
         'ml-to-oz': 'ml-to-oz/ml-to-oz',
         'oz-to-ml': 'oz-to-ml/oz-to-ml',
-        'mg-to-tsp': 'mg-to-tbsp/mg-to-tbsp',
+        'mg-to-tsp': 'mg-to-tsp/mg-to-tsp',
+        'tsp-to-mg': 'tsp-to-mg/tsp-to-mg',
     }
     
     base_path = page_map.get(page)
