@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6HV5NG31L1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-6HV5NG31L1');
+    </script>
+    <meta charset="UTF-8">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.png') }}" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="index, follow">
+    <title>mL to Moles Calculator (with formula, and step-by-step examples)</title>
+    <meta name="description" content="Easily convert mL to moles using our calculator. Includes formula, worked examples, and simple steps for students and lab use." />
+    <meta name="keywords" content="ml to moles, molarity calculator, moles from volume, concentration to moles, chemistry calculator" />
+    <link rel="canonical" href="https://mltomg.info/ml-to-moles" />
+    <link rel="alternate" hreflang="x-default" href="https://mltomg.info/ml-to-moles" />
+    <link rel="alternate" hreflang="en" href="https://mltomg.info/ml-to-moles" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+    <meta name="google-site-verification" content="49KC3Wnkoo8QxBc56Q5dkx-LVqsbPxtgJTBs_MG7WBU" />
+    <style>
+        #result-section {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #e9ecef;
+            min-height: 60px;
+            position: relative;
+        }
+        #result-section .result-heading {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-weight: 600;
+            color: var(--primary-color);
+            border-left: 3px solid var(--secondary-color);
+            padding-left: 10px;
+            font-size: 1.1rem;
+        }
+        #result-section .result-value {
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 10px;
+            padding-top: 20px;
+            color: var(--light-text-color);
+            width: 100%;
+        }
+        .hidden {
+            display: none !important;
+        }
+        .concentration-unit {
+            font-size: 0.9rem;
+            color: #666;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+    {% include 'header.html' %}
+    <header class="secondary-header">
+        <div class="container">
+            <h1>ML to Moles Calculator</h1>
+            <p>Just enter the volume in mL and the select the substance the calculator will quickly show you how many moles are in the solution.</p>
+        </div>
+    </header>
+    <div class="container main-content">
+        <section class="card" id="tool">
+            <h2>Convert mL to Moles</h2>
+            <div class="tool-container">
+                <div class="form-group">
+                    <label for="volumeInput"><b>Volume (mL):</b></label>
+                    <input type="number" id="volumeInput" placeholder="Enter volume in mL" step="0.01" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="solutionSelect"><b>Select Solution:</b></label>
+                    <select id="solutionSelect">
+                        <option value="">-- Select a Solution --</option>
+                        <option value="water">Pure Water (55.51 M)</option>
+                        <option value="hcl-1">Hydrochloric Acid (1 M)</option>
+                        <option value="hcl-2">Hydrochloric Acid (2 M)</option>
+                        <option value="naoh-1">Sodium Hydroxide (1 M)</option>
+                        <option value="naoh-2">Sodium Hydroxide (2 M)</option>
+                        <option value="ethanol-95">Ethanol (95%, 17.1 M)</option>
+                        <option value="acetic-acid">Acetic Acid (17.4 M)</option>
+                        <option value="custom">Custom Concentration</option>
+                    </select>
+                </div>
+
+                <div class="form-group hidden" id="concentrationGroup">
+                    <label for="concentrationInput"><b>Concentration:</b></label>
+                    <div style="display: flex; align-items: center;">
+                        <input type="number" id="concentrationInput" placeholder="Enter concentration" step="0.001" required style="flex: 1;">
+                        <span class="concentration-unit">mol/L</span>
+                    </div>
+                </div>
+
+                <button class="btn" onclick="convertMlToMoles()">Calculate Moles</button>
+            </div>
+
+            <p style="color: red;"><b>Note:</b>Concentrations varies with temperature and may differ by material. You can also select <b>Custom Concentration</b> from the dropdown to enter your own value.</p>
+
+            <div id="result-section">
+                <div class="result-heading">Result:</div>
+                <div class="result-value" id="result-value">Your result will appear here</div>
+            </div>
+        </section>
+
+        <section class="card" id="formula">
+          <p>Converting mL to moles is a common conversion in many chemistry tasks, like performing titrations, preparing solutions or doing stoichiometry. By using the ml to moles calculator offered by mltomg.info you can make the conversions accurately and smoothly.</p>
+          <h3>Formula To Convert mL To Mol:</h3> 
+        <p style="text-align: center; color: blue;">Moles = (Volume in mL × Molarity) ÷ 1000</p>
+        </section>
+          <section class="card" id="formula">
+            <h2>Formula Derivation:</h2>
+            <p>The relationship between mL and moles comes from the definition of molarity. Molarity (M) can be found out by dividing the number of moles by the number of milliliters.</p>
+            <p><b>M = moles ÷ liters</b></p>
+            <p>Rearranging the formula to find moles gives:</p>
+            <p><b>moles = M × liters</b></p>
+            <p>Since most volumes in labs are measured in milliliters (mL), we need to convert mL to liters. There are 1000 mL in 1 L, so:</p>
+            <p><b>liters = mL ÷ 1000</b></p> 
+            <p>Substituting this into the equation gives the working formula:</p>
+            <p><b>moles = (mL × M) ÷ 1000</b></p>
+        </section>
+
+        <section class="card" id="common-solutions">
+            <h2>What is a Mole / Molarity / mL</h2>
+            <p><b>Mole (mol):</b>Mole is the standard unit in chemistry that is used to count particles like ions, atoms or molecules. 1 mol = (6.022 × 10²³) particles, which is called Avogadro’s number. It helps chemists to find out amounts of substances in a simple way instead of counting individual particles.</p>
+            <p><b>Molarity (M):</b>Molarity describes how concentrated a solution is. It is defined as the number of moles of solute (the substance being dissolved) in one liter (L) of solution. For example, a 1 M solution has 1 mole of solute dissolved in 1 liter of solution.</p>
+            <p><b>Milliliter (mL):</b>Milliliter is the small unit of volume, There are 1000 milliliters in 1 liter. In chemistry, volumes are often measured in mL, but formulas usually require liters (L). That’s why when converting mL to moles, it’s important to first change mL into L by dividing by 1000. </p>
+        </section>
+            <section class="card" id="how-to-use">
+            <h2>Practical Example Of mL To Moles Conversion:</h2>
+             <p><b>Example 1:</b> You have 250 mL of a 0.2 M sodium chloride (NaCl) solution. How many moles of NaCl are present?</p>
+                <p>Step 1: <b>Convert mL to L</b></p>
+                <p> 250 mL ÷ 1000 = 0.25 L</p>
+                <p>Step 2: <b>Apply the formula</b></p>
+                 <p>moles = M × liters</p>
+                <p>moles = 0.2 × 0.25</p>
+                <p>Step 3: <b>Calculate</b></p>
+                 moles = 0.05 mol
+                <p><b>Answer:</b></p>
+                <p>There are 0.05 moles of NaCl in 250 mL of a 0.2 M solution.</p>
+                <p><b>Example 2:</b> A beaker contains 80 mL of a 0.75 M nitric acid (HNO₃) solution. How many moles of HNO₃ are there?</p>
+                <p>Step 1: <b>Convert mL to L</b></p>
+                <P>80 ÷ 1000 = 0.08 L</P>
+                <p>Step 2: <b>Apply the formula</b></p>
+                <p> moles = M × L</p>
+                <p> moles = 0.75 × 0.08</p>
+                <p>Step 3: <b>Calculate</b></p>
+                <p>moles = 0.06 mol</p>
+                <p><b>Answer:</b></p>
+                <p>There are 0.06 moles of HNO₃ in 80 mL of a 0.75 M solution</p>
+        </section>
+ <section class="card" id="how-to-use">
+     <h2>mL to Moles Conversion Table:</h2>
+     <table border="1" cellspacing="0" cellpadding="8" style="border-collapse: collapse; text-align: center; margin: 20px auto; width: 60%;">
+  <thead style="background-color: #f2f2f2;">
+    <tr>
+      <th>Volume (mL)</th>
+      <th>Volume (L)</th>
+      <th>Moles (at 1.0 M)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>10 mL</td><td>0.01 L</td><td>0.01 mol</td></tr>
+    <tr><td>25 mL</td><td>0.025 L</td><td>0.025 mol</td></tr>
+    <tr><td>50 mL</td><td>0.05 L</td><td>0.05 mol</td></tr>
+    <tr><td>75 mL</td><td>0.075 L</td><td>0.075 mol</td></tr>
+    <tr><td>100 mL</td><td>0.1 L</td><td>0.1 mol</td></tr>
+    <tr><td>150 mL</td><td>0.15 L</td><td>0.15 mol</td></tr>
+    <tr><td>200 mL</td><td>0.2 L</td><td>0.2 mol</td></tr>
+    <tr><td>250 mL</td><td>0.25 L</td><td>0.25 mol</td></tr>
+    <tr><td>500 mL</td><td>0.5 L</td><td>0.5 mol</td></tr>
+    <tr><td>1000 mL</td><td>1.0 L</td><td>1.0 mol</td></tr>
+  </tbody>
+</table>
+ </section>
+        <section class="card" id="faq">
+       <h2>Use Cases Of mL To Moles Calculators:</h2>
+            <p>It can be used in various fields like:</p>
+            <h3>Education:</h3>
+            <p>Helps students and teachers solve chemistry problems quickly and understand concepts like molarity and stoichiometry.</p>
+            <h3>Laboratory Work:</h3>
+            <p>It can be used for preparing solutions, titrations, and experiments where precise mole calculations are needed.</p>
+            <h3>Research Projects:</h3>
+            <p>ML to moles converter saves time and reduces errors in converting in research projects for academic or professional studies.</p>
+        </section>
+        <section class="card" id="faq">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>Q: Can I convert mL to moles for solids?</h4>
+                    <span class="toggle-icon">+</span>
+                </div>
+                <div class="faq-answer" style="display: none;">
+                    <p>A: No, you cannot directly make conversion for solid because, mL to moles conversion works only for liquids and solutions, for solids you don’t usually measure them in milliliters, but in grams (mass). To find moles for a solid use this formula: </p>
+        <p style="text-align: center; color: blue;">moles = mass of substance (g) ÷ molar mass (g/mol)</p>
+                    
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>Q: What is the difference between mL to moles and grams to moles?</h4>
+                    <span class="toggle-icon">+</span>
+                </div>
+                <div class="faq-answer" style="display: none;">
+                    <p><b>mL to moles:</b> Used for solutions, based on volume and concentration (molarity).</p>
+                    <p><b>grams to moles:</b> Used for solids, based on mass and molar mass.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>Q: Do all liquids require the same formula for mL to moles?</h4>
+                    <span class="toggle-icon">+</span>
+                </div>
+                <div class="faq-answer" style="display: none;">
+                    <p>A: Yes, but the result depends on the molarity of each solution. Different solutions have different densities, so you always need the molarity to find moles.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="card" id="reference">
+            <h2>References & Further Reading</h2>
+            <p>For more information about molarity and calculations:</p>
+            <ul>
+                <li><a href="https://chem.libretexts.org/" target="_blank">Chemistry LibreTexts - Solutions and Concentrations</a></li>
+                <li><a href="https://www.khanacademy.org/science/chemistry" target="_blank">Khan Academy - Molarity</a></li>
+                <li><a href="https://pubchem.ncbi.nlm.nih.gov/" target="_blank">PubChem - Chemical Information</a></li>
+            </ul>
+        </section>
+    </div>
+    {% include 'footer.html' %}
+
+    <script>
+        // Toggle FAQ answers
+        function toggleFAQ(element) {
+            const answer = element.nextElementSibling;
+            const icon = element.querySelector('.toggle-icon');
+            const allFAQs = document.querySelectorAll('.faq-answer');
+
+            // Close all other FAQs
+            allFAQs.forEach(faq => {
+                if (faq !== answer) {
+                    faq.style.display = "none";
+                }
+            });
+
+            // Toggle current FAQ
+            if (answer.style.display === "block") {
+                answer.style.display = "none";
+                icon.textContent = "+";
+            } else {
+                answer.style.display = "block";
+                icon.textContent = "-";
+            }
+
+            // Update all icons
+            document.querySelectorAll('.faq-question').forEach(question => {
+                const currentIcon = question.querySelector('.toggle-icon');
+                if (question !== element) {
+                    currentIcon.textContent = "+";
+                }
+            });
+        }
+
+        // DOM elements
+        const solutionSelect = document.getElementById('solutionSelect');
+        const concentrationGroup = document.getElementById('concentrationGroup');
+        const concentrationInput = document.getElementById('concentrationInput');
+        const volumeInput = document.getElementById('volumeInput');
+        const resultValue = document.getElementById('result-value');
+
+        // Concentration data for predefined solutions
+        const solutionData = {
+            "water": 55.51,
+            "hcl-1": 1,
+            "hcl-2": 2,
+            "naoh-1": 1,
+            "naoh-2": 2,
+            "ethanol-95": 17.1,
+            "acetic-acid": 17.4
+        };
+
+        // Event listener for solution selection
+        solutionSelect.addEventListener('change', () => {
+            const selectedValue = solutionSelect.value;
+
+            if (selectedValue === 'custom') {
+                concentrationGroup.classList.remove('hidden');
+                concentrationInput.value = '';
+            } else {
+                concentrationGroup.classList.add('hidden');
+            }
+        });
+
+        // Conversion function
+        function convertMlToMoles() {
+            const volumeMl = parseFloat(volumeInput.value);
+            const selectedSolution = solutionSelect.value;
+
+            // Validation
+            if (isNaN(volumeMl) || volumeMl <= 0) {
+                resultValue.innerHTML = "Please enter a valid positive volume in mL.";
+                resultValue.style.color = "red";
+                return;
+            }
+
+            if (selectedSolution === '') {
+                resultValue.innerHTML = "Please select a solution or choose custom concentration.";
+                resultValue.style.color = "red";
+                return;
+            }
+
+            let molarity;
+            if (selectedSolution === 'custom') {
+                molarity = parseFloat(concentrationInput.value);
+
+                if (isNaN(molarity) || molarity <= 0) {
+                    resultValue.innerHTML = "Please enter a valid positive concentration in mol/L.";
+                    resultValue.style.color = "red";
+                    return;
+                }
+            } else {
+                molarity = solutionData[selectedSolution];
+            }
+
+            // Convert mL to L
+            const volumeL = volumeMl / 1000;
+
+            // Calculate moles
+            const moles = molarity * volumeL;
+
+            // Get solution name for display
+            const solutionName = solutionSelect.options[solutionSelect.selectedIndex].text;
+
+            // Display result
+            resultValue.innerHTML = `
+                ${volumeMl} mL of ${solutionName} (${molarity} M)
+                <br>= <strong>${moles.toFixed(6)} moles</strong>
+            `;
+            resultValue.style.color = "green";
+
+            // Scroll to result
+            document.getElementById('result-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    </script>
+</body>
+</html>

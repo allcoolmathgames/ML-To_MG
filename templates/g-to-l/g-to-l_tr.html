@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.png') }}" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Gram - Litre Dönüştürücü (G - L)</title>
+    <meta name="description" content="Çevrimiçi gram-litre dönüştürücümüz/hesaplayıcımızla gramı litreye kolayca dönüştürün. Gram-litre dönüşüm tablosu da verilmiştir." />
+    <meta name="keywords" content="gramdan litreye, gramdan litreye dönüştürücü, gramı litreye dönüştür, g'den L'ye hesap makinesi, yemek pişirme dönüşümleri, kimya dönüştürücü, ağırlıktan hacme, gramdan litreye aracı, gramı çevrimiçi litreye dönüştür" />
+    <link rel="canonical" href="https://mltomg.info/g-to-l" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+    <meta name="google-site-verification" content="49KC3Wnkoo8QxBc56Q5dkx-LVqsbPxtgJTBs_MG7WBU" />
+    <style>
+        /* General styling for the tool sections */
+        .card {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        .tool-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .form-group label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+        .btn {
+            background-color: #007bff;
+            color: #fff;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+        .result-section {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .result-heading {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 0.5rem;
+        }
+        .result-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #28a745;
+        }
+        .error-message {
+            color: #dc3545;
+        }
+        /* Table styles */
+        .table-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+            margin-top: 2rem;
+        }
+        .table-scroll {
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        thead {
+            position: sticky;
+            top: 0;
+            background-color: #f3f4f6;
+            z-index: 10;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        th {
+            font-weight: 600;
+            color: #111827;
+        }
+        tbody tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+        .notes-column {
+            font-style: italic;
+            color: #6b7280;
+        }
+        .col-center {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    {% include 'header.html' %}
+    <header class="secondary-header">
+        <div class="container">
+            <h1>Gram - Litre Dönüştürücü</h1>
+            <p>Bu gram-litre dönüştürücüyü kullanarak tek bir tıklamayla g'den l'ye dönüşümler yapabilirsiniz.</p>
+        </div>
+    </header>
+    <div class="container main-content">
+        <section class="card" id="tool">
+            <h2>Gramı Litreye Dönüştür</h2>
+            <div class="tool-container">
+                <div class="form-group">
+                    <label for="gInput"><b>Kütle (g cinsinden):</b></label>
+                    <input type="number" id="gInput" placeholder="Kütleyi gram cinsinden girin" required>
+                </div>
+                <div class="form-group">
+                    <label for="liquidSelect"><b>Sıvı Seçin:</b></label>
+                    <select id="liquidSelect">
+                        <option value="">-- Bir Sıvı Seçin --</option>
+                        <option value="1">Su</option>
+                        <option value="0.789">Etanol</option>
+                        <option value="0.918">Zeytinyağı</option>
+                        <option value="1.03">Süt</option>
+                        <option value="1.3">Bal</option>
+                        <option value="1.8">Gliserin</option>
+                    </select>
+                </div>
+                <button class="btn" onclick="convertGToL()">Litreye Dönüştür</button>
+                <div class="result-section">
+                    <div class="result-heading">Sonuç:</div>
+                    <div class="result-value" id="result-value">Sonucunuz burada görünecek</div>
+                </div>
+            </div>
+        </section>
+        <section class="card" id="why-choose-us">
+            <p>Herhangi bir maddenin gramını tek bir tıklamayla litreye dönüştürmek için bu gram-litre dönüştürücüyü kullanın. Bu gram-litre dönüştürücü aracı, yemek pişirme, bilim ve günlük ölçüm ihtiyaçlarınızı karşılamanızı kolaylaştırır.</p>
+        </section>
+        <section class="card" id="how-to-use">
+            <h2>Gram Litre Dönüşümü Nedir?</h2>
+            <p>Gramdan litreye (g'den l'ye) dönüştürme, madde ağırlığını (gram cinsinden ölçülür) hacmine (litre cinsinden ölçülür) dönüştürme işlemidir. Gram kütleyi, litre ise hacmi ölçtüğünden, dönüşüm maddenin yoğunluğuna bağlıdır çünkü farklı maddelerin yoğunlukları farklıdır. Örneğin, 1000 gram su, 1 litreye eşittir çünkü suyun yoğunluğu 1 g/ml'dir. Ancak aynı durumda, yağ, un veya yoğunluğu 1 g/ml olmayan herhangi bir madde için ölçümler değişecektir.</p>
+            <h3>Formül:</h3>
+            <p>Gramı litreye dönüştürmek için ağırlığı maddenin yoğunluğuna bölmeniz gerekir. Yoğunluğun gram/litre (g/l) cinsinden olması gerektiğini unutmayın.</p>
+            <p>Yoğunluk mililitre başına gram (g/ml) cinsindense, bunu litre başına grama (g/l) dönüştürmek için yoğunluğu 1000 ile çarpmanız gerekir. İşte yoğunluğu g/ml cinsinden olan bir madde için dönüştürme işlemini yapmak üzere temel bir formül.</p>
+            <p style="text-align: center; font-weight: bold; color: red;">litre = gram / 1.000 × yoğunluk</p>
+            <h4>Örnek:</h4>
+            <p><b>Yoğunluğu 1,03 olan 600 gram sütü litreye çeviriniz.</b></p>
+            <p>Bu dönüşümün formülünü bildiğimiz için, aynı formülü kullanarak bu örneği de çözebiliriz:</p>
+            <ul>
+                <li>Litre = 600 / 1000 x 1,03</li>
+            </ul>
+            <p>Nerede:</p>
+            <p>Süt Gramı = 600</p>
+            <p>Sütün Yoğunluğu = 1.03</p>
+            <p>Cevap: 0,58</p>
+            <p>Yani 600 gram süt 0,58 L'ye eşittir.</p>
+        </section>
+        <section class="card" id="table">
+            <h2>Gram - Litre Dönüşüm Tablosu</h2>
+            <div class="table-card">
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th><span>Gram cinsinden ağırlık</span></th>
+                                <th class="col-center"><span>Su</span></th>
+                                <th class="col-center"><span>Süt</span></th>
+                                <th class="col-center"><span>Yemeklik Yağ</span></th>
+                                <th class="col-center"><span>Çok Amaçlı Un</span></th>
+                                <th class="col-center"><span>Toz Şeker</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td data-label="Gram cinsinden ağırlık">10 g</td>
+                                <td data-label="Su" class="col-center">0.01 L</td>
+                                <td data-label="Süt" class="col-center">0.009709 L</td>
+                                <td data-label="Yemeklik Yağ" class="col-center">0.011364 L</td>
+                                <td data-label="Çok Amaçlı Un" class="col-center">0.018904 L</td>
+                                <td data-label="Toz Şeker" class="col-center">0.014184 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Gram cinsinden ağırlık">20 g</td>
+                                <td data-label="Su" class="col-center">0.02 L</td>
+                                <td data-label="Süt" class="col-center">0.019417 L</td>
+                                <td data-label="Yemeklik Yağ" class="col-center">0.022727 L</td>
+                                <td data-label="Çok Amaçlı Un" class="col-center">0.037807 L</td>
+                                <td data-label="Toz Şeker" class="col-center">0.028369 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Gram cinsinden ağırlık">30 g</td>
+                                <td data-label="Su" class="col-center">0.03 L</td>
+                                <td data-label="Süt" class="col-center">0.029126 L</td>
+                                <td data-label="Yemeklik Yağ" class="col-center">0.034091 L</td>
+                                <td data-label="Çok Amaçlı Un" class="col-center">0.056711 L</td>
+                                <td data-label="Toz Şeker" class="col-center">0.042553 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Gram cinsinden ağırlık">40 g</td>
+                                <td data-label="Su" class="col-center">0.04 L</td>
+                                <td data-label="Süt" class="col-center">0.038835 L</td>
+                                <td data-label="Yemeklik Yağ" class="col-center">0.045455 L</td>
+                                <td data-label="Çok Amaçlı Un" class="col-center">0.075614 L</td>
+                                <td data-label="Toz Şeker" class="col-center">0.056738 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Gram cinsinden ağırlık">50 g</td>
+                                <td data-label="Su" class="col-center">0.05 L</td>
+                                <td data-label="Süt" class="col-center">0.048544 L</td>
+                                <td data-label="Yemeklik Yağ" class="col-center">0.056818 L</td>
+                                <td data-label="Çok Amaçlı Un" class="col-center">0.094518 L</td>
+                                <td data-label="Toz Şeker" class="col-center">0.070922 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Gram cinsinden ağırlık">60 g</td>
+                                <td data-label="Su" class="col-center">0.06 L</td>
+                                <td data-label="Süt" class="col-center">0.058252 L</td>
+                                <td data-label="Yemeklik Yağ" class="col-center">0.068182 L</td>
+                                <td data-label="Çok Amaçlı Un" class="col-center">0.113422 L</td>
+                                <td data-label="Toz Şeker" class="col-center">0.085106 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Gram cinsinden ağırlık">70 g</td>
+                                <td data-label="Su" class="col-center">0.07 L</td>
+                                <td data-label="Süt" class="col-center">0.067961 L</td>
+                                <td data-label="Yemeklik Yağ" class="col-center">0.079545 L</td>
+                                <td data-label="Çok Amaçlı Un" class="col-center">0.132325 L</td>
+                                <td data-label="Toz Şeker" class="col-center">0.099291 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Gram cinsinden ağırlık">80 g</td>
+                                <td data-label="Su" class="col-center">0.08 L</td>
+                                <td data-label="Süt" class="col-center">0.07767 L</td>
+                                <td data-label="Yemeklik Yağ" class="col-center">0.090909 L</td>
+                                <td data-label="Çok Amaçlı Un" class="col-center">0.151229 L</td>
+                                <td data-label="Toz Şeker" class="col-center">0.113475 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Gram cinsinden ağırlık">90 g</td>
+                                <td data-label="Su" class="col-center">0.09 L</td>
+                                <td data-label="Süt" class="col-center">0.087379 L</td>
+                                <td data-label="Yemeklik Yağ" class="col-center">0.102273 L</td>
+                                <td data-label="Çok Amaçlı Un" class="col-center">0.170132 L</td>
+                                <td data-label="Toz Şeker" class="col-center">0.12766 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Gram cinsinden ağırlık">100 g</td>
+                                <td data-label="Su" class="col-center">0.1 L</td>
+                                <td data-label="Süt" class="col-center">0.097087 L</td>
+                                <td data-label="Yemeklik Yağ" class="col-center">0.113636 L</td>
+                                <td data-label="Çok Amaçlı Un" class="col-center">0.189036 L</td>
+                                <td data-label="Toz Şeker" class="col-center">0.141844 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Gram cinsinden ağırlık">110 g</td>
+                                <td data-label="Su" class="col-center">0.11 L</td>
+                                <td data-label="Süt" class="col-center">0.106796 L</td>
+                                <td data-label="Yemeklik Yağ" class="col-center">0.125 L</td>
+                                <td data-label="Çok Amaçlı Un" class="col-center">0.20794 L</td>
+                                <td data-label="Toz Şeker" class="col-center">0.156028 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Gram cinsinden ağırlık">120 g</td>
+                                <td data-label="Su" class="col-center">0.12 L</td>
+                                <td data-label="Süt" class="col-center">0.116505 L</td>
+                                <td data-label="Yemeklik Yağ" class="col-center">0.136364 L</td>
+                                <td data-label="Çok Amaçlı Un" class="col-center">0.226843 L</td>
+                                <td data-label="Toz Şeker" class="col-center">0.170213 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Gram cinsinden ağırlık">130 g</td>
+                                <td data-label="Su" class="col-center">0.13 L</td>
+                                <td data-label="Süt" class="col-center">0.126214 L</td>
+                                <td data-label="Yemeklik Yağ" class="col-center">0.147727 L</td>
+                                <td data-label="Çok Amaçlı Un" class="col-center">0.245747 L</td>
+                                <td data-label="Toz Şeker" class="col-center">0.184397 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Gram cinsinden ağırlık">140 g</td>
+                                <td data-label="Su" class="col-center">0.14 L</td>
+                                <td data-label="Süt" class="col-center">0.135922 L</td>
+                                <td data-label="Yemeklik Yağ" class="col-center">0.159091 L</td>
+                                <td data-label="Çok Amaçlı Un" class="col-center">0.26465 L</td>
+                                <td data-label="Toz Şeker" class="col-center">0.198582 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Gram cinsinden ağırlık">150 g</td>
+                                <td data-label="Su" class="col-center">0.15 L</td>
+                                <td data-label="Süt" class="col-center">0.145631 L</td>
+                                <td data-label="Yemeklik Yağ" class="col-center">0.170455 L</td>
+                                <td data-label="Çok Amaçlı Un" class="col-center">0.283554 L</td>
+                                <td data-label="Toz Şeker" class="col-center">0.212766 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Gram cinsinden ağırlık">160 g</td>
+                                <td data-label="Su" class="col-center">0.16 L</td>
+                                <td data-label="Süt" class="col-center">0.15534 L</td>
+                                <td data-label="Yemeklik Yağ" class="col-center">0.181818 L</td>
+                                <td data-label="Çok Amaçlı Un" class="col-center">0.302457 L</td>
+                                <td data-label="Toz Şeker" class="col-center">0.22695 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Gram cinsinden ağırlık">170 g</td>
+                                <td data-label="Su" class="col-center">0.17 L</td>
+                                <td data-label="Süt" class="col-center">0.165049 L</td>
+                                <td data-label="Yemeklik Yağ" class="col-center">0.193182 L</td>
+                                <td data-label="Çok Amaçlı Un" class="col-center">0.321361 L</td>
+                                <td data-label="Toz Şeker" class="col-center">0.241135 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Gram cinsinden ağırlık">180 g</td>
+                                <td data-label="Su" class="col-center">0.18 L</td>
+                                <td data-label="Süt" class="col-center">0.174757 L</td>
+                                <td data-label="Yemeklik Yağ" class="col-center">0.204545 L</td>
+                                <td data-label="Çok Amaçlı Un" class="col-center">0.340265 L</td>
+                                <td data-label="Toz Şeker" class="col-center">0.255319 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Gram cinsinden ağırlık">190 g</td>
+                                <td data-label="Su" class="col-center">0.19 L</td>
+                                <td data-label="Süt" class="col-center">0.184466 L</td>
+                                <td data-label="Yemeklik Yağ" class="col-center">0.215909 L</td>
+                                <td data-label="Çok Amaçlı Un" class="col-center">0.359168 L</td>
+                                <td data-label="Toz Şeker" class="col-center">0.269504 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Gram cinsinden ağırlık">200 g</td>
+                                <td data-label="Su" class="col-center">0.2 L</td>
+                                <td data-label="Süt" class="col-center">0.194175 L</td>
+                                <td data-label="Yemeklik Yağ" class="col-center">0.227273 L</td>
+                                <td data-label="Çok Amaçlı Un" class="col-center">0.378072 L</td>
+                                <td data-label="Toz Şeker" class="col-center">0.283688 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Gram cinsinden ağırlık">210 g</td>
+                                <td data-label="Su" class="col-center">0.21 L</td>
+                                <td data-label="Süt" class="col-center">0.203883 L</td>
+                                <td data-label="Yemeklik Yağ" class="col-center">0.238636 L</td>
+                                <td data-label="Çok Amaçlı Un" class="col-center">0.396975 L</td>
+                                <td data-label="Toz Şeker" class="col-center">0.297872 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Gram cinsinden ağırlık">220 g</td>
+                                <td data-label="Su" class="col-center">0.22 L</td>
+                                <td data-label="Süt" class="col-center">0.213592 L</td>
+                                <td data-label="Yemeklik Yağ" class="col-center">0.25 L</td>
+                                <td data-label="Çok Amaçlı Un" class="col-center">0.415879 L</td>
+                                <td data-label="Toz Şeker" class="col-center">0.312057 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Gram cinsinden ağırlık">230 g</td>
+                                <td data-label="Su" class="col-center">0.23 L</td>
+                                <td data-label="Süt" class="col-center">0.223301 L</td>
+                                <td data-label="Yemeklik Yağ" class="col-center">0.261364 L</td>
+                                <td data-label="Çok Amaçlı Un" class="col-center">0.434783 L</td>
+                                <td data-label="Toz Şeker" class="col-center">0.326241 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Gram cinsinden ağırlık">240 g</td>
+                                <td data-label="Su" class="col-center">0.24 L</td>
+                                <td data-label="Süt" class="col-center">0.23301 L</td>
+                                <td data-label="Yemeklik Yağ" class="col-center">0.272727 L</td>
+                                <td data-label="Çok Amaçlı Un" class="col-center">0.453686 L</td>
+                                <td data-label="Toz Şeker" class="col-center">0.340426 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Gram cinsinden ağırlık">250 g</td>
+                                <td data-label="Su" class="col-center">0.25 L</td>
+                                <td data-label="Süt" class="col-center">0.242718 L</td>
+                                <td data-label="Yemeklik Yağ" class="col-center">0.284091 L</td>
+                                <td data-label="Çok Amaçlı Un" class="col-center">0.47259 L</td>
+                                <td data-label="Toz Şeker" class="col-center">0.35461 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Gram cinsinden ağırlık">260 g</td>
+                                <td data-label="Su" class="col-center">0.26 L</td>
+                                <td data-label="Süt" class="col-center">0.252427 L</td>
+                                <td data-label="Yemeklik Yağ" class="col-center">0.295455 L</td>
+                                <td data-label="Çok Amaçlı Un" class="col-center">0.491493 L</td>
+                                <td data-label="Toz Şeker" class="col-center">0.368794 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Gram cinsinden ağırlık">270 g</td>
+                                <td data-label="Su" class="col-center">0.27 L</td>
+                                <td data-label="Süt" class="col-center">0.262136 L</td>
+                                <td data-label="Yemeklik Yağ" class="col-center">0.306818 L</td>
+                                <td data-label="Çok Amaçlı Un" class="col-center">0.510397 L</td>
+                                <td data-label="Toz Şeker" class="col-center">0.382979 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Gram cinsinden ağırlık">280 g</td>
+                                <td data-label="Su" class="col-center">0.28 L</td>
+                                <td data-label="Süt" class="col-center">0.271845 L</td>
+                                <td data-label="Yemeklik Yağ" class="col-center">0.318182 L</td>
+                                <td data-label="Çok Amaçlı Un" class="col-center">0.529301 L</td>
+                                <td data-label="Toz Şeker" class="col-center">0.397163 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Gram cinsinden ağırlık">290 g</td>
+                                <td data-label="Su" class="col-center">0.29 L</td>
+                                <td data-label="Süt" class="col-center">0.281553 L</td>
+                                <td data-label="Yemeklik Yağ" class="col-center">0.329545 L</td>
+                                <td data-label="Çok Amaçlı Un" class="col-center">0.548204 L</td>
+                                <td data-label="Toz Şeker" class="col-center">0.411348 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Gram cinsinden ağırlık">300 g</td>
+                                <td data-label="Su" class="col-center">0.3 L</td>
+                                <td data-label="Süt" class="col-center">0.291262 L</td>
+                                <td data-label="Yemeklik Yağ" class="col-center">0.340909 L</td>
+                                <td data-label="Çok Amaçlı Un" class="col-center">0.567108 L</td>
+                                <td data-label="Toz Şeker" class="col-center">0.425532 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Gram cinsinden ağırlık">310 g</td>
+                                <td data-label="Su" class="col-center">0.31 L</td>
+                                <td data-label="Süt" class="col-center">0.300971 L</td>
+                                <td data-label="Yemeklik Yağ" class="col-center">0.352273 L</td>
+                                <td data-label="Çok Amaçlı Un" class="col-center">0.586011 L</td>
+                                <td data-label="Toz Şeker" class="col-center">0.439716 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Gram cinsinden ağırlık">320 g</td>
+                                <td data-label="Su" class="col-center">0.32 L</td>
+                                <td data-label="Süt" class="col-center">0.31068 L</td>
+                                <td data-label="Yemeklik Yağ" class="col-center">0.363636 L</td>
+                                <td data-label="Çok Amaçlı Un" class="col-center">0.604915 L</td>
+                                <td data-label="Toz Şeker" class="col-center">0.453901 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Gram cinsinden ağırlık">330 g</td>
+                                <td data-label="Su" class="col-center">0.33 L</td>
+                                <td data-label="Süt" class="col-center">0.320388 L</td>
+                                <td data-label="Yemeklik Yağ" class="col-center">0.375 L</td>
+                                <td data-label="Çok Amaçlı Un" class="col-center">0.623819 L</td>
+                                <td data-label="Toz Şeker" class="col-center">0.468085 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Gram cinsinden ağırlık">340 g</td>
+                                <td data-label="Su" class="col-center">0.34 L</td>
+                                <td data-label="Süt" class="col-center">0.330097 L</td>
+                                <td data-label="Yemeklik Yağ" class="col-center">0.386364 L</td>
+                                <td data-label="Çok Amaçlı Un" class="col-center">0.642722 L</td>
+                                <td data-label="Toz Şeker" class="col-center">0.48227 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Gram cinsinden ağırlık">350 g</td>
+                                <td data-label="Su" class="col-center">0.35 L</td>
+                                <td data-label="Süt" class="col-center">0.339806 L</td>
+                                <td data-label="Yemeklik Yağ" class="col-center">0.397727 L</td>
+                                <td data-label="Çok Amaçlı Un" class="col-center">0.661626 L</td>
+                                <td data-label="Toz Şeker" class="col-center">0.496454 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Gram cinsinden ağırlık">360 g</td>
+                                <td data-label="Su" class="col-center">0.36 L</td>
+                                <td data-label="Süt" class="col-center">0.349515 L</td>
+                                <td data-label="Yemeklik Yağ" class="col-center">0.409091 L</td>
+                                <td data-label="Çok Amaçlı Un" class="col-center">0.680529 L</td>
+                                <td data-label="Toz Şeker" class="col-center">0.510638 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Gram cinsinden ağırlık">370 g</td>
+                                <td data-label="Su" class="col-center">0.37 L</td>
+                                <td data-label="Süt" class="col-center">0.359223 L</td>
+                                <td data-label="Yemeklik Yağ" class="col-center">0.420455 L</td>
+                                <td data-label="Çok Amaçlı Un" class="col-center">0.699433 L</td>
+                                <td data-label="Toz Şeker" class="col-center">0.524823 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Gram cinsinden ağırlık">380 g</td>
+                                <td data-label="Su" class="col-center">0.38 L</td>
+                                <td data-label="Süt" class="col-center">0.368932 L</td>
+                                <td data-label="Yemeklik Yağ" class="col-center">0.431818 L</td>
+                                <td data-label="Çok Amaçlı Un" class="col-center">0.718336 L</td>
+                                <td data-label="Toz Şeker" class="col-center">0.539007 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Gram cinsinden ağırlık">390 g</td>
+                                <td data-label="Su" class="col-center">0.39 L</td>
+                                <td data-label="Süt" class="col-center">0.378641 L</td>
+                                <td data-label="Yemeklik Yağ" class="col-center">0.443182 L</td>
+                                <td data-label="Çok Amaçlı Un" class="col-center">0.73724 L</td>
+                                <td data-label="Toz Şeker" class="col-center">0.553191 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Gram cinsinden ağırlık">400 g</td>
+                                <td data-label="Su" class="col-center">0.4 L</td>
+                                <td data-label="Süt" class="col-center">0.38835 L</td>
+                                <td data-label="Yemeklik Yağ" class="col-center">0.454545 L</td>
+                                <td data-label="Çok Amaçlı Un" class="col-center">0.756144 L</td>
+                                <td data-label="Toz Şeker" class="col-center">0.567376 L</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="note">Not: Dönüşümler tipik yoğunlukları varsayar; gerçek hacimler sıcaklık ve ürün çeşitliliğine göre değişebilir.</div>
+            </div>
+        </section>
+        <section class="card" id="use-cases">
+            <h2>Gram-Litre Dönüştürücünün Kullanım Örnekleri</h2>
+            <h3>1. Pişirme ve Fırıncılık</h3>
+            <ul>
+                <li>Birçok tarifte gram kullanılır, ancak sürahi veya bardak gibi günlük ölçüm aletleriniz litre veya mililitre cinsinden işaretlenir. Bu nedenle, bu g'den l'ye dönüştürücü, tarifleriniz için kolayca ölçüm yapmanıza yardımcı olur.</li>
+                <li>Örnek: Bir tarifte 200 gr süt isteniyor, ancak sürahiniz mL/L olarak işaretlenmiş. Doğru ölçümü yapmak için dönüştürücümüzün yardımıyla gramı litreye dönüştürebilirsiniz.</li>
+            </ul>
+            <h3>Alışveriş ve Fiyat Karşılaştırması</h3>
+            <ul>
+                <li>Günlük hayatımızda yağ, meyve suyu, sos gibi pek çok ürünü litre cinsinden satsak da çoğu ürün gram cinsinden satılmaktadır.</li>
+                <li>Örnek: Bir marka 1 L meyve suyu satarken, diğeri 950 g meyve suyu satıyor. Bu g - l dönüştürücü, fiyatları adil bir şekilde karşılaştırmanıza yardımcı olur.</li>
+            </ul>
+            <h3>Günlük Su Alımı</h3>
+            <ul>
+                <li>Doktorlar su tüketiminin litre cinsinden (örneğin günde 2 litre) yapılmasını öneriyor.</li>
+                <li>Şişeniz gram veya mL cinsinden gösterilebilir. Bu dönüştürücünün yardımıyla 2000 gr suyun 2 L suya eşit olduğunu bilirsiniz.</li>
+            </ul>
+            <h3>Kendin Yap, Temizlik ve Ev İşleri</h3>
+            <ul>
+                <li>Günlük hayatımızda deterjan, cam temizleyicileri ve kütle veya hacmi farklı gösterebilen diğer sıvılar gibi ev temizlik ürünlerini sıklıkla kullanırız.</li>
+                <li>Örnek: Bir deterjan talimatında "litre suya 50 gr kullanın" yazıyor. Doğru karışımı hazırlamak için hızlı bir genel bakışa ihtiyacınız var.</li>
+            </ul>
+            <h3>Eczacılık ve Tıp</h3>
+            <ul>
+                <li>İlaçlar ve şuruplar genellikle ilacın miktarını miligram (mg) veya gram (g) olarak gösterir, ancak biz bunları aslında mililitre (mL) veya litre (L) olarak ölçeriz.</li>
+                <li>Örneğin, bir şurup etiketinde her 5 mL'de 500 mg yazıyorsa, doğru doz için alınması gereken tam şurup miktarını bilmek için bunu dönüştürmeniz gerekir.</li>
+            </ul>
+        </section>
+        <section class="card" id="what-is-density">
+            <h2>Yoğunluk Nedir?</h2>
+            <p>Yoğunluk, kütle ve hacim arasındaki ilişkidir. Bir şeyin boyutuna göre ne kadar ağır olduğunu söyler.</p>
+            <h3>Yoğunluk Formülü:</h3>
+            <p style="text-align: center; font-weight: bold; color: red;">Yoğunluk = Kütle / Hacim</p>
+            <p><b>Birimler:</b> g/cm³ veya g/L</p>
+        </section>
+        <section class="card" id="density-chart">
+            <h2>Farklı Maddeler İçin Yoğunluk Tablosu</h2>
+            <div class="table-card">
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Madde</th>
+                                <th class="density col-center">Yoğunluk (g/mL)</th>
+                                <th class="density col-center">Yoğunluk (g/L)</th>
+                                <th>Notlar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td data-label="Madde">Su</td>
+                                <td data-label="Yoğunluk (g/mL)" class="col-center">1.00</td>
+                                <td data-label="Yoğunluk (g/L)" class="col-center">1000</td>
+                                <td data-label="Notlar">Standart referans</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Madde">Süt</td>
+                                <td data-label="Yoğunluk (g/mL)" class="col-center">1.03</td>
+                                <td data-label="Yoğunluk (g/L)" class="col-center">1030</td>
+                                <td data-label="Notlar">Sudan biraz daha ağır</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Madde">Yağ (bitkisel)</td>
+                                <td data-label="Yoğunluk (g/mL)" class="col-center">0.92</td>
+                                <td data-label="Yoğunluk (g/L)" class="col-center">920</td>
+                                <td data-label="Notlar">Sudan hafiftir, yüzer</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Madde">Bal</td>
+                                <td data-label="Yoğunluk (g/mL)" class="col-center">1.42</td>
+                                <td data-label="Yoğunluk (g/L)" class="col-center">1420</td>
+                                <td data-label="Notlar">Sudan çok daha ağır</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Madde">Alkol (Etanol)</td>
+                                <td data-label="Yoğunluk (g/mL)" class="col-center">0.79</td>
+                                <td data-label="Yoğunluk (g/L)" class="col-center">790</td>
+                                <td data-label="Notlar">Sudan daha hafif</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Madde">Hava</td>
+                                <td data-label="Yoğunluk (g/mL)" class="col-center">0.0012</td>
+                                <td data-label="Yoğunluk (g/L)" class="col-center">1.2</td>
+                                <td data-label="Notlar">Sıvılara kıyasla çok hafif</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Madde">Buz</td>
+                                <td data-label="Yoğunluk (g/mL)" class="col-center">0.92</td>
+                                <td data-label="Yoğunluk (g/L)" class="col-center">920</td>
+                                <td data-label="Notlar">Sudan daha hafif → yüzer</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Madde">Demir (katı)</td>
+                                <td data-label="Yoğunluk (g/mL)" class="col-center">7.87</td>
+                                <td data-label="Yoğunluk (g/L)" class="col-center">7870</td>
+                                <td data-label="Notlar">Çok yoğun metal</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Madde">Altın (katı)</td>
+                                <td data-label="Yoğunluk (g/mL)" class="col-center">19.32</td>
+                                <td data-label="Yoğunluk (g/L)" class="col-center">19,320</td>
+                                <td data-label="Notlar">Son derece yoğun metal</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        <section class="card more-tools" id="more-tools">
+            <h2>Daha Fazla Araç</h2>
+            <div class="tool-cards-container">
+                <a href="/mg-to-ml" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>Mg'den Ml'ye</h3>
+                        <p>Miligramı mililitreye çevirin.</p>
+                    </div>
+                </a>
+                <a href="/g-to-l" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>G'den L'ye</h3>
+                        <p>Gramı litreye çevir.</p>
+                    </div>
+                </a>
+                <a href="/kg-to-l" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Kg'dan L'ye</h3>
+                        <p>Kilogramı litreye çevir.</p>
+                    </div>
+                </a>
+                <a href="/l-to-g" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>L'den G'ye</h3>
+                        <p>Litreyi grama çevirin.</p>
+                    </div>
+                </a>
+                <a href="/l-to-kg" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>L'den Kg'ye</h3>
+                        <p>Litreyi kilograma çevir.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-g" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>Ml'den G'ye</h3>
+                        <p>Mililitreyi grama çevirin.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-oz" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>Ml'den Oz'a</h3>
+                        <p>Mililitreyi onsa çevir.</p>
+                    </div>
+                </a>
+                <a href="/oz-to-ml" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Oz'dan Ml'ye</h3>
+                        <p>Onsu mililitreye çevirin.</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+        <section class="card" id="faq">
+            <h2>SSS</h2>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h3>S1: Gramı doğrudan litreye dönüştürebilir miyiz?</h3>
+                    <span class="toggle-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>C: Hayır, doğrudan dönüşüm mümkün değildir. Gramı litreye doğru şekilde dönüştürmek için her zaman yoğunluğa ihtiyacınız vardır, çünkü her maddenin yoğunluğu farklıdır; gram kütleyi, litre ise hacmi ölçer.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h3>S2: Yemek malzemeleri gramdan litreye nasıl dönüştürülür?</h3>
+                    <span class="toggle-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>A: Yemek malzemelerini gramdan litreye dönüştürmek için her maddenin yoğunluğunu bilmeniz gerekir. Yoğunluğu öğrendikten sonra, dönüşümü yapmak için önceki makalede belirtilen formülü kullanın.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h3>S3: Gram ve litre hangi birimleri ölçer?</h3>
+                    <span class="toggle-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>C: Gram kütleyi (ağırlığı) ölçerken, litre hacmi (uzayı) ölçer.</p>
+                    <ul>
+                        <li><b>Gram:</b> Bir şeyin ne kadar ağır olduğu.</li>
+                        <li><b>Litre:</b> Bir şeyin ne kadar yer kapladığı.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+    {% include 'footer.html' %}
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Conversion function
+            function convertGToL() {
+                const gInput = document.getElementById('gInput');
+                const liquidSelect = document.getElementById('liquidSelect');
+                const resultValue = document.getElementById('result-value');
+                const g = parseFloat(gInput.value);
+                const density = parseFloat(liquidSelect.value);
+                // Input validation
+                if (liquidSelect.value === '') {
+                    resultValue.innerHTML = '<span class="error-message">Lütfen bir sıvı seçin.</span>';
+                    return;
+                }
+                if (isNaN(g) || g <= 0) {
+                    resultValue.innerHTML = '<span class="error-message">Lütfen geçerli bir gram değeri girin.</span>';
+                    return;
+                }
+                // Calculation
+                const L = g / (density * 1000);
+                // Display result
+                resultValue.innerHTML = `${g} g = <strong>${L.toFixed(4)} L</strong>`;
+                resultValue.style.color = '#28a745';
+            }
+            // Bind the conversion function to the button click
+            document.querySelector('.btn').addEventListener('click', convertGToL);
+            // FAQ toggle logic
+            function toggleFAQ(element) {
+                const faqItem = element.closest('.faq-item');
+                const answer = faqItem.querySelector('.faq-answer');
+                const toggleIcon = faqItem.querySelector('.toggle-icon');
+                faqItem.classList.toggle('active');
+                if (faqItem.classList.contains('active')) {
+                    answer.style.display = 'block';
+                    toggleIcon.textContent = '-';
+                } else {
+                    answer.style.display = 'none';
+                    toggleIcon.textContent = '+';
+                }
+            }
+            // Attach FAQ toggle to all questions
+            const faqQuestions = document.querySelectorAll('.faq-question');
+            faqQuestions.forEach(question => {
+                question.addEventListener('click', function() {
+                    toggleFAQ(this);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

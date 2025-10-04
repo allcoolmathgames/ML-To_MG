@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.png') }}" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Convertisseur de grammes en litres (G en L)</title>
+    <meta name="description" content="Convertissez facilement des grammes en litres grâce à notre convertisseur/calculateur en ligne. Un tableau de conversion est également disponible." />
+    <meta name="keywords" content="grammes en litres, convertisseur grammes en litres, convertir grammes en litres, calculatrice g en L, conversions culinaires, convertisseur de chimie, poids en volume, outil grammes en litres, convertir grammes en litres en ligne" />
+    <link rel="canonical" href="https://mltomg.info/g-to-l" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+    <meta name="google-site-verification" content="49KC3Wnkoo8QxBc56Q5dkx-LVqsbPxtgJTBs_MG7WBU" />
+    <style>
+        /* General styling for the tool sections */
+        .card {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        .tool-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .form-group label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+        .btn {
+            background-color: #007bff;
+            color: #fff;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+        .result-section {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .result-heading {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 0.5rem;
+        }
+        .result-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #28a745;
+        }
+        .error-message {
+            color: #dc3545;
+        }
+        /* Table styles */
+        .table-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+            margin-top: 2rem;
+        }
+        .table-scroll {
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        thead {
+            position: sticky;
+            top: 0;
+            background-color: #f3f4f6;
+            z-index: 10;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        th {
+            font-weight: 600;
+            color: #111827;
+        }
+        tbody tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+        .notes-column {
+            font-style: italic;
+            color: #6b7280;
+        }
+        .col-center {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    {% include 'header.html' %}
+    <header class="secondary-header">
+        <div class="container">
+            <h1>Convertisseur de grammes en litres</h1>
+            <p>Utilisez ce convertisseur de grammes en litres pour effectuer des conversions de g en l en un seul clic.</p>
+        </div>
+    </header>
+    <div class="container main-content">
+        <section class="card" id="tool">
+            <h2>Convertir des grammes en litres</h2>
+            <div class="tool-container">
+                <div class="form-group">
+                    <label for="gInput"><b>Masse (en g) :</b></label>
+                    <input type="number" id="gInput" placeholder="Entrez la masse en g" required>
+                </div>
+                <div class="form-group">
+                    <label for="liquidSelect"><b>Sélectionnez un liquide :</b></label>
+                    <select id="liquidSelect">
+                        <option value="">-- Sélectionnez un liquide --</option>
+                        <option value="1">Eau</option>
+                        <option value="0.789">Éthanol</option>
+                        <option value="0.918">Huile d'olive</option>
+                        <option value="1.03">Lait</option>
+                        <option value="1.3">Miel</option>
+                        <option value="1.8">Glycérine</option>
+                    </select>
+                </div>
+                <button class="btn" onclick="convertGToL()">Convertir en L</button>
+                <div class="result-section">
+                    <div class="result-heading">Résultat :</div>
+                    <div class="result-value" id="result-value">Votre résultat s'affichera ici</div>
+                </div>
+            </div>
+        </section>
+        <section class="card" id="why-choose-us">
+            <p>Utilisez ce convertisseur de grammes en litres pour convertir les grammes de n'importe quelle substance en litres d'un simple clic. Cet outil simplifie vos tâches culinaires, scientifiques et vos besoins quotidiens en matière de mesures.</p>
+        </section>
+        <section class="card" id="how-to-use">
+            <h2>Qu'est-ce que la conversion de grammes en litres ?</h2>
+            <p>La conversion de grammes en litres (g en l) consiste à convertir le poids d'une substance (mesuré en grammes) en son volume (mesuré en litres). Puisque les grammes mesurent la masse et les litres le volume, la conversion dépend de la masse volumique de la substance, car chaque substance a sa propre masse volumique. Par exemple, 1 000 grammes d'eau équivalent à 1 litre, car sa masse volumique est de 1 g/ml. Cependant, dans le cas d'huile, de farine ou de toute autre substance dont la masse volumique est différente de 1 g/ml, les mesures seront différentes.</p>
+            <h3>Formule :</h3>
+            <p>Pour convertir des grammes en litres, il faut diviser le poids par la masse volumique de la substance. Notez que la masse volumique doit être exprimée en grammes par litre (g/l).</p>
+            <p>Si la masse volumique est exprimée en grammes par millilitre (g/ml), il faut la multiplier par 1 000 pour la convertir en grammes par litre (g/l). Voici une formule de base pour une substance dont la masse volumique est exprimée en g/ml afin d'effectuer la conversion.</p>
+            <p style="text-align: center; font-weight: bold; color: red;">litres = grammes / 1 000 × densité</p>
+            <h4>Exemple :</h4>
+            <p><b>Convertissez 600 grammes de lait d'une densité de 1,03 en litres.</b></p>
+            <p>Comme nous connaissons la formule de cette conversion, nous pouvons résoudre cet exemple en utilisant la même formule :</p>
+            <ul>
+                <li>Litres = 600 / 1000 × 1,03</li>
+            </ul>
+            <p>Où :</p>
+            <p>Grammes de lait = 600</p>
+            <p>Densité du lait = 1,03</p>
+            <p>Réponse : 0,58</p>
+            <p>Ainsi, 600 grammes de lait équivalent à 0,58 L.</p>
+        </section>
+        <section class="card" id="table">
+            <h2>Tableau de conversion des grammes en litres</h2>
+            <div class="table-card">
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th><span>Poids en grammes</span></th>
+                                <th class="col-center"><span>Eau</span></th>
+                                <th class="col-center"><span>Lait</span></th>
+                                <th class="col-center"><span>Huile de cuisson</span></th>
+                                <th class="col-center"><span>Farine tout usage</span></th>
+                                <th class="col-center"><span>Sucre en poudre</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td data-label="Poids en grammes">10 g</td>
+                                <td data-label="Eau" class="col-center">0,01 L</td>
+                                <td data-label="Lait" class="col-center">0,009709 L</td>
+                                <td data-label="Huile de cuisson" class="col-center">0,011364 L</td>
+                                <td data-label="Farine tout usage" class="col-center">0,018904 L</td>
+                                <td data-label="Sucre en poudre" class="col-center">0,014184 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Poids en grammes">20 g</td>
+                                <td data-label="Eau" class="col-center">0,02 L</td>
+                                <td data-label="Lait" class="col-center">0,019417 L</td>
+                                <td data-label="Huile de cuisson" class="col-center">0,022727 L</td>
+                                <td data-label="Farine tout usage" class="col-center">0,037807 L</td>
+                                <td data-label="Sucre en poudre" class="col-center">0,028369 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Poids en grammes">30 g</td>
+                                <td data-label="Eau" class="col-center">0,03 L</td>
+                                <td data-label="Lait" class="col-center">0,029126 L</td>
+                                <td data-label="Huile de cuisson" class="col-center">0,034091 L</td>
+                                <td data-label="Farine tout usage" class="col-center">0,056711 L</td>
+                                <td data-label="Sucre en poudre" class="col-center">0,042553 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Poids en grammes">40 g</td>
+                                <td data-label="Eau" class="col-center">0,04 L</td>
+                                <td data-label="Lait" class="col-center">0,038835 L</td>
+                                <td data-label="Huile de cuisson" class="col-center">0,045455 L</td>
+                                <td data-label="Farine tout usage" class="col-center">0,075614 L</td>
+                                <td data-label="Sucre en poudre" class="col-center">0,056738 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Poids en grammes">50 g</td>
+                                <td data-label="Eau" class="col-center">0,05 L</td>
+                                <td data-label="Lait" class="col-center">0,048544 L</td>
+                                <td data-label="Huile de cuisson" class="col-center">0,056818 L</td>
+                                <td data-label="Farine tout usage" class="col-center">0,094518 L</td>
+                                <td data-label="Sucre en poudre" class="col-center">0,070922 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Poids en grammes">60 g</td>
+                                <td data-label="Eau" class="col-center">0,06 L</td>
+                                <td data-label="Lait" class="col-center">0,058252 L</td>
+                                <td data-label="Huile de cuisson" class="col-center">0,068182 L</td>
+                                <td data-label="Farine tout usage" class="col-center">0,113422 L</td>
+                                <td data-label="Sucre en poudre" class="col-center">0,085106 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Poids en grammes">70 g</td>
+                                <td data-label="Eau" class="col-center">0,07 L</td>
+                                <td data-label="Lait" class="col-center">0,067961 L</td>
+                                <td data-label="Huile de cuisson" class="col-center">0,079545 L</td>
+                                <td data-label="Farine tout usage" class="col-center">0,132325 L</td>
+                                <td data-label="Sucre en poudre" class="col-center">0,099291 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Poids en grammes">80 g</td>
+                                <td data-label="Eau" class="col-center">0,08 L</td>
+                                <td data-label="Lait" class="col-center">0,07767 L</td>
+                                <td data-label="Huile de cuisson" class="col-center">0,090909 L</td>
+                                <td data-label="Farine tout usage" class="col-center">0,151229 L</td>
+                                <td data-label="Sucre en poudre" class="col-center">0,113475 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Poids en grammes">90 g</td>
+                                <td data-label="Eau" class="col-center">0,09 L</td>
+                                <td data-label="Lait" class="col-center">0,087379 L</td>
+                                <td data-label="Huile de cuisson" class="col-center">0,102273 L</td>
+                                <td data-label="Farine tout usage" class="col-center">0,170132 L</td>
+                                <td data-label="Sucre en poudre" class="col-center">0,12766 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Poids en grammes">100 g</td>
+                                <td data-label="Eau" class="col-center">0,1 L</td>
+                                <td data-label="Lait" class="col-center">0,097087 L</td>
+                                <td data-label="Huile de cuisson" class="col-center">0,113636 L</td>
+                                <td data-label="Farine tout usage" class="col-center">0,189036 L</td>
+                                <td data-label="Sucre en poudre" class="col-center">0,141844 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Poids en grammes">110 g</td>
+                                <td data-label="Eau" class="col-center">0,11 L</td>
+                                <td data-label="Lait" class="col-center">0,106796 L</td>
+                                <td data-label="Huile de cuisson" class="col-center">0,125 L</td>
+                                <td data-label="Farine tout usage" class="col-center">0,20794 L</td>
+                                <td data-label="Sucre en poudre" class="col-center">0,156028 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Poids en grammes">120 g</td>
+                                <td data-label="Eau" class="col-center">0,12 L</td>
+                                <td data-label="Lait" class="col-center">0,116505 L</td>
+                                <td data-label="Huile de cuisson" class="col-center">0,136364 L</td>
+                                <td data-label="Farine tout usage" class="col-center">0,226843 L</td>
+                                <td data-label="Sucre en poudre" class="col-center">0,170213 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Poids en grammes">130 g</td>
+                                <td data-label="Eau" class="col-center">0,13 L</td>
+                                <td data-label="Lait" class="col-center">0,126214 L</td>
+                                <td data-label="Huile de cuisson" class="col-center">0,147727 L</td>
+                                <td data-label="Farine tout usage" class="col-center">0,245747 L</td>
+                                <td data-label="Sucre en poudre" class="col-center">0,184397 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Poids en grammes">140 g</td>
+                                <td data-label="Eau" class="col-center">0,14 L</td>
+                                <td data-label="Lait" class="col-center">0,135922 L</td>
+                                <td data-label="Huile de cuisson" class="col-center">0,159091 L</td>
+                                <td data-label="Farine tout usage" class="col-center">0,26465 L</td>
+                                <td data-label="Sucre en poudre" class="col-center">0,198582 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Poids en grammes">150 g</td>
+                                <td data-label="Eau" class="col-center">0,15 L</td>
+                                <td data-label="Lait" class="col-center">0,145631 L</td>
+                                <td data-label="Huile de cuisson" class="col-center">0,170455 L</td>
+                                <td data-label="Farine tout usage" class="col-center">0,283554 L</td>
+                                <td data-label="Sucre en poudre" class="col-center">0,212766 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Poids en grammes">160 g</td>
+                                <td data-label="Eau" class="col-center">0,16 L</td>
+                                <td data-label="Lait" class="col-center">0,15534 L</td>
+                                <td data-label="Huile de cuisson" class="col-center">0,181818 L</td>
+                                <td data-label="Farine tout usage" class="col-center">0,302457 L</td>
+                                <td data-label="Sucre en poudre" class="col-center">0,22695 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Poids en grammes">170 g</td>
+                                <td data-label="Eau" class="col-center">0,17 L</td>
+                                <td data-label="Lait" class="col-center">0,165049 L</td>
+                                <td data-label="Huile de cuisson" class="col-center">0,193182 L</td>
+                                <td data-label="Farine tout usage" class="col-center">0,321361 L</td>
+                                <td data-label="Sucre en poudre" class="col-center">0,241135 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Poids en grammes">180 g</td>
+                                <td data-label="Eau" class="col-center">0,18 L</td>
+                                <td data-label="Lait" class="col-center">0,174757 L</td>
+                                <td data-label="Huile de cuisson" class="col-center">0,204545 L</td>
+                                <td data-label="Farine tout usage" class="col-center">0,340265 L</td>
+                                <td data-label="Sucre en poudre" class="col-center">0,255319 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Poids en grammes">190 g</td>
+                                <td data-label="Eau" class="col-center">0,19 L</td>
+                                <td data-label="Lait" class="col-center">0,184466 L</td>
+                                <td data-label="Huile de cuisson" class="col-center">0,215909 L</td>
+                                <td data-label="Farine tout usage" class="col-center">0,359168 L</td>
+                                <td data-label="Sucre en poudre" class="col-center">0,269504 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Poids en grammes">200 g</td>
+                                <td data-label="Eau" class="col-center">0,2 L</td>
+                                <td data-label="Lait" class="col-center">0,194175 L</td>
+                                <td data-label="Huile de cuisson" class="col-center">0,227273 L</td>
+                                <td data-label="Farine tout usage" class="col-center">0,378072 L</td>
+                                <td data-label="Sucre en poudre" class="col-center">0,283688 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Poids en grammes">210 g</td>
+                                <td data-label="Eau" class="col-center">0,21 L</td>
+                                <td data-label="Lait" class="col-center">0,203883 L</td>
+                                <td data-label="Huile de cuisson" class="col-center">0,238636 L</td>
+                                <td data-label="Farine tout usage" class="col-center">0,396975 L</td>
+                                <td data-label="Sucre en poudre" class="col-center">0,297872 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Poids en grammes">220 g</td>
+                                <td data-label="Eau" class="col-center">0,22 L</td>
+                                <td data-label="Lait" class="col-center">0,213592 L</td>
+                                <td data-label="Huile de cuisson" class="col-center">0,25 L</td>
+                                <td data-label="Farine tout usage" class="col-center">0,415879 L</td>
+                                <td data-label="Sucre en poudre" class="col-center">0,312057 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Poids en grammes">230 g</td>
+                                <td data-label="Eau" class="col-center">0,23 L</td>
+                                <td data-label="Lait" class="col-center">0,223301 L</td>
+                                <td data-label="Huile de cuisson" class="col-center">0,261364 L</td>
+                                <td data-label="Farine tout usage" class="col-center">0,434783 L</td>
+                                <td data-label="Sucre en poudre" class="col-center">0,326241 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Poids en grammes">240 g</td>
+                                <td data-label="Eau" class="col-center">0,24 L</td>
+                                <td data-label="Lait" class="col-center">0,23301 L</td>
+                                <td data-label="Huile de cuisson" class="col-center">0,272727 L</td>
+                                <td data-label="Farine tout usage" class="col-center">0,453686 L</td>
+                                <td data-label="Sucre en poudre" class="col-center">0,340426 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Poids en grammes">250 g</td>
+                                <td data-label="Eau" class="col-center">0,25 L</td>
+                                <td data-label="Lait" class="col-center">0,242718 L</td>
+                                <td data-label="Huile de cuisson" class="col-center">0,284091 L</td>
+                                <td data-label="Farine tout usage" class="col-center">0,47259 L</td>
+                                <td data-label="Sucre en poudre" class="col-center">0,35461 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Poids en grammes">260 g</td>
+                                <td data-label="Eau" class="col-center">0,26 L</td>
+                                <td data-label="Lait" class="col-center">0,252427 L</td>
+                                <td data-label="Huile de cuisson" class="col-center">0,295455 L</td>
+                                <td data-label="Farine tout usage" class="col-center">0,491493 L</td>
+                                <td data-label="Sucre en poudre" class="col-center">0,368794 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Poids en grammes">270 g</td>
+                                <td data-label="Eau" class="col-center">0,27 L</td>
+                                <td data-label="Lait" class="col-center">0,262136 L</td>
+                                <td data-label="Huile de cuisson" class="col-center">0,306818 L</td>
+                                <td data-label="Farine tout usage" class="col-center">0,510397 L</td>
+                                <td data-label="Sucre en poudre" class="col-center">0,382979 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Poids en grammes">280 g</td>
+                                <td data-label="Eau" class="col-center">0,28 L</td>
+                                <td data-label="Lait" class="col-center">0,271845 L</td>
+                                <td data-label="Huile de cuisson" class="col-center">0,318182 L</td>
+                                <td data-label="Farine tout usage" class="col-center">0,529301 L</td>
+                                <td data-label="Sucre en poudre" class="col-center">0,397163 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Poids en grammes">290 g</td>
+                                <td data-label="Eau" class="col-center">0,29 L</td>
+                                <td data-label="Lait" class="col-center">0,281553 L</td>
+                                <td data-label="Huile de cuisson" class="col-center">0,329545 L</td>
+                                <td data-label="Farine tout usage" class="col-center">0,548204 L</td>
+                                <td data-label="Sucre en poudre" class="col-center">0,411348 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Poids en grammes">300 g</td>
+                                <td data-label="Eau" class="col-center">0,3 L</td>
+                                <td data-label="Lait" class="col-center">0,291262 L</td>
+                                <td data-label="Huile de cuisson" class="col-center">0,340909 L</td>
+                                <td data-label="Farine tout usage" class="col-center">0,567108 L</td>
+                                <td data-label="Sucre en poudre" class="col-center">0,425532 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Poids en grammes">310 g</td>
+                                <td data-label="Eau" class="col-center">0,31 L</td>
+                                <td data-label="Lait" class="col-center">0,300971 L</td>
+                                <td data-label="Huile de cuisson" class="col-center">0,352273 L</td>
+                                <td data-label="Farine tout usage" class="col-center">0,586011 L</td>
+                                <td data-label="Sucre en poudre" class="col-center">0,439716 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Poids en grammes">320 g</td>
+                                <td data-label="Eau" class="col-center">0,32 L</td>
+                                <td data-label="Lait" class="col-center">0,31068 L</td>
+                                <td data-label="Huile de cuisson" class="col-center">0,363636 L</td>
+                                <td data-label="Farine tout usage" class="col-center">0,604915 L</td>
+                                <td data-label="Sucre en poudre" class="col-center">0,453901 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Poids en grammes">330 g</td>
+                                <td data-label="Eau" class="col-center">0,33 L</td>
+                                <td data-label="Lait" class="col-center">0,320388 L</td>
+                                <td data-label="Huile de cuisson" class="col-center">0,375 L</td>
+                                <td data-label="Farine tout usage" class="col-center">0,623819 L</td>
+                                <td data-label="Sucre en poudre" class="col-center">0,468085 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Poids en grammes">340 g</td>
+                                <td data-label="Eau" class="col-center">0,34 L</td>
+                                <td data-label="Lait" class="col-center">0,330097 L</td>
+                                <td data-label="Huile de cuisson" class="col-center">0,386364 L</td>
+                                <td data-label="Farine tout usage" class="col-center">0,642722 L</td>
+                                <td data-label="Sucre en poudre" class="col-center">0,48227 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Poids en grammes">350 g</td>
+                                <td data-label="Eau" class="col-center">0,35 L</td>
+                                <td data-label="Lait" class="col-center">0,339806 L</td>
+                                <td data-label="Huile de cuisson" class="col-center">0,397727 L</td>
+                                <td data-label="Farine tout usage" class="col-center">0,661626 L</td>
+                                <td data-label="Sucre en poudre" class="col-center">0,496454 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Poids en grammes">360 g</td>
+                                <td data-label="Eau" class="col-center">0,36 L</td>
+                                <td data-label="Lait" class="col-center">0,349515 L</td>
+                                <td data-label="Huile de cuisson" class="col-center">0,409091 L</td>
+                                <td data-label="Farine tout usage" class="col-center">0,680529 L</td>
+                                <td data-label="Sucre en poudre" class="col-center">0,510638 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Poids en grammes">370 g</td>
+                                <td data-label="Eau" class="col-center">0,37 L</td>
+                                <td data-label="Lait" class="col-center">0,359223 L</td>
+                                <td data-label="Huile de cuisson" class="col-center">0,420455 L</td>
+                                <td data-label="Farine tout usage" class="col-center">0,699433 L</td>
+                                <td data-label="Sucre en poudre" class="col-center">0,524823 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Poids en grammes">380 g</td>
+                                <td data-label="Eau" class="col-center">0,38 L</td>
+                                <td data-label="Lait" class="col-center">0,368932 L</td>
+                                <td data-label="Huile de cuisson" class="col-center">0,431818 L</td>
+                                <td data-label="Farine tout usage" class="col-center">0,718336 L</td>
+                                <td data-label="Sucre en poudre" class="col-center">0,539007 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Poids en grammes">390 g</td>
+                                <td data-label="Eau" class="col-center">0,39 L</td>
+                                <td data-label="Lait" class="col-center">0,378641 L</td>
+                                <td data-label="Huile de cuisson" class="col-center">0,443182 L</td>
+                                <td data-label="Farine tout usage" class="col-center">0,73724 L</td>
+                                <td data-label="Sucre en poudre" class="col-center">0,553191 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Poids en grammes">400 g</td>
+                                <td data-label="Eau" class="col-center">0,4 L</td>
+                                <td data-label="Lait" class="col-center">0,38835 L</td>
+                                <td data-label="Huile de cuisson" class="col-center">0,454545 L</td>
+                                <td data-label="Farine tout usage" class="col-center">0,756144 L</td>
+                                <td data-label="Sucre en poudre" class="col-center">0,567376 L</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="note">Remarque : les conversions supposent des densités typiques ; les volumes réels peuvent varier en fonction de la température et des variations du produit.</div>
+            </div>
+        </section>
+        <section class="card" id="use-cases">
+            <h2>Cas d'utilisation du convertisseur de grammes en litres</h2>
+            <h3>1. Cuisine et pâtisserie</h3>
+            <ul>
+                <li>De nombreuses recettes utilisent des grammes, mais vos instruments de mesure habituels, comme les pichets ou les tasses, sont gradués en litres ou en millilitres. Ce convertisseur de grammes en litres vous permet de mesurer facilement vos recettes.</li>
+                <li>Exemple : Une recette demande 200 g de lait, mais votre pichet est gradué en mL/L. Pour obtenir des mesures correctes, convertissez les grammes en litres grâce à notre convertisseur.</li>
+            </ul>
+            <h3>Achats et comparaison de prix</h3>
+            <ul>
+                <li>Dans la vie de tous les jours, nous utilisons de nombreux produits comme l'huile, les jus et les sauces vendus en litres, mais la plupart des produits sont vendus en grammes.</li>
+                <li>Exemple : Une marque vend 1 L de jus, une autre 950 g. Ce convertisseur de g en l vous permet de comparer les prix équitablement.</li>
+            </ul>
+            <h3>Apport quotidien en eau</h3>
+            <ul>
+                <li>Les médecins recommandent de boire de l'eau en litres (par exemple, boire 2 L par jour).</li>
+                <li>Votre bouteille peut afficher des grammes ou des ml. Grâce à ce convertisseur, vous savez que 2 000 g d'eau = 2 L d'eau.</li>
+            </ul>
+            <h3>Bricolage, nettoyage et travaux ménagers</h3>
+            <ul>
+                <li>Dans la vie de tous les jours, nous utilisons souvent des produits de nettoyage ménagers tels que des détergents, des nettoyants pour vitres et d'autres liquides qui peuvent présenter une masse ou un volume différent.</li>
+                <li>Exemple : Une notice de lessive indique « utiliser 50 g par litre d'eau ». Un aperçu rapide est nécessaire pour préparer le bon dosage.</li>
+            </ul>
+            <h3>Pharmacie et médecine</h3>
+            <ul>
+                <li>Les médicaments et les sirops indiquent généralement la quantité de médicament en milligrammes (mg) ou en grammes (g), mais nous les mesurons en réalité en millilitres (mL) ou en litres (L).</li>
+                <li>Par exemple, si l'étiquette d'un sirop indique 500 mg dans chaque 5 ml, vous devez la convertir pour connaître la quantité exacte de sirop à prendre pour la bonne dose.</li>
+            </ul>
+        </section>
+        <section class="card" id="what-is-density">
+            <h2>Qu'est-ce que la densité ?</h2>
+            <p>La densité est le rapport entre la masse et le volume. Elle indique le poids d'un objet par rapport à sa taille.</p>
+            <h3>Formule de densité :</h3>
+            <p style="text-align: center; font-weight: bold; color: red;">Densité = Masse / Volume</p>
+            <p><b>Unités :</b> g/cm³ ou g/L</p>
+        </section>
+        <section class="card" id="density-chart">
+            <h2>Tableau de densité pour différentes substances</h2>
+            <div class="table-card">
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Substance</th>
+                                <th class="density col-center">Densité (g/mL)</th>
+                                <th class="density col-center">Densité (g/L)</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td data-label="Substance">Eau</td>
+                                <td data-label="Densité (g/mL)" class="col-center">1,00</td>
+                                <td data-label="Densité (g/L)" class="col-center">1000</td>
+                                <td data-label="Notes">Référence standard</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Substance">Lait</td>
+                                <td data-label="Densité (g/mL)" class="col-center">1,03</td>
+                                <td data-label="Densité (g/L)" class="col-center">1030</td>
+                                <td data-label="Notes">Légèrement plus lourd que l'eau</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Substance">Huile (végétale)</td>
+                                <td data-label="Densité (g/mL)" class="col-center">0,92</td>
+                                <td data-label="Densité (g/L)" class="col-center">920</td>
+                                <td data-label="Notes">Plus léger que l'eau, flotte</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Substance">Miel</td>
+                                <td data-label="Densité (g/mL)" class="col-center">1,42</td>
+                                <td data-label="Densité (g/L)" class="col-center">1420</td>
+                                <td data-label="Notes">Beaucoup plus lourd que l'eau</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Substance">Alcool (éthanol)</td>
+                                <td data-label="Densité (g/mL)" class="col-center">0,79</td>
+                                <td data-label="Densité (g/L)" class="col-center">790</td>
+                                <td data-label="Notes">Plus léger que l'eau</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Substance">Air</td>
+                                <td data-label="Densité (g/mL)" class="col-center">0,0012</td>
+                                <td data-label="Densité (g/L)" class="col-center">1,2</td>
+                                <td data-label="Notes">Très léger par rapport aux liquides</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Substance">Glace</td>
+                                <td data-label="Densité (g/mL)" class="col-center">0,92</td>
+                                <td data-label="Densité (g/L)" class="col-center">920</td>
+                                <td data-label="Notes">Plus léger que l'eau → flotte</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Substance">Fer (solide)</td>
+                                <td data-label="Densité (g/mL)" class="col-center">7,87</td>
+                                <td data-label="Densité (g/L)" class="col-center">7870</td>
+                                <td data-label="Notes">Métal très dense</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Substance">Or (solide)</td>
+                                <td data-label="Densité (g/mL)" class="col-center">19,32</td>
+                                <td data-label="Densité (g/L)" class="col-center">19 320</td>
+                                <td data-label="Notes">Métal extrêmement dense</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        <section class="card more-tools" id="more-tools">
+            <h2>Plus d'outils</h2>
+            <div class="tool-cards-container">
+                <a href="/mg-to-ml" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>Mg en Ml</h3>
+                        <p>Convertir des milligrammes en millilitres.</p>
+                    </div>
+                </a>
+                <a href="/g-to-l" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>G en L</h3>
+                        <p>Convertir des grammes en litres.</p>
+                    </div>
+                </a>
+                <a href="/kg-to-l" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Kg en L</h3>
+                        <p>Convertir des kilogrammes en litres.</p>
+                    </div>
+                </a>
+                <a href="/l-to-g" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>L en G</h3>
+                        <p>Convertir des litres en grammes.</p>
+                    </div>
+                </a>
+                <a href="/l-to-kg" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>L en Kg</h3>
+                        <p>Convertir des litres en kilogrammes.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-g" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>Ml en G</h3>
+                        <p>Convertir des millilitres en grammes.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-oz" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>Ml en Oz</h3>
+                        <p>Convertir des millilitres en onces.</p>
+                    </div>
+                </a>
+                <a href="/oz-to-ml" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Oz en Ml</h3>
+                        <p>Convertir des onces en millilitres.</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+        <section class="card" id="faq">
+            <h2>FAQ</h2>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h3>Q1 : Pouvons-nous convertir directement des grammes en litres ?</h3>
+                    <span class="toggle-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>R : Non, la conversion directe n'est pas possible. La masse volumique est toujours nécessaire pour convertir correctement les grammes en litres, car chaque substance a une masse volumique différente : les grammes mesurent la masse et les litres le volume.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h3>Q2 : Comment convertir les ingrédients de cuisine de grammes en litres ?</h3>
+                    <span class="toggle-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>R : Pour convertir des ingrédients culinaires de grammes en litres, il faut connaître la masse volumique de chaque substance. Une fois cette masse volumique connue, utilisez la formule mentionnée dans l'article précédent pour effectuer la conversion.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h3>Q3 : Quelles unités mesurent les grammes et les litres ?</h3>
+                    <span class="toggle-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>R : Les grammes mesurent la masse (le poids), tandis que les litres mesurent le volume (l'espace).</p>
+                    <ul>
+                        <li><b>Gramme :</b> À quel point quelque chose est lourd.</li>
+                        <li><b>Litre :</b> Combien d'espace occupe quelque chose.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+    {% include 'footer.html' %}
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Conversion function
+            function convertGToL() {
+                const gInput = document.getElementById('gInput');
+                const liquidSelect = document.getElementById('liquidSelect');
+                const resultValue = document.getElementById('result-value');
+                const g = parseFloat(gInput.value);
+                const density = parseFloat(liquidSelect.value);
+                // Input validation
+                if (liquidSelect.value === '') {
+                    resultValue.innerHTML = '<span class="error-message">Veuillez sélectionner un liquide.</span>';
+                    return;
+                }
+                if (isNaN(g) || g <= 0) {
+                    resultValue.innerHTML = '<span class="error-message">Veuillez entrer une masse valide en grammes.</span>';
+                    return;
+                }
+                // Calculation
+                const L = g / (density * 1000);
+                // Display result
+                resultValue.innerHTML = `${g} g = <strong>${L.toFixed(4)} L</strong>`;
+                resultValue.style.color = '#28a745';
+            }
+            // Bind the conversion function to the button click
+            document.querySelector('.btn').addEventListener('click', convertGToL);
+            // FAQ toggle logic
+            function toggleFAQ(element) {
+                const faqItem = element.closest('.faq-item');
+                const answer = faqItem.querySelector('.faq-answer');
+                const toggleIcon = faqItem.querySelector('.toggle-icon');
+                faqItem.classList.toggle('active');
+                if (faqItem.classList.contains('active')) {
+                    answer.style.display = 'block';
+                    toggleIcon.textContent = '-';
+                } else {
+                    answer.style.display = 'none';
+                    toggleIcon.textContent = '+';
+                }
+            }
+            // Attach FAQ toggle to all questions
+            const faqQuestions = document.querySelectorAll('.faq-question');
+            faqQuestions.forEach(question => {
+                question.addEventListener('click', function() {
+                    toggleFAQ(this);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

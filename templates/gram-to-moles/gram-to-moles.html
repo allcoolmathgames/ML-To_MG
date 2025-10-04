@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.png') }}" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Gram to Moles Converter | g to mol (Exact Match)</title>
+    <meta name="description" content="Convert grams to moles with exact results matching standard calculators. Includes all elements and common compounds." />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        #result-section {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #e9ecef;
+            min-height: 60px;
+            position: relative;
+        }
+        #result-section .result-heading {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-weight: 600;
+            color: var(--primary-color);
+            border-left: 3px solid var(--secondary-color);
+            padding-left: 10px;
+            font-size: 1.1rem;
+        }
+        #result-section .result-value {
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 10px;
+            padding-top: 20px;
+            color: var(--light-text-color);
+            width: 100%;
+        }
+        .hidden { display: none !important; }
+        .molar-mass-display {
+            margin-top: 10px;
+        }
+        .molar-mass-display input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .molar-mass-display input[readonly] {
+            background-color: #f5f5f5;
+            cursor: not-allowed;
+        }
+        .faq-item {
+            border-bottom: 1px solid #e5e7eb;
+            padding: 12px 0;
+        }
+        .faq-question {
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .faq-answer {
+            display: block;
+            padding-top: 10px;
+            color: #4b5563;
+        }
+        .toggle-icon {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .table-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+        }
+        .table-scroll {
+            max-height: 70vh;
+            overflow: auto;
+        }
+        table {
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%;
+        }
+        thead th {
+            position: sticky;
+            top: 0;
+            background: #f3f4f6;
+            color: #111827;
+            font-weight: 600;
+            text-align: left;
+            padding: 10px 12px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        tbody td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #e5e7eb;
+            vertical-align: top;
+        }
+        tbody tr:nth-child(even) td {
+            background: #f9fafb;
+        }
+        th, td.num {
+            text-align: right;
+        }
+        th:first-child, td:first-child {
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    {% include 'header.html' %}
+    <header class="secondary-header">
+        <div class="container">
+            <h1>Gram to Moles Converter</h1>
+            <p>Convert grams to moles with exact results matching standard calculators</p>
+        </div>
+    </header>
+
+    <div class="container main-content">
+        <section class="card" id="tool">
+            <h2>Convert Grams to Moles</h2>
+            <div class="tool-container">
+                <div class="form-group">
+                    <label for="massInput"><b>Mass (in grams):</b></label>
+                    <input type="number" id="massInput" placeholder="e.g., 10" step="0.000001" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="substanceSelect"><b>Select Substance:</b></label>
+                    <select id="substanceSelect">
+                        <option value="">-- Select a Substance --</option>
+                        <option value="custom">Custom Molar Mass</option>
+                        <optgroup label="Elements">
+                            <option value="H" data-molar-mass="1.00784">Hydrogen (H)</option>
+                            <option value="He" data-molar-mass="4.0026">Helium (He)</option>
+                            <option value="Li" data-molar-mass="6.941">Lithium (Li)</option>
+                            <option value="Be" data-molar-mass="9.0122">Beryllium (Be)</option>
+                            <option value="B" data-molar-mass="10.811">Boron (B)</option>
+                            <option value="C" data-molar-mass="12.0107">Carbon (C)</option>
+                            <option value="N" data-molar-mass="14.0067">Nitrogen (N)</option>
+                            <option value="O" data-molar-mass="15.999">Oxygen (O)</option>
+                            <option value="F" data-molar-mass="18.998">Fluorine (F)</option>
+                            <option value="Ne" data-molar-mass="20.180">Neon (Ne)</option>
+                            <option value="Na" data-molar-mass="22.990">Sodium (Na)</option>
+                            <option value="Mg" data-molar-mass="24.305">Magnesium (Mg)</option>
+                            <option value="Al" data-molar-mass="26.982">Aluminum (Al)</option>
+                            <option value="Si" data-molar-mass="28.085">Silicon (Si)</option>
+                            <option value="P" data-molar-mass="30.974">Phosphorus (P)</option>
+                            <option value="S" data-molar-mass="32.06">Sulfur (S)</option>
+                            <option value="Cl" data-molar-mass="35.45">Chlorine (Cl)</option>
+                            <option value="Ar" data-molar-mass="39.948">Argon (Ar)</option>
+                            <option value="K" data-molar-mass="39.098">Potassium (K)</option>
+                            <option value="Ca" data-molar-mass="40.078">Calcium (Ca)</option>
+                            <option value="Sc" data-molar-mass="44.956">Scandium (Sc)</option>
+                            <option value="Ti" data-molar-mass="47.867">Titanium (Ti)</option>
+                            <option value="V" data-molar-mass="50.942">Vanadium (V)</option>
+                            <option value="Cr" data-molar-mass="51.996">Chromium (Cr)</option>
+                            <option value="Mn" data-molar-mass="54.938">Manganese (Mn)</option>
+                            <option value="Fe" data-molar-mass="55.845">Iron (Fe)</option>
+                            <option value="Co" data-molar-mass="58.933">Cobalt (Co)</option>
+                            <option value="Ni" data-molar-mass="58.693">Nickel (Ni)</option>
+                            <option value="Cu" data-molar-mass="63.546">Copper (Cu)</option>
+                            <option value="Zn" data-molar-mass="65.38">Zinc (Zn)</option>
+                            <option value="Ga" data-molar-mass="69.723">Gallium (Ga)</option>
+                            <option value="Ge" data-molar-mass="72.630">Germanium (Ge)</option>
+                            <option value="As" data-molar-mass="74.922">Arsenic (As)</option>
+                            <option value="Se" data-molar-mass="78.971">Selenium (Se)</option>
+                            <option value="Br" data-molar-mass="79.904">Bromine (Br)</option>
+                            <option value="Kr" data-molar-mass="83.798">Krypton (Kr)</option>
+                            <option value="Rb" data-molar-mass="85.468">Rubidium (Rb)</option>
+                            <option value="Sr" data-molar-mass="87.62">Strontium (Sr)</option>
+                            <option value="Y" data-molar-mass="88.906">Yttrium (Y)</option>
+                            <option value="Zr" data-molar-mass="91.224">Zirconium (Zr)</option>
+                            <option value="Nb" data-molar-mass="92.906">Niobium (Nb)</option>
+                            <option value="Mo" data-molar-mass="95.95">Molybdenum (Mo)</option>
+                            <option value="Tc" data-molar-mass="98">Technetium (Tc)</option>
+                            <option value="Ru" data-molar-mass="101.07">Ruthenium (Ru)</option>
+                            <option value="Rh" data-molar-mass="102.91">Rhodium (Rh)</option>
+                            <option value="Pd" data-molar-mass="106.42">Palladium (Pd)</option>
+                            <option value="Ag" data-molar-mass="107.87">Silver (Ag)</option>
+                            <option value="Cd" data-molar-mass="112.41">Cadmium (Cd)</option>
+                            <option value="In" data-molar-mass="114.82">Indium (In)</option>
+                            <option value="Sn" data-molar-mass="118.71">Tin (Sn)</option>
+                            <option value="Sb" data-molar-mass="121.76">Antimony (Sb)</option>
+                            <option value="Te" data-molar-mass="127.60">Tellurium (Te)</option>
+                            <option value="I" data-molar-mass="126.90">Iodine (I)</option>
+                            <option value="Xe" data-molar-mass="131.29">Xenon (Xe)</option>
+                            <option value="Cs" data-molar-mass="132.91">Cesium (Cs)</option>
+                            <option value="Ba" data-molar-mass="137.33">Barium (Ba)</option>
+                            <option value="La" data-molar-mass="138.91">Lanthanum (La)</option>
+                            <option value="Ce" data-molar-mass="140.12">Cerium (Ce)</option>
+                            <option value="Pr" data-molar-mass="140.91">Praseodymium (Pr)</option>
+                            <option value="Nd" data-molar-mass="144.24">Neodymium (Nd)</option>
+                            <option value="Pm" data-molar-mass="145">Promethium (Pm)</option>
+                            <option value="Sm" data-molar-mass="150.36">Samarium (Sm)</option>
+                            <option value="Eu" data-molar-mass="151.96">Europium (Eu)</option>
+                            <option value="Gd" data-molar-mass="157.25">Gadolinium (Gd)</option>
+                            <option value="Tb" data-molar-mass="158.93">Terbium (Tb)</option>
+                            <option value="Dy" data-molar-mass="162.50">Dysprosium (Dy)</option>
+                            <option value="Ho" data-molar-mass="164.93">Holmium (Ho)</option>
+                            <option value="Er" data-molar-mass="167.26">Erbium (Er)</option>
+                            <option value="Tm" data-molar-mass="168.93">Thulium (Tm)</option>
+                            <option value="Yb" data-molar-mass="173.05">Ytterbium (Yb)</option>
+                            <option value="Lu" data-molar-mass="174.97">Lutetium (Lu)</option>
+                            <option value="Hf" data-molar-mass="178.49">Hafnium (Hf)</option>
+                            <option value="Ta" data-molar-mass="180.95">Tantalum (Ta)</option>
+                            <option value="W" data-molar-mass="183.84">Tungsten (W)</option>
+                            <option value="Re" data-molar-mass="186.21">Rhenium (Re)</option>
+                            <option value="Os" data-molar-mass="190.23">Osmium (Os)</option>
+                            <option value="Ir" data-molar-mass="192.22">Iridium (Ir)</option>
+                            <option value="Pt" data-molar-mass="195.08">Platinum (Pt)</option>
+                            <option value="Au" data-molar-mass="196.97">Gold (Au)</option>
+                            <option value="Hg" data-molar-mass="200.59">Mercury (Hg)</option>
+                            <option value="Tl" data-molar-mass="204.38">Thallium (Tl)</option>
+                            <option value="Pb" data-molar-mass="207.2">Lead (Pb)</option>
+                            <option value="Bi" data-molar-mass="208.98">Bismuth (Bi)</option>
+                            <option value="Po" data-molar-mass="209">Polonium (Po)</option>
+                            <option value="At" data-molar-mass="210">Astatine (At)</option>
+                            <option value="Rn" data-molar-mass="222">Radon (Rn)</option>
+                            <option value="Fr" data-molar-mass="223">Francium (Fr)</option>
+                            <option value="Ra" data-molar-mass="226">Radium (Ra)</option>
+                            <option value="Ac" data-molar-mass="227">Actinium (Ac)</option>
+                            <option value="Th" data-molar-mass="232.04">Thorium (Th)</option>
+                            <option value="Pa" data-molar-mass="231.04">Protactinium (Pa)</option>
+                            <option value="U" data-molar-mass="238.03">Uranium (U)</option>
+                            <option value="Np" data-molar-mass="237">Neptunium (Np)</option>
+                            <option value="Pu" data-molar-mass="244">Plutonium (Pu)</option>
+                            <option value="Am" data-molar-mass="243">Americium (Am)</option>
+                            <option value="Cm" data-molar-mass="247">Curium (Cm)</option>
+                            <option value="Bk" data-molar-mass="247">Berkelium (Bk)</option>
+                            <option value="Cf" data-molar-mass="251">Californium (Cf)</option>
+                            <option value="Es" data-molar-mass="252">Einsteinium (Es)</option>
+                            <option value="Fm" data-molar-mass="257">Fermium (Fm)</option>
+                            <option value="Md" data-molar-mass="258">Mendelevium (Md)</option>
+                            <option value="No" data-molar-mass="259">Nobelium (No)</option>
+                            <option value="Lr" data-molar-mass="266">Lawrencium (Lr)</option>
+                            <option value="Rf" data-molar-mass="267">Rutherfordium (Rf)</option>
+                            <option value="Db" data-molar-mass="270">Dubnium (Db)</option>
+                            <option value="Sg" data-molar-mass="271">Seaborgium (Sg)</option>
+                            <option value="Bh" data-molar-mass="270">Bohrium (Bh)</option>
+                            <option value="Hs" data-molar-mass="277">Hassium (Hs)</option>
+                            <option value="Mt" data-molar-mass="276">Meitnerium (Mt)</option>
+                            <option value="Ds" data-molar-mass="281">Darmstadtium (Ds)</option>
+                            <option value="Rg" data-molar-mass="280">Roentgenium (Rg)</option>
+                            <option value="Cn" data-molar-mass="285">Copernicium (Cn)</option>
+                            <option value="Nh" data-molar-mass="284">Nihonium (Nh)</option>
+                            <option value="Fl" data-molar-mass="289">Flerovium (Fl)</option>
+                            <option value="Mc" data-molar-mass="288">Moscovium (Mc)</option>
+                            <option value="Lv" data-molar-mass="293">Livermorium (Lv)</option>
+                            <option value="Ts" data-molar-mass="294">Tennessine (Ts)</option>
+                            <option value="Og" data-molar-mass="294">Oganesson (Og)</option>
+                        </optgroup>
+                        <optgroup label="Common Compounds">
+                            <option value="H2O" data-molar-mass="18.01528">Water (H₂O)</option>
+                            <option value="CO2" data-molar-mass="44.0095">Carbon Dioxide (CO₂)</option>
+                            <option value="CH4" data-molar-mass="16.0425">Methane (CH₄)</option>
+                            <option value="NH3" data-molar-mass="17.0307">Ammonia (NH₃)</option>
+                            <option value="O2" data-molar-mass="31.9988">Oxygen (O₂)</option>
+                            <option value="N2" data-molar-mass="28.0134">Nitrogen (N₂)</option>
+                            <option value="NaCl" data-molar-mass="58.4428">Salt (NaCl)</option>
+                            <option value="C6H12O6" data-molar-mass="180.1559">Glucose (C₆H₁₂O₆)</option>
+                            <option value="C12H22O11" data-molar-mass="342.2965">Sucrose (C₁₂H₂₂O₁₁)</option>
+                            <option value="H2SO4" data-molar-mass="98.0785">Sulfuric Acid (H₂SO₄)</option>
+                            <option value="HCl" data-molar-mass="36.4609">Hydrochloric Acid (HCl)</option>
+                            <option value="CH3COOH" data-molar-mass="60.052">Acetic Acid (CH₃COOH)</option>
+                            <option value="C2H5OH" data-molar-mass="46.0684">Ethanol (C₂H₅OH)</option>
+                            <option value="CaCO3" data-molar-mass="100.0869">Calcium Carbonate (CaCO₃)</option>
+                            <option value="NaHCO3" data-molar-mass="84.0066">Sodium Bicarbonate (NaHCO₃)</option>
+                        </optgroup>
+                    </select>
+                </div>
+
+                <div class="form-group molar-mass-display">
+                    <label for="molarMassDisplay"><b>Molar Mass (g/mol):</b></label>
+                    <input type="text" id="molarMassDisplay" placeholder="Select a substance first" readonly>
+                    <input type="number" id="molarMassInput" class="hidden" placeholder="Enter molar mass in g/mol" step="0.001">
+                </div>
+
+                <button class="btn" onclick="convertGramToMole()">Convert to Moles</button>
+            </div>
+        </section>
+
+        <p style="color: red;"><b>Note:</b> Molar masses are sourced from NIST and PubChem databases. For custom substances, enter the exact molar mass.</p>
+
+        <div id="result-section">
+            <div class="result-heading">Result:</div>
+            <div class="result-value" id="result-value">Your result will appear here</div>
+        </div>
+
+        <!-- How it works section -->
+        <section class="card">
+            <h2>How to Convert Grams to Moles</h2>
+            <p>The formula is:</p>
+            <p style="text-align: center; color: red; font-weight: bold; font-size: 1.2rem;">
+                moles = mass (g) / molar mass (g/mol)
+            </p>
+            <h4>Example:</h4>
+            <p>Convert <b>10g of Water (H₂O)</b> to moles:</p>
+            <p style="text-align: center; color: green; font-weight: bold;">
+                moles = 10g / 18.01528 g/mol ≈ <b>0.555085 mol</b>
+            </p>
+        </section>
+
+        <!-- Conversion Table -->
+        <section class="card">
+            <h2>Common Conversions</h2>
+            <div class="table-card">
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Substance</th>
+                                <th>Mass (g)</th>
+                                <th>Moles (mol)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Water (H₂O)</td><td>18.015</td><td>1.000000</td></tr>
+                            <tr><td>Carbon (C)</td><td>12.011</td><td>1.000000</td></tr>
+                            <tr><td>Salt (NaCl)</td><td>58.443</td><td>1.000000</td></tr>
+                            <tr><td>Glucose (C₆H₁₂O₆)</td><td>180.156</td><td>1.000000</td></tr>
+                            <tr><td>Oxygen (O₂)</td><td>32.00</td><td>1.000000</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="card" id="faq">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>Q: How accurate are these calculations?</h4>
+                    <span class="toggle-icon">-</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Our calculator uses precise molar mass values from NIST and PubChem databases, matching results from standard chemistry calculators like omnicalculator.com.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>Q: Can I use this for any chemical?</h4>
+                    <span class="toggle-icon">-</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Yes! For chemicals not in our list, select "Custom Molar Mass" and enter the exact molar mass value from a reliable source.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>Q: How do I find the molar mass of a compound?</h4>
+                    <span class="toggle-icon">-</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Sum the atomic masses of all atoms in the formula. For example, for CO₂:</p>
+                    <ul>
+                        <li>Carbon (C) = 12.0107 g/mol</li>
+                        <li>Oxygen (O) = 15.999 × 2 = 31.998 g/mol</li>
+                        <li>Total = 12.0107 + 31.998 = 44.0087 g/mol</li>
+                    </ul>
+                    <p>Use <a href="https://pubchem.ncbi.nlm.nih.gov/" target="_blank">PubChem</a> for verified values.</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    {% include 'footer.html' %}
+
+    <script>
+        const substanceSelect = document.getElementById('substanceSelect');
+        const molarMassDisplay = document.getElementById('molarMassDisplay');
+        const molarMassInput = document.getElementById('molarMassInput');
+        const massInput = document.getElementById('massInput');
+        const resultValue = document.getElementById('result-value');
+
+        substanceSelect.addEventListener('change', function() {
+            if (this.value === 'custom') {
+                molarMassDisplay.classList.add('hidden');
+                molarMassInput.classList.remove('hidden');
+                molarMassInput.value = '';
+                molarMassInput.removeAttribute('readonly');
+                molarMassInput.placeholder = 'Enter molar mass in g/mol';
+            } else if (this.value !== '') {
+                molarMassInput.classList.add('hidden');
+                molarMassDisplay.classList.remove('hidden');
+                const selectedOption = this.options[this.selectedIndex];
+                molarMassDisplay.value = selectedOption.dataset.molarMass;
+            } else {
+                molarMassDisplay.classList.remove('hidden');
+                molarMassInput.classList.add('hidden');
+                molarMassDisplay.value = '';
+            }
+        });
+
+        function convertGramToMole() {
+            const mass = parseFloat(massInput.value);
+            let molarMass;
+
+            if (substanceSelect.value === 'custom') {
+                molarMass = parseFloat(molarMassInput.value);
+                if (isNaN(molarMass) || molarMass <= 0) {
+                    resultValue.innerHTML = 'Please enter a valid molar mass (must be > 0)';
+                    resultValue.style.color = 'red';
+                    return;
+                }
+            } else if (substanceSelect.value !== '') {
+                molarMass = parseFloat(substanceSelect.options[substanceSelect.selectedIndex].dataset.molarMass);
+            } else {
+                resultValue.innerHTML = 'Please select a substance or enter a custom molar mass';
+                resultValue.style.color = 'red';
+                return;
+            }
+
+            if (isNaN(mass) || mass <= 0) {
+                resultValue.innerHTML = 'Please enter a valid mass (must be > 0)';
+                resultValue.style.color = 'red';
+                return;
+            }
+
+            const moles = mass / molarMass;
+            const roundedMoles = moles.toFixed(6);
+
+            resultValue.innerHTML = `
+                <b>${mass} g</b> = <b>${roundedMoles} mol</b>
+                <div style="font-size: 0.9rem; color: #6b7280; margin-top: 5px;">
+                    (Molar mass: ${molarMass.toFixed(5)} g/mol)
+                </div>
+            `;
+            resultValue.style.color = 'green';
+            document.getElementById('result-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function toggleFAQ(element) {
+            const answer = element.nextElementSibling;
+            const icon = element.querySelector('.toggle-icon');
+            if (answer.style.display === 'block') {
+                answer.style.display = 'none';
+                icon.textContent = '+';
+            } else {
+                answer.style.display = 'block';
+                icon.textContent = '-';
+            }
+        }
+    </script>
+</body>
+</html>

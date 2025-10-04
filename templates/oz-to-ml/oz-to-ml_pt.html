@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.png') }}" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Ounces to Milliliters Converter Pro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+</head>
+<body>
+    {% include 'header.html' %}
+
+    <header class="secondary-header">
+        <div class="container">
+            <h1>Ounces to Milliliters Converter</h1>
+            <p>A professional tool for accurate volume conversions</p>
+        </div>
+    </header>
+
+    <div class="container main-content">
+        <section class="card" id="tool">
+            <h2>Our Conversion Tool</h2>
+            <div class="tool-container">
+                <div class="form-group">
+                    <label for="ozInput"><b>Volume (in oz):</b></label>
+                    <input type="number" id="ozInput" placeholder="Enter volume in oz" required>
+                </div>
+                
+                <button class="btn" onclick="convertOzToMl()">Convert to ml</button>
+                <div id="result"></div>
+            </div>
+        </section>
+
+        <section class="card" id="how-to-use">
+            <h2>How to Use</h2>
+            <p>1. <b>Enter Volume:</b> Enter your value in the "Volume (in oz)" field.</p>
+            <p>2. <b>Click Convert:</b> Click on the "Convert" button to see the result. The result will appear in the **Result** section.</p>
+        </section>
+
+        <section class="card" id="why-choose-us">
+            <h2>Why Choose Us?</h2>
+            <p>Our tool provides **reliable and precise results** for quick volume conversions. Its clean and modern interface also provides a superior user experience.</p>
+        </section>
+
+        <section class="card" id="how-it-works">
+            <h2>How Our Tool Works</h2>
+            <p>The conversion formula is: $$Volume (ml) = Volume (oz) \div 0.033814$$</p>
+            <p>This tool calculates the **volume in milliliters** by applying a fixed conversion factor to your input volume. For example, if you enter **1 oz**, the result will be **29.57 ml**.</p>
+        </section>
+
+        <section class="card more-tools" id="more-tools">
+            <h2>More Tools</h2>
+            <div class="tool-cards-container">
+                <a href="/mg-to-ml" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>Mg to Ml</h3>
+                        <p>Convert milligrams to milliliters.</p>
+                    </div>
+                </a>
+                <a href="/g-to-l" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>G to L</h3>
+                        <p>Convert grams to liters.</p>
+                    </div>
+                </a>
+                <a href="/kg-to-l" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Kg to L</h3>
+                        <p>Convert kilograms to liters.</p>
+                    </div>
+                </a>
+                <a href="/l-to-g" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>L to G</h3>
+                        <p>Convert liters to grams.</p>
+                    </div>
+                </a>
+                <a href="/l-to-kg" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>L to Kg</h3>
+                        <p>Convert liters to kilograms.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-g" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>Ml to G</h3>
+                        <p>Convert milliliters to grams.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-oz" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>Ml to Oz</h3>
+                        <p>Convert milliliters to ounces.</p>
+                    </div>
+                </a>
+                <a href="/oz-to-ml" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Oz to Ml</h3>
+                        <p>Convert ounces to milliliters.</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <section class="card" id="faq">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>Q: Can I use this tool for both liquids and solids?</h4>
+                    <span class="toggle-icon">-</span>
+                </div>
+                <div class="faq-answer">
+                    <p>A: Yes, as long as you know the substance's density, you can use this tool. We have provided densities for some common liquids to make it easier.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>Q: What if my liquid is not on the list?</h4>
+                    <span class="toggle-icon">-</span>
+                </div>
+                <div class="faq-answer">
+                    <p>A: Currently, this tool includes only the listed liquids. If you need another liquid, you can search for its density online and update the code for your own use.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    {% include 'footer.html' %}
+</body>
+</html>

@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.png') }}" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Liter in Kilogramm Umrechnung | L in Kg Umrechnung</title>
+    <meta name="description" content="Verwenden Sie diesen Liter-Kilogramm-Umrechner, um für verschiedene Substanzen basierend auf ihrer Dichte Umrechnungen von Litern in Kilogramm vorzunehmen." />
+    <meta name="keywords" content="Liter-Kilogramm-Umrechnung, l-kg-Umrechnung, l-kg-Tabelle, Wasserumrechnung, Milchumrechnung, Speiseölumrechnung, Mehlumrechnung, Küchenmaßtabelle, Backumrechnungen, Zutatenmassetabelle" />
+    <link rel="canonical" href="https://kgtoL.info/l-to-kg" />
+    <link rel="alternate" hreflang="x-default" href="https://kgtoL.info/l-to-kg" />
+    <link rel="alternate" hreflang="de" href="https://kgtoL.info/l-to-kg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <meta name="google-site-verification" content="49KC3Wnkoo8QxBc56Q5dkx-LVqsbPxtgJTBs_MG7WBU" />
+    <style>
+        /* Jo styles aapne diye the woh yahan hain, isko external CSS mein bhi move kar sakte hain */
+        #result-section {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #e9ecef;
+            min-height: 60px;
+            position: relative;
+        }
+        #result-section .result-heading {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-weight: 600;
+            color: var(--primary-color);
+            border-left: 3px solid var(--secondary-color);
+            padding-left: 10px;
+            font-size: 1.1rem;
+        }
+        #result-section .result-value {
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 10px;
+            padding-top: 20px;
+            color: var(--light-text-color);
+            width: 100%;
+        }
+        .hidden {
+            display: none !important;
+        }
+
+        /* Table styles from the original code */
+        :root {
+            --bg: #ffffff;
+            --text: #1f2937;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+            --stripe: #f9fafb;
+        }
+        body {
+            font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+            color: var(--text);
+            background: var(--bg);
+            margin: 0;
+        }
+        h1 { font-size: 1.25rem; margin: 0 0 12px; }
+        .wrap { max-width: 1100px; margin: 0 auto; }
+        .table-card { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+        .table-scroll { max-height: 70vh; overflow: auto; }
+        table { border-collapse: separate; border-spacing: 0; width: 100%; }
+        thead th { position: sticky; top: 0; background: var(--border); color: #111827; font-weight: 600; text-align: center; padding: 10px 12px; border-bottom: 1px solid var(--border); }
+        tbody td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; text-align: center; }
+        tbody tr:nth-child(even) td { background: var(--stripe); }
+        th, td.num { text-align: right; }
+        th:first-child, td:first-child { text-align: center; }
+        caption { caption-side: bottom; padding: 10px; font-size: 0.875rem; color: var(--muted); }
+    </style>
+</head>
+<body>
+    {% include 'header.html' %}
+    <header class="secondary-header">
+        <div class="container">
+            <h1>Liter in Kilogramm Umrechner</h1>
+            <p>Geben Sie unten das Volumen in Litern ein, um die Masse in Kilogramm zu berechnen.</p>
+        </div>
+    </header>
+    <div class="container main-content">
+        <section class="card" id="tool">
+            <h2>Liter in Kilogramm umrechnen</h2>
+            <div class="tool-container">
+                <div class="form-group">
+                    <label for="lInput"><b>Volumen (in Litern):</b></label>
+                    <input type="number" id="lInput" placeholder="Volumen in Litern eingeben" required>
+                </div>
+                <div class="form-group">
+                    <label for="mainSelect"><b>Substanz auswählen:</b></label>
+                    <select id="mainSelect">
+                        <option value="">-- Substanz auswählen --</option>
+                        <optgroup label="Allgemein">
+                            <option value="water" data-density="1.000">Wasser</option>
+                        </optgroup>
+                        <optgroup label="Zuckerarten">
+                            <option value="granulated-sugar" data-density="0.845">Kristallzucker</option>
+                            <option value="powdered-sugar" data-density="0.560">Puderzucker</option>
+                            <option value="brown-sugar" data-density="0.850">Brauner Zucker</option>
+                            <option value="raw-sugar" data-density="0.900">Rohrzucker</option>
+                        </optgroup>
+                        <optgroup label="Sirupe und Aufstriche">
+                            <option value="corn-syrup" data-density="1.380">Maissirup</option>
+                            <option value="honey" data-density="1.420">Honig</option>
+                            <option value="nutella" data-density="1.200">Nutella</option>
+                            <option value="jelly" data-density="1.300">Gelee</option>
+                        </optgroup>
+                        <optgroup label="Mehlsorten">
+                            <option value="all-purpose-flour" data-density="0.529">Universalmehl</option>
+                            <option value="wheat-flour" data-density="0.529">Weizenmehl</option>
+                            <option value="bread-flour" data-density="0.529">Brotmehl</option>
+                            <option value="type-00-flour" data-density="0.600">Mehl Type 00</option>
+                            <option value="cake-flour" data-density="0.480">Kuchenmehl</option>
+                            <option value="rye-flour" data-density="0.460">Roggenmehl</option>
+                        </optgroup>
+                        <optgroup label="Backtriebmittel & Gewürze">
+                            <option value="baking-soda" data-density="0.960">Backsoda</option>
+                            <option value="baking-powder" data-density="0.800">Backpulver</option>
+                            <option value="cream-of-tartar" data-density="0.750">Weinsteinbackpulver</option>
+                            <option value="cinnamon" data-density="0.540">Zimt</option>
+                            <option value="garlic-powder" data-density="0.550">Knoblauchpulver</option>
+                            <option value="salt" data-density="2.160">Salz</option>
+                            <option value="spice-blends" data-density="0.550">Gewürzmischungen</option>
+                            <option value="cocoa-powder" data-density="0.480">Kakao</option>
+                            <option value="vanilla" data-density="1.200">Vanilleextrakt</option>
+                        </optgroup>
+                        <optgroup label="Fette & Öle">
+                            <option value="cooking-oil" data-density="0.918">Speiseöl</option>
+                            <option value="olive-oil" data-density="0.918">Olivenöl</option>
+                            <option value="vegetable-oil" data-density="0.918">Pflanzenöl</option>
+                            <option value="butter" data-density="0.911">Butter</option>
+                            <option value="margarine" data-density="0.940">Margarine</option>
+                            <option value="lard" data-density="0.920">Schmalz</option>
+                            <option value="mayonnaise" data-density="0.920">Mayonnaise</option>
+                            <option value="peanut-butter" data-density="1.060">Erdnussbutter</option>
+                        </optgroup>
+                        <optgroup label="Milchprodukte">
+                            <option value="milk" data-density="1.030">Milch</option>
+                            <option value="buttermilk" data-density="1.030">Buttermilch</option>
+                            <option value="light-cream" data-density="1.009">Leichte Sahne</option>
+                            <option value="heavy-cream" data-density="0.994">Schlagsahne</option>
+                            <option value="whipped-cream" data-density="0.480">Schlagsahne</option>
+                            <option value="ice-cream" data-density="0.560">Eiscreme</option>
+                            <option value="sour-cream" data-density="1.030">Saure Sahne</option>
+                            <option value="cottage-cheese" data-density="1.060">Hüttenkäse</option>
+                            <option value="cream-cheese" data-density="1.040">Frischkäse</option>
+                            <option value="yogurt" data-density="1.030">Joghurt</option>
+                        </optgroup>
+                        <optgroup label="Nüsse & Getreide">
+                            <option value="almonds" data-density="0.600">Mandeln</option>
+                            <option value="cashews" data-density="0.600">Cashewkerne</option>
+                            <option value="peanuts" data-density="0.600">Erdnüsse</option>
+                            <option value="sunflower-seeds" data-density="0.500">Sonnenblumenkerne</option>
+                            <option value="barley" data-density="0.700">Gerste</option>
+                            <option value="bran" data-density="0.300">Kleie</option>
+                            <option value="oats" data-density="0.450">Haferflocken</option>
+                            <option value="rice" data-density="0.850">Reis (ungekocht)</option>
+                            <option value="rye" data-density="0.700">Roggen</option>
+                            <option value="wheat" data-density="0.800">Weizen</option>
+                            <option value="breadcrumbs" data-density="0.420">Paniermehl</option>
+                            <option value="corn-flakes" data-density="0.150">Cornflakes</option>
+                            <option value="cornstarch" data-density="0.500">Maisstärke</option>
+                            <option value="rice-krispies" data-density="0.110">Reis-Knusperflocken</option>
+                        </optgroup>
+                        <optgroup label="Sonstige Zutaten">
+                            <option value="dried-apple-slices" data-density="0.200">Getrocknete Apfelscheiben</option>
+                            <option value="carrots" data-density="0.500">Karotten (gerieben)</option>
+                            <option value="corn" data-density="0.750">Mais (Körner)</option>
+                            <option value="kidney-beans" data-density="0.850">Kidneybohnen (getrocknet)</option>
+                            <option value="onions" data-density="0.700">Zwiebeln (gehackt)</option>
+                            <option value="potatoes" data-density="0.750">Kartoffeln (gewürfelt)</option>
+                            <option value="yams" data-density="0.750">Süßkartoffeln (gewürfelt)</option>
+                            <option value="bread" data-density="0.250">Brot (in Scheiben)</option>
+                            <option value="cake-mix" data-density="0.800">Kuchenmischung</option>
+                        </optgroup>
+                        <option value="custom-liquid">Benutzerdefinierte Dichte (kg/L)</option>
+                    </select>
+                </div>
+                <div class="form-group hidden" id="densityGroup">
+                    <label for="densityInput"><b>Dichte (kg/L):</b></label>
+                    <input type="number" id="densityInput" placeholder="Dichte in kg/L eingeben" required>
+                </div>
+                <button class="btn" onclick="convertLToKg()">In Kilogramm umrechnen</button>
+            </div>
+
+        <p style="color: red;"><b>Hinweis:</b> Die Dichte variiert mit der Temperatur und kann je nach Material unterschiedlich sein. Sie können auch <b>Benutzerdefinierte Dichte</b> aus der Dropdown-Liste auswählen, um Ihren eigenen Wert einzugeben.</p>
+        <div id="result-section">
+            <div class="result-heading">Ergebnis:</div>
+            <div class="result-value" id="result-value">Ihr Ergebnis erscheint hier</div>
+        </div>
+        <section class="card" id="why-choose-us">
+            <p>Der Liter-kg-Umrechner ist ein nützliches Tool zur Umrechnung des Volumens einer Substanz oder eines Materials von Litern in ein entsprechendes Gewicht in Kilogramm. Unser L-kg-Umrechner zeigt Ihnen auch die Dichte der ausgewählten Substanz oder des Materials an, um die Genauigkeit und Effizienz der Umrechnung zu gewährleisten. Sie können unseren <a href="https://mltomg.info/kg-to-l">Kilogramm-Liter-Umrechner</a> auch für umgekehrte Berechnungen verwenden.</p>
+        </section>
+        <section class="card more-tools" id="more-tools">
+            <h2>Weitere Tools</h2>
+            <div class="tool-cards-container">
+                <a href="/mg-to-ml" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>Mg in ml</h3>
+                        <p>Milligramm in Milliliter umrechnen.</p>
+                    </div>
+                </a>
+                <a href="/g-to-l" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>G in L</h3>
+                        <p>Gramm in Liter umrechnen.</p>
+                    </div>
+                </a>
+                <a href="/kg-to-l" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Kg in L</h3>
+                        <p>Kilogramm in Liter umrechnen.</p>
+                    </div>
+                </a>
+                <a href="/l-to-g" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>L in G</h3>
+                        <p>Liter in Gramm umrechnen.</p>
+                    </div>
+                </a>
+                <a href="/l-to-kg" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>L in kg</h3>
+                        <p>Liter in Kilogramm umrechnen.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-g" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>Ml in G</h3>
+                        <p>Milliliter in Gramm umrechnen.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-oz" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>Ml in Oz</h3>
+                        <p>Milliliter in Unzen umrechnen.</p>
+                    </div>
+                </a>
+                <a href="/oz-to-ml" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Oz in ml</h3>
+                        <p>Unzen in Milliliter umrechnen.</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+        <section class="card" id="why-choose-us">
+            <h2>Umrechnung von Litern in kg:</h2>
+            <p>Ein Liter (ℓ) gibt das Volumen an, während ein Kilogramm (kg) die Masse angibt. Beide stellen unterschiedliche Einheiten dar, daher ist eine direkte Umrechnung nicht möglich. Für die Umrechnung ist die Dichte der Substanz oder des Materials erforderlich.</p>
+            <h3>Formel:</h3>
+            <p style="text-align: center; color: red;">Kilogramm = Liter × Dichte</p>
+            <p>Um die Formel anwenden zu können, müssen Sie die Dichte der Substanz kennen.</p>
+            <h4>Beispiele:</h4>
+            <ul>
+                <li>Wandeln Sie 1 Liter in kg um, wenn die Substanz eine Dichte von 1 kg pro Liter hat.</li>
+            </ul>
+            <p><b>Lösung:</b></p>
+            <p>Mithilfe der obigen Formel lösen wir dieses Beispiel:</p>
+            <p style="text-align: center; color: red;">Kilogramm = 1 x 1</p>
+            <p style="text-align: center; color: red;">Kilogramm = 1</p>
+            <p>Wo</p>
+            <ul>
+                <li>1 = Liter der Substanz</li>
+                <li>1 = Dichte der Substanz</li>
+            </ul>
+            <p>1 Liter einer Substanz mit einer Dichte von 1 kg pro Liter entspricht also 1 Kilogramm.</p>
+            <ul>
+                <li>Konvertieren Sie 5 Liter in kg für Substanzen mit einer Dichte von 1,38 kg pro Liter</li>
+            </ul>
+            <p><b>Lösung:</b></p>
+            <p>Mithilfe der obigen Formel lösen wir dieses Beispiel:</p>
+            <p style="text-align: center; color: red;">Kilogramm = 5 x 1,38</p>
+            <p style="text-align: center; color: red;">Kilogramm = 6,90</p>
+            <p>Wo;</p>
+            <ul>
+                <li>5 = Liter der Substanz</li>
+                <li>1,38 = Dichte des Stoffes</li>
+            </ul>
+            <p>Die 5 Liter der Substanz mit einer Dichte von 1,38 kg pro Liter entsprechen also 6,90 Kilogramm.</p>
+        </section>
+        <section class="card" id="how-it-works">
+            <h2>Anwendungsfälle des Liter-KG-Konverters von Mltomg.info</h2>
+            <p>Hier sind einige Anwendungsfälle des Liter-kg-Umrechners:</p>
+            <h3>Versand und Transport</h3>
+            <p>Die Umrechnung von Litern in Kilogramm hilft Fahrzeugen, die Gewichtsgrenzen einzuhalten und die Vorschriften einzuhalten. Wenn beispielsweise ein Tanklastwagen 1000 Liter Chemikalien transportiert, muss das Gewicht in Kilogramm umgerechnet werden, um sicherzustellen, dass die Sicherheits- und gesetzlichen Anforderungen für die Fahrt erfüllt werden.</p>
+            <h3>Kochen und Backen</h3>
+            <p>Liter werden üblicherweise für Flüssigkeiten wie Wasser, Milch oder Öl verwendet, Kilogramm hingegen für trockene Lebensmittel wie Mehl und Zucker. Die Umrechnung von Litern in Kilogramm ist wichtig, um die richtigen Proportionen zu erhalten, insbesondere bei Rezepten, die genaue Messungen erfordern.</p>
+            <h3>Wissenschaft & Bildung</h3>
+            <p>Zur Durchführung von Laborexperimenten oder Unterrichtsübungen, bei denen Volumen (Liter) in Masse (Kilogramm) umgerechnet werden muss.</p>
+            <h3>Einkaufen und Einkauf</h3>
+            <p>Angenommen, Sie vergleichen im Supermarkt zwei Speiseölmarken. Marke 1 ist in einer 2-Liter-Flasche für 5 Dollar erhältlich, Marke 2 in einem 2,5-Kilogramm-Behälter für 7 Dollar. Um herauszufinden, welches Öl für Sie das bessere Angebot ist, müssen Sie Liter in Kilogramm umrechnen, damit beide Optionen fair verglichen werden können.</p>
+        </section>
+        <section class="card" id="table">
+            <h2>L in KG Umrechnungstabelle</h2>
+            <table border="1" cellpadding="8" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Substanz</th>
+                        <th>Dichte (kg/L)</th>
+                        <th>0.5 L (kg)</th>
+                        <th>1 L (kg)</th>
+                        <th>2 L (kg)</th>
+                        <th>5 L (kg)</th>
+                        <th>10 L (kg)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Wasser</td>
+                        <td>1.00</td>
+                        <td>0.50</td>
+                        <td>1.00</td>
+                        <td>2.00</td>
+                        <td>5.00</td>
+                        <td>10.00</td>
+                    </tr>
+                    <tr>
+                        <td>Milch</td>
+                        <td>1.03</td>
+                        <td>0.52</td>
+                        <td>1.03</td>
+                        <td>2.06</td>
+                        <td>5.15</td>
+                        <td>10.30</td>
+                    </tr>
+                    <tr>
+                        <td>Speiseöl</td>
+                        <td>0.92</td>
+                        <td>0.46</td>
+                        <td>0.92</td>
+                        <td>1.84</td>
+                        <td>4.60</td>
+                        <td>9.20</td>
+                    </tr>
+                    <tr>
+                        <td>Honig</td>
+                        <td>1.42</td>
+                        <td>0.71</td>
+                        <td>1.42</td>
+                        <td>2.84</td>
+                        <td>7.10</td>
+                        <td>14.20</td>
+                    </tr>
+                    <tr>
+                        <td>Mehl (flüssig/Schlämme)</td>
+                        <td>0.59</td>
+                        <td>0.30</td>
+                        <td>0.59</td>
+                        <td>1.18</td>
+                        <td>2.95</td>
+                        <td>5.90</td>
+                    </tr>
+                    <tr>
+                        <td>Zuckerlösung</td>
+                        <td>0.85</td>
+                        <td>0.43</td>
+                        <td>0.85</td>
+                        <td>1.70</td>
+                        <td>4.25</td>
+                        <td>8.50</td>
+                    </tr>
+                    <tr>
+                        <td>Olivenöl</td>
+                        <td>0.91</td>
+                        <td>0.46</td>
+                        <td>0.91</td>
+                        <td>1.82</td>
+                        <td>4.55</td>
+                        <td>9.10</td>
+                    </tr>
+                    <tr>
+                        <td>Benzin</td>
+                        <td>0.74</td>
+                        <td>0.37</td>
+                        <td>0.74</td>
+                        <td>1.48</td>
+                        <td>3.70</td>
+                        <td>7.40</td>
+                    </tr>
+                    <tr>
+                        <td>Diesel</td>
+                        <td>0.83</td>
+                        <td>0.42</td>
+                        <td>0.83</td>
+                        <td>1.66</td>
+                        <td>4.15</td>
+                        <td>8.30</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        <section class="card" id="faq">
+            <h2>Häufig gestellte Fragen</h2>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>F: Kann 1 Liter immer 1 Kilogramm entsprechen?</h4>
+                    <span class="toggle-icon">-</span>
+                </div>
+                <div class="faq-answer">
+                    <p>A: Nein. Nur bei reinem Wasser unter Standardbedingungen (4 °C) entspricht 1 Liter 1 Kilogramm. Andere Flüssigkeiten wie Milch, Öl oder Honig haben unterschiedliche Dichten und daher unterschiedliche Gewichte.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>F: Ist der L-KG-Konverter von mltomg.info für alle Substanzen genau?</h4>
+                    <span class="toggle-icon">-</span>
+                </div>
+                <div class="faq-answer">
+                    <p>A: Ja, solange die korrekte Dichte der Substanz verwendet wird. Da sich die Dichte mit der Temperatur ändern kann, sind die Ergebnisse in manchen Fällen nur ungefähre Angaben. Unser Team stellt jedoch mithilfe von Experten die Genauigkeit dieses Konverters sicher.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+    {% include 'footer.html' %}
+    <script>
+        const mainSelect = document.getElementById('mainSelect');
+        const densityGroup = document.getElementById('densityGroup');
+        const densityInput = document.getElementById('densityInput');
+        const lInput = document.getElementById('lInput'); // Volume in Liters
+        const resultValue = document.getElementById('result-value');
+        // Event listener for dropdown change
+        mainSelect.addEventListener('change', () => {
+            const selectedValue = mainSelect.value;
+            densityGroup.classList.add('hidden');
+            densityInput.value = '';
+            if (selectedValue === 'custom-liquid') {
+                densityGroup.classList.remove('hidden');
+                densityInput.placeholder = 'Dichte in kg/L eingeben';
+            } else if (selectedValue !== '') {
+                densityGroup.classList.remove('hidden');
+                // Density data attribute se uthaya ja raha hai, jo ki ab kg/L mein hai.
+                densityInput.value = mainSelect.options[mainSelect.selectedIndex].dataset.density;
+            }
+        });
+        // Conversion function: Liters to Kilograms
+        function convertLToKg() {
+            const L = parseFloat(lInput.value); // Volume in Liters
+            const density = parseFloat(densityInput.value); // Density in kg/L
+
+            if (mainSelect.value === '') {
+                resultValue.innerHTML = 'Bitte wählen Sie eine Substanz aus oder geben Sie eine benutzerdefinierte Dichte ein.';
+                resultValue.style.color = 'red';
+                return;
+            }
+            if (isNaN(L) || isNaN(density) || L <= 0 || density <= 0) {
+                resultValue.innerHTML = `Bitte geben Sie gültige positive Zahlen für Volumen und Dichte ein.`;
+                resultValue.style.color = 'red';
+                return;
+            }
+            // Formula: Mass (kg) = Volume (L) × Density (kg/L)
+            const Kg = L * density;
+
+            resultValue.innerHTML = `${L} L = ${Kg.toFixed(4)} kg`;
+            resultValue.style.color = 'green';
+            document.getElementById('result-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    </script>
+    <script>
+        // FAQ toggle function ko yahaan add kar diya hai
+        function toggleFAQ(element) {
+            const answer = element.nextElementSibling;
+            const icon = element.querySelector('.toggle-icon');
+            if (answer.style.maxHeight) {
+                answer.style.maxHeight = null;
+                icon.textContent = '+';
+            } else {
+                answer.style.maxHeight = answer.scrollHeight + "px";
+                icon.textContent = '-';
+            }
+        }
+    </script>
+</body>
+</html>

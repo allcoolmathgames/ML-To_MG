@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.png') }}" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Convertisseur de ml en grammes (ml en grammes)</title>
+    <meta name="description" content="Ce convertisseur mL en grammes vous aide à convertir rapidement les volumes de liquide ou d'ingrédients en millilitres (mL) en poids en grammes (g) en fonction de la densité.">
+    <meta name="keywords" content="Conversion de ml en grammes, conversion de ml en grammes, conversion de ml en g, tableau de conversion de ml en g, conversion d'eau, conversion de lait, conversion d'huile de cuisson, conversion de farine, tableau de mesures de cuisine, conversions de pâtisserie, tableau de masse des ingrédients">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+    <style>
+        .card {
+            background: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #333;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        .table-wrap {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            padding: 0 15px;
+            background-color: #fff;
+        }
+        .faq-question {
+            cursor: pointer;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .faq-question h4 {
+            margin: 0;
+            color: #0056b3;
+        }
+        .toggle-icon {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #0056b3;
+        }
+        .faq-item:last-child .faq-question {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    {% include 'header.html' %}
+
+    <header class="secondary-header">
+        <div class="container">
+            <h1>Convertisseur de ml en grammes (ml en g)</h1>
+            <p>Un outil professionnel pour des conversions précises de volume en masse</p>
+        </div>
+    </header>
+
+    <div class="container main-content">
+        <section class="card" id="tool">
+            <h2>Notre Outil de Conversion</h2>
+            <div class="tool-container">
+                <div class="form-group">
+                    <label for="mlInput"><b>Volume (en ml):</b></label>
+                    <input type="number" id="mlInput" placeholder="Entrez le volume en ml" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="liquidSelect"><b>Sélectionnez le liquide:</b></label>
+                    <select id="liquidSelect">
+                        <option value="">-- Sélectionnez le liquide --</option>
+                        <option value="1">Eau (Water)</option>
+                        <option value="0.789">Éthanol (Ethanol)</option>
+                        <option value="0.92">Huile de cuisson (Cooking Oil)</option>
+                        <option value="1.03">Lait (Milk)</option>
+                        <option value="1.42">Miel (Honey)</option>
+                        <option value="1.8">Glycérine (Glycerin)</option>
+                        <option value="0.59">Farine (Flour) - **Note: Estimation**</option>
+                        <option value="0.85">Sucre (Sugar) - **Note: Estimation**</option>
+                    </select>
+                </div>
+
+                <button class="btn" onclick="convertMlToG()">Convertir en g</button>
+                <div id="result"></div>
+            </div>
+        </section>
+
+        <section class="card" id="how-to-use">
+            <p>Vous cherchez à convertir des **millilitres en grammes** ? Ce convertisseur gratuit de ml en grammes sur mltomg.info vous simplifie la tâche. Que vous cuisiniez, pâtissiez ou fassiez des travaux pratiques, saisissez simplement votre valeur en **mL** pour obtenir le poids exact en **grammes**. Plus besoin de deviner : « **100 mL valent-ils 100 grammes ?** » Le résultat dépend de la **densité** de l'ingrédient, et notre outil s'en charge pour vous. Vous pouvez également effectuer les calculs inverses en utilisant notre <a href="https://mltomg.info/g-to-ml">convertisseur de grammes en ml</a>.</p>
+        </section>
+
+        <section class="card more-tools" id="more-tools">
+            <h2>Plus d'Outils</h2>
+            <div class="tool-cards-container">
+                <a href="/mg-to-ml" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>Mg to Ml</h3>
+                        <p>Convertir des milligrammes en millilitres.</p>
+                    </div>
+                </a>
+                <a href="/g-to-l" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>G to L</h3>
+                        <p>Convertir des grammes en litres.</p>
+                    </div>
+                </a>
+                <a href="/kg-to-l" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Kg to L</h3>
+                        <p>Convertir des kilogrammes en litres.</p>
+                    </div>
+                </a>
+                <a href="/l-to-g" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>L to G</h3>
+                        <p>Convertir des litres en grammes.</p>
+                    </div>
+                </a>
+                <a href="/l-to-kg" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>L to Kg</h3>
+                        <p>Convertir des litres en kilogrammes.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-g" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>Ml to G</h3>
+                        <p>Convertir des millilitres en grammes.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-oz" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>Ml to Oz</h3>
+                        <p>Convertir des millilitres en onces.</p>
+                    </div>
+                </a>
+                <a href="/oz-to-ml" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Oz to Ml</h3>
+                        <p>Convertir des onces en millilitres.</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+        <section class="card" id="why-choose-us">
+            <h2>Conversion de ML en grammes :</h2>
+            <p>Le **millilitre (mL)** est l'unité de volume et le **gramme (G)** l'unité de masse. Ces deux grandeurs physiques sont différentes ; il est donc nécessaire de connaître la **masse volumique (densité)** de la substance ou du matériau pour convertir les millilitres en grammes.</p>
+            <h3>Formule:</h3>
+            <p>Utilisez cette formule pour effectuer des conversions, assurez-vous que la densité doit être en (g/mL).</p>
+            <p style="text-align: center; color: red; font-weight: bold;">Grammes (g) = Millilitres (mL) × Densité (g/mL)</p>
+            <h4>Exemple:</h4>
+            <p>Comprenons cette formule en résolvant un exemple de conversion de **10 ml** de substance de densité **1,03 (g/ml)** en grammes.</p>
+            <p style="text-align: center; color: red; font-weight: bold;">Grammes = 10 x 1,03</p>
+            <p style="text-align: center; color: red; font-weight: bold;">Grammes = 10,3 g</p>
+            <p>Donc **10 ml = 10,3 grammes** pour la substance qui a une densité de 1,03.</p>
+            <p>Résolvons un autre exemple de conversion de **25 ml** de substance de densité **0,705 (g/ml)** en grammes.</p>
+            <p style="text-align: center; color: red; font-weight: bold;">Grammes = 25 x 0,705</p>
+            <p style="text-align: center; color: red; font-weight: bold;">Grammes = 17,625</p>
+        </section>
+        <section class="card" id="how-it-works">
+            <h2>Exemples d'utilisation du convertisseur de millilitres en grammes de Mltomg.info</h2>
+            <h3>Cuisine et pâtisserie</h3>
+            <p>Les recettes mélangent souvent volume et poids. Notre outil vous permet de mesurer avec précision des ingrédients comme la farine, le sucre, le lait ou l'huile pour éviter de gâcher votre plat.</p>
+            <p><b>Exemple :</b> 250 mL de farine = 147,5 g.</p>
+            <h3>Suivi de l'alimentation et de la nutrition</h3>
+            <p>Les étiquettes alimentaires indiquent généralement le poids en grammes, tandis que les tasses à mesurer indiquent les millilitres. Grâce à notre convertisseur de ml en grammes, vous pouvez convertir le volume en poids et connaître précisément la quantité que vous mangez.</p>
+            <p><b>Exemple :</b> 100 mL d’huile d’olive = 92 g.</p>
+            <h3>Projets éducatifs et scolaires</h3>
+            <p>C'est également un outil très utile pour les étudiants ou les enseignants lorsqu'ils réalisent des projets scientifiques ou des travaux de laboratoire, ils ont souvent besoin de changer le volume en poids, donc notre convertisseur ml en g leur est utile. </p>
+            <h3>Fabrication et industrie</h3>
+            <p>Les industries agroalimentaires, chimiques et pharmaceutiques mesurent souvent les liquides en **mL**, mais les utilisent en **grammes** pour le conditionnement, le contrôle qualité et la cohérence. Ce convertisseur de mltomg les aide à effectuer des conversions précises de millilitres en grammes.</p>
+        </section>
+        <section class="card more-tools" id="table">
+            
+        <h2>Tableau de conversion ML en G :</h2>
+        <div class="table-wrap" role="table" aria-label="Tableau de conversion de millilitres en grammes">
+            <table>
+                <thead>
+                    <tr>
+                        <th>mL</th>
+                        <th>Eau (g)</th>
+                        <th>Lait (g)</th>
+                        <th>Huile de cuisson (g)</th>
+                        <th>Farine (g)</th>
+                        <th>Sucre (g)</th>
+                        <th>Miel (g)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td>1.00</td><td>1.03</td><td>0.92</td><td>0.59</td><td>0.85</td><td>1.42</td></tr>
+                    <tr><td>2</td><td>2.00</td><td>2.06</td><td>1.84</td><td>1.18</td><td>1.70</td><td>2.84</td></tr>
+                    <tr><td>3</td><td>3.00</td><td>3.09</td><td>2.76</td><td>1.77</td><td>2.55</td><td>4.26</td></tr>
+                    <tr><td>4</td><td>4.00</td><td>4.12</td><td>3.68</td><td>2.36</td><td>3.40</td><td>5.68</td></tr>
+                    <tr><td>5</td><td>5.00</td><td>5.15</td><td>4.60</td><td>2.95</td><td>4.25</td><td>7.10</td></tr>
+                    <tr><td>6</td><td>6.00</td><td>6.18</td><td>5.52</td><td>3.54</td><td>5.10</td><td>8.52</td></tr>
+                    <tr><td>7</td><td>7.00</td><td>7.21</td><td>6.44</td><td>4.13</td><td>5.95</td><td>9.94</td></tr>
+                    <tr><td>8</td><td>8.00</td><td>8.24</td><td>7.36</td><td>4.72</td><td>6.80</td><td>11.36</td></tr>
+                    <tr><td>9</td><td>9.00</td><td>9.27</td><td>8.28</td><td>5.31</td><td>7.65</td><td>12.78</td></tr>
+                    <tr><td>10</td><td>10.00</td><td>10.30</td><td>9.20</td><td>5.90</td><td>8.50</td><td>14.20</td></tr>
+                    <tr><td>11</td><td>11.00</td><td>11.33</td><td>10.12</td><td>6.49</td><td>9.35</td><td>15.62</td></tr>
+                    <tr><td>12</td><td>12.00</td><td>12.36</td><td>11.04</td><td>7.08</td><td>10.20</td><td>17.04</td></tr>
+                    <tr><td>13</td><td>13.00</td><td>13.39</td><td>11.96</td><td>7.67</td><td>11.05</td><td>18.46</td></tr>
+                    <tr><td>14</td><td>14.00</td><td>14.42</td><td>12.88</td><td>8.26</td><td>11.90</td><td>19.88</td></tr>
+                    <tr><td>15</td><td>15.00</td><td>15.45</td><td>13.80</td><td>8.85</td><td>12.75</td><td>21.30</td></tr>
+                    <tr><td>16</td><td>16.00</td><td>16.48</td><td>14.72</td><td>9.44</td><td>13.60</td><td>22.72</td></tr>
+                    <tr><td>17</td><td>17.00</td><td>17.51</td><td>15.64</td><td>10.03</td><td>14.45</td><td>24.14</td></tr>
+                    <tr><td>18</td><td>18.00</td><td>18.54</td><td>16.56</td><td>10.62</td><td>15.30</td><td>25.56</td></tr>
+                    <tr><td>19</td><td>19.00</td><td>19.57</td><td>17.48</td><td>11.21</td><td>16.15</td><td>26.98</td></tr>
+                    <tr><td>20</td><td>20.00</td><td>20.60</td><td>18.40</td><td>11.80</td><td>17.00</td><td>28.40</td></tr>
+                    <tr><td>21</td><td>21.00</td><td>21.63</td><td>19.32</td><td>12.39</td><td>17.85</td><td>29.82</td></tr>
+                    <tr><td>22</td><td>22.00</td><td>22.66</td><td>20.24</td><td>12.98</td><td>18.70</td><td>31.24</td></tr>
+                    <tr><td>23</td><td>23.00</td><td>23.69</td><td>21.16</td><td>13.57</td><td>19.55</td><td>32.66</td></tr>
+                    <tr><td>24</td><td>24.00</td><td>24.72</td><td>22.08</td><td>14.16</td><td>20.40</td><td>34.08</td></tr>
+                    <tr><td>25</td><td>25.00</td><td>25.75</td><td>23.00</td><td>14.75</td><td>21.25</td><td>35.50</td></tr>
+                    <tr><td>26</td><td>26.00</td><td>26.78</td><td>23.92</td><td>15.34</td><td>22.10</td><td>36.92</td></tr>
+                    <tr><td>27</td><td>27.00</td><td>27.81</td><td>24.84</td><td>15.93</td><td>22.95</td><td>38.34</td></tr>
+                    <tr><td>28</td><td>28.00</td><td>28.84</td><td>25.76</td><td>16.52</td><td>23.80</td><td>39.76</td></tr>
+                    <tr><td>29</td><td>29.00</td><td>29.87</td><td>26.68</td><td>17.11</td><td>24.65</td><td>41.18</td></tr>
+                    <tr><td>30</td><td>30.00</td><td>30.90</td><td>27.60</td><td>17.70</td><td>25.50</td><td>42.60</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+        <section class="card" id="faq">
+            <h2>Questions fréquemment posées</h2>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>Q: 1 mL est-il toujours égal à 1 gramme ?</h4>
+                    <span class="toggle-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>R: **Non**. Seule l'eau à température ambiante a 1 mL = 1 g. Les autres liquides et solides ont des densités différentes, ce qui modifie la conversion.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>Q: Pourquoi ne puis-je pas utiliser la même conversion pour tous les liquides ?</h4>
+                    <span class="toggle-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>R: Différents liquides et ingrédients ont des **densités différentes**. Par exemple :</p>
+                    <ul>
+                        <li>100 mL d'eau = **100 g**</li>
+                        <li>100 mL d'huile = **92 g**</li>
+                        <li>100 mL de miel = **142 g**</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    {% include 'footer.html' %}
+<script>
+    const liquidSelect = document.getElementById('liquidSelect'); // Select element
+    const mlInput = document.getElementById('mlInput'); // Volume in Milliliters
+    const resultDiv = document.getElementById('result'); // Result div
+
+    // Conversion function: Milliliters to Grams
+    function convertMlToG() {
+        const mL = parseFloat(mlInput.value); // Volume in Milliliters
+        const density = parseFloat(liquidSelect.value); // Density in g/mL from select value
+        const liquidName = liquidSelect.options[liquidSelect.selectedIndex].text.split(' ')[0]; // Liquid name for display
+
+        if (liquidSelect.value === '') {
+            resultDiv.innerHTML = 'Veuillez sélectionner un liquide.';
+            resultDiv.style.color = 'red';
+            return;
+        }
+
+        if (isNaN(mL) || isNaN(density) || mL <= 0 || density <= 0) {
+            resultDiv.innerHTML = `Veuillez entrer des nombres positifs valides pour le volume et la densité.`;
+            resultDiv.style.color = 'red';
+            return;
+        }
+
+        // Formula: Mass (g) = Volume (mL) × Density (g/mL)
+        const G = mL * density; 
+        
+        resultDiv.innerHTML = `${mL} mL de ${liquidName} = **${G.toFixed(4)} g**`;
+        resultDiv.style.color = 'green';
+        document.getElementById('tool').scrollIntoView({ behavior: 'smooth', block: 'center' }); // Scroll to the tool for result visibility
+    }
+</script>
+<script>
+    // FAQ toggle function ko yahaan add kar diya hai
+    function toggleFAQ(element) {
+        const answer = element.nextElementSibling;
+        const icon = element.querySelector('.toggle-icon');
+        if (answer.style.maxHeight) {
+            answer.style.maxHeight = null;
+            icon.textContent = '+';
+            // Adjust padding for smooth collapse
+            answer.style.paddingTop = '0';
+            answer.style.paddingBottom = '0';
+        } else {
+            // Set maxHeight to scrollHeight for open animation
+            answer.style.maxHeight = answer.scrollHeight + "px";
+            icon.textContent = '-';
+            // Set padding back for open state
+            answer.style.paddingTop = '15px';
+            answer.style.paddingBottom = '15px';
+        }
+    }
+
+    // Initial state setup for FAQ
+    document.querySelectorAll('.faq-answer').forEach(answer => {
+        answer.style.maxHeight = '0';
+        answer.style.paddingTop = '0';
+        answer.style.paddingBottom = '0';
+    });
+    document.querySelectorAll('.faq-question .toggle-icon').forEach(icon => {
+        icon.textContent = '+';
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.png') }}" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Конвертер мл в граммы (мл в граммы)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+    <style>
+        .card {
+            background: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #333;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        .table-wrap {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        /* FAQ Styles for Russian Content */
+        .faq-question h4 {
+            margin: 0;
+        }
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            padding: 0 15px;
+        }
+        .faq-answer p, .faq-answer ul {
+            padding-top: 10px;
+            padding-bottom: 10px;
+            margin: 0;
+        }
+        .faq-question {
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+        }
+        .toggle-icon {
+            font-size: 1.5em;
+            transition: transform 0.3s;
+        }
+    </style>
+    <meta name="description" content="Этот конвертер мл в граммы поможет вам быстро преобразовать объемы жидкостей или ингредиентов в миллилитрах (мл) в вес в граммах (г) на основе плотности.">
+    <meta name="keywords" content="мл в граммы, конвертер мл в граммы, перевод мл в г, таблица мл в г, перевод воды, перевод молока, перевод растительного масла, перевод муки, таблица кухонных измерений, переводы для выпечки, таблица масс ингредиентов">
+</head>
+<body>
+    {% include 'header.html' %}
+
+    <header class="secondary-header">
+        <div class="container">
+            <h1>Калькулятор перевода миллилитров в граммы</h1>
+            <p>Конвертер мл в граммы (мл в г)</p>
+        </div>
+    </header>
+
+    <div class="container main-content">
+        <section class="card" id="tool">
+            <h2>Наш инструмент для конвертации</h2>
+            <div class="tool-container">
+                <div class="form-group">
+                    <label for="mlInput"><b>Объем (в мл):</b></label>
+                    <input type="number" id="mlInput" placeholder="Введите объем в мл" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="liquidSelect"><b>Выберите жидкость:</b></label>
+                    <select id="liquidSelect">
+                        <option value="">-- Выберите жидкость --</option>
+                        <option value="1">Вода</option>
+                        <option value="0.789">Этанол</option>
+                        <option value="0.918">Оливковое масло</option>
+                        <option value="1.03">Молоко</option>
+                        <option value="1.3">Мед</option>
+                        <option value="1.8">Глицерин</option>
+                    </select>
+                </div>
+
+                <button class="btn" onclick="convertMlToG()">Конвертировать в г</button>
+                <div id="result"></div>
+            </div>
+        </section>
+
+        <section class="card" id="how-to-use">
+           <p>Хотите перевести миллилитры в граммы? Бесплатный конвертер мл в граммы на mltomg.info упрощает задачу. Готовите ли вы, печете или проводите лабораторную работу, просто введите значение в мл и получите точный вес в граммах. Больше не нужно гадать: «100 мл — это 100 граммов?» Результат зависит от плотности ингредиента, и наш инструмент сделает это за вас. Вы также можете выполнить обратные расчеты, используя наш <a href="https://mltomg.info/g-to-ml">конвертер граммов в мл</a>.</p>
+        </section>
+
+        <section class="card more-tools" id="more-tools">
+            <h2>Дополнительные инструменты</h2>
+            <div class="tool-cards-container">
+                <a href="/mg-to-ml" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>Мг в Мл</h3>
+                        <p>Перевод миллиграммов в миллилитры.</p>
+                    </div>
+                </a>
+                <a href="/g-to-l" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>Г в Л</h3>
+                        <p>Перевод граммов в литры.</p>
+                    </div>
+                </a>
+                <a href="/kg-to-l" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Кг в Л</h3>
+                        <p>Перевод килограммов в литры.</p>
+                    </div>
+                </a>
+                <a href="/l-to-g" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>Л в Г</h3>
+                        <p>Перевод литров в граммы.</p>
+                    </div>
+                </a>
+                <a href="/l-to-kg" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>Л в Кг</h3>
+                        <p>Перевод литров в килограммы.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-g" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>Мл в Г</h3>
+                        <p>Перевод миллилитров в граммы.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-oz" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>Мл в Унции</h3>
+                        <p>Перевод миллилитров в унции.</p>
+                    </div>
+                </a>
+                <a href="/oz-to-ml" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Унции в Мл</h3>
+                        <p>Перевод унций в миллилитры.</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+        <section class="card" id="why-choose-us">
+            <h2>Перевод мл в граммы:</h2>
+            <p>Миллилитр (мл) — единица измерения объёма, а грамм (г) — единица измерения массы. Это разные физические величины, поэтому для перевода миллилитров в граммы нам необходимо знать плотность вещества или материала.</p>
+            <h3>Формула:</h3>
+            <p>Используйте эту формулу для преобразования величин. Плотность должна быть выражена в (г/мл).</p>
+            <p style="text-align: center; color: red; font-weight: bold;">Граммы (г) = Миллилитры (мл) × Плотность (г/мл)</p>
+            <h4>Пример:</h4>
+            <p>Давайте разберем эту формулу, решив пример перевода 10 мл вещества плотностью 1,03 (г/мл) в граммы.</p>
+            <p style="text-align: center; color: red; font-weight: bold;">Граммы = 10 x 1,03</p>
+            <p style="text-align: center; color: red; font-weight: bold;">Граммы = 10,3 г</p>
+            <p>Итак, 10 мл = 10,3 грамма для вещества, имеющего плотность 1,03.</p>
+            <p>Решим еще 1 пример перевода 25 мл вещества плотностью 0,705 (г/мл) в граммы.</p>
+             <p style="text-align: center; color: red; font-weight: bold;">Граммы = 25 x 0,705</p>
+            <p style="text-align: center; color: red; font-weight: bold;">Граммы = 17,625</p>
+        </section>
+        <section class="card" id="how-it-works">
+            <h2>Примеры использования конвертера миллилитров в граммы от Mltomg.info</h2>
+            <h3>Кулинария и выпечка</h3>
+            <p>В рецептах часто путают объём и вес. Наш инструмент поможет вам точно отмерить ингредиенты, такие как мука, сахар, молоко или масло, чтобы не испортить блюдо.</p>
+            <p><b>Пример:</b> 250 мл муки = 147,5 г.</p>
+            <h3>Отслеживание диеты и питания</h3>
+            <p>На этикетках продуктов питания вес обычно указывается в граммах, а на мерных стаканчиках — в миллилитрах. С помощью нашего конвертера мл в граммы вы можете перевести объём в вес, чтобы точно знать, сколько вы едите.</p>
+            <p><b>Пример:</b> 100 мл оливкового масла = 92 г.</p>
+            <h3>Образование и школьные проекты</h3>
+            <p>Это также очень полезный инструмент для студентов и преподавателей, когда они выполняют научные проекты или лабораторные работы. Им часто нужно преобразовать объем в вес, поэтому наш конвертер мл в граммы будет для них полезен. </p>
+            <h3>Производство и промышленность</h3>
+            <p>В пищевой, химической и фармацевтической промышленности жидкости часто измеряются в мл, но для упаковки, контроля качества и обеспечения однородности объёма требуется измерять их в граммах. Поэтому этот конвертер мл/мг помогает им точно переводить миллилитры в граммы.</p>
+        </section>
+        <section class="card more-tools" id="table">
+            
+        <h2>Таблица преобразования ML в G:</h2>
+        <div class="table-wrap" role="table" aria-label="Milliliters to grams conversion">
+            <table>
+                <thead>
+                    <tr>
+                        <th>мл</th>
+                        <th>Вода (г)</th>
+                        <th>Молоко (г)</th>
+                        <th>Масло (г)</th>
+                        <th>Мука (г)</th>
+                        <th>Сахар (г)</th>
+                        <th>Мед (г)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td>1.00</td><td>1.03</td><td>0.92</td><td>0.59</td><td>0.85</td><td>1.42</td></tr>
+                    <tr><td>2</td><td>2.00</td><td>2.06</td><td>1.84</td><td>1.18</td><td>1.70</td><td>2.84</td></tr>
+                    <tr><td>3</td><td>3.00</td><td>3.09</td><td>2.76</td><td>1.77</td><td>2.55</td><td>4.26</td></tr>
+                    <tr><td>4</td><td>4.00</td><td>4.12</td><td>3.68</td><td>2.36</td><td>3.40</td><td>5.68</td></tr>
+                    <tr><td>5</td><td>5.00</td><td>5.15</td><td>4.60</td><td>2.95</td><td>4.25</td><td>7.10</td></tr>
+                    <tr><td>6</td><td>6.00</td><td>6.18</td><td>5.52</td><td>3.54</td><td>5.10</td><td>8.52</td></tr>
+                    <tr><td>7</td><td>7.00</td><td>7.21</td><td>6.44</td><td>4.13</td><td>5.95</td><td>9.94</td></tr>
+                    <tr><td>8</td><td>8.00</td><td>8.24</td><td>7.36</td><td>4.72</td><td>6.80</td><td>11.36</td></tr>
+                    <tr><td>9</td><td>9.00</td><td>9.27</td><td>8.28</td><td>5.31</td><td>7.65</td><td>12.78</td></tr>
+                    <tr><td>10</td><td>10.00</td><td>10.30</td><td>9.20</td><td>5.90</td><td>8.50</td><td>14.20</td></tr>
+                    <tr><td>11</td><td>11.00</td><td>11.33</td><td>10.12</td><td>6.49</td><td>9.35</td><td>15.62</td></tr>
+                    <tr><td>12</td><td>12.00</td><td>12.36</td><td>11.04</td><td>7.08</td><td>10.20</td><td>17.04</td></tr>
+                    <tr><td>13</td><td>13.00</td><td>13.39</td><td>11.96</td><td>7.67</td><td>11.05</td><td>18.46</td></tr>
+                    <tr><td>14</td><td>14.00</td><td>14.42</td><td>12.88</td><td>8.26</td><td>11.90</td><td>19.88</td></tr>
+                    <tr><td>15</td><td>15.00</td><td>15.45</td><td>13.80</td><td>8.85</td><td>12.75</td><td>21.30</td></tr>
+                    <tr><td>16</td><td>16.00</td><td>16.48</td><td>14.72</td><td>9.44</td><td>13.60</td><td>22.72</td></tr>
+                    <tr><td>17</td><td>17.00</td><td>17.51</td><td>15.64</td><td>10.03</td><td>14.45</td><td>24.14</td></tr>
+                    <tr><td>18</td><td>18.00</td><td>18.54</td><td>16.56</td><td>10.62</td><td>15.30</td><td>25.56</td></tr>
+                    <tr><td>19</td><td>19.00</td><td>19.57</td><td>17.48</td><td>11.21</td><td>16.15</td><td>26.98</td></tr>
+                    <tr><td>20</td><td>20.00</td><td>20.60</td><td>18.40</td><td>11.80</td><td>17.00</td><td>28.40</td></tr>
+                    <tr><td>21</td><td>21.00</td><td>21.63</td><td>19.32</td><td>12.39</td><td>17.85</td><td>29.82</td></tr>
+                    <tr><td>22</td><td>22.00</td><td>22.66</td><td>20.24</td><td>12.98</td><td>18.70</td><td>31.24</td></tr>
+                    <tr><td>23</td><td>23.00</td><td>23.69</td><td>21.16</td><td>13.57</td><td>19.55</td><td>32.66</td></tr>
+                    <tr><td>24</td><td>24.00</td><td>24.72</td><td>22.08</td><td>14.16</td><td>20.40</td><td>34.08</td></tr>
+                    <tr><td>25</td><td>25.00</td><td>25.75</td><td>23.00</td><td>14.75</td><td>21.25</td><td>35.50</td></tr>
+                    <tr><td>26</td><td>26.00</td><td>26.78</td><td>23.92</td><td>15.34</td><td>22.10</td><td>36.92</td></tr>
+                    <tr><td>27</td><td>27.00</td><td>27.81</td><td>24.84</td><td>15.93</td><td>22.95</td><td>38.34</td></tr>
+                    <tr><td>28</td><td>28.00</td><td>28.84</td><td>25.76</td><td>16.52</td><td>23.80</td><td>39.76</td></tr>
+                    <tr><td>29</td><td>29.00</td><td>29.87</td><td>26.68</td><td>17.11</td><td>24.65</td><td>41.18</td></tr>
+                    <tr><td>30</td><td>30.00</td><td>30.90</td><td>27.60</td><td>17.70</td><td>25.50</td><td>42.60</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+        <section class="card" id="faq">
+            <h2>Часто задаваемые вопросы</h2>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>В: Всегда ли 1 мл равен 1 грамму?</h4>
+                    <span class="toggle-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>О: Нет. 1 мл = 1 г только у воды при комнатной температуре. Плотность других жидкостей и твёрдых тел различна, поэтому метод пересчёта меняется.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>В: Почему я не могу использовать одно и то же преобразование для всех жидкостей?</h4>
+                    <span class="toggle-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>О: Разные жидкости и ингредиенты имеют разную плотность. Например:</p>
+                    <ul>
+                        <li>100 мл воды = <b>100 г</b></li>
+                        <li>100 мл масла = <b>92 г</b></li>
+                        <li>100 мл меда = <b>142 г</b></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    {% include 'footer.html' %}
+<script>
+        // Note: The original JavaScript logic references 'mainSelect', 'densityGroup', 'densityInput', and 'result-value', which are NOT present in the HTML structure.
+        // For the provided HTML, the relevant IDs are: 'liquidSelect', 'mlInput', and 'result'.
+        // The script below is an attempt to adapt the original logic to the provided HTML structure.
+
+        const mlInput = document.getElementById('mlInput'); 
+        const liquidSelect = document.getElementById('liquidSelect');
+        const resultDiv = document.getElementById('result');
+
+        // Conversion function: Milliliters to Grams
+        function convertMlToG() {
+            const mL = parseFloat(mlInput.value); // Volume in Milliliters
+            const density = parseFloat(liquidSelect.value); // Density from selected option value
+            
+            if (liquidSelect.value === '' || liquidSelect.value === 'custom-liquid') {
+                // Assuming "custom-liquid" option is no longer used, or we use a simplified check
+                resultDiv.innerHTML = '<p style="color: red;">Пожалуйста, выберите жидкость.</p>';
+                return;
+            }
+
+            if (isNaN(mL) || mL <= 0) {
+                resultDiv.innerHTML = `<p style="color: red;">Пожалуйста, введите положительное число для объема.</p>`;
+                return;
+            }
+
+            // Formula: Mass (g) = Volume (mL) × Density (g/mL)
+            const G = mL * density; 
+            
+            // Getting the selected liquid name for a better message
+            const liquidName = liquidSelect.options[liquidSelect.selectedIndex].text;
+
+            resultDiv.innerHTML = `<p style="color: green; font-weight: bold;">${mL} мл ${liquidName} = ${G.toFixed(4)} г</p>`;
+            document.getElementById('tool').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    </script>
+    <script>
+        // FAQ toggle function
+        function toggleFAQ(element) {
+            const answer = element.nextElementSibling;
+            const icon = element.querySelector('.toggle-icon');
+            if (answer.style.maxHeight && answer.style.maxHeight !== '0px') {
+                answer.style.maxHeight = null;
+                icon.textContent = '+';
+            } else {
+                answer.style.maxHeight = answer.scrollHeight + "px";
+                icon.textContent = '–'; // Use en dash for minus
+            }
+        }
+    </script>
+</body>
+</html>

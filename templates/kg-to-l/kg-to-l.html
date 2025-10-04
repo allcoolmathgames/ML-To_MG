@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.png') }}" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="index, follow">
+    <title>Kilogram To Liter Converter | Kg to L Conversion</title>
+    <meta name="description" content="Use this kilogram to liter converter to make conversions from kilograms to liters by just making a single click." />
+    <meta name="keywords" content="kilogram to liter converter, kg to l conversion, kg to l table, water conversion, milk conversion, cooking oil conversion, flour conversion, sugar conversion, kitchen measurement chart, baking conversions, ingredient volume chart" />
+    <link rel="canonical" href="https://kgtoL.info/" />
+    <link rel="alternate" hreflang="x-default" href="https://kgtoL.info/" />
+    <link rel="alternate" hreflang="en" href="https://kgtoL.info/" />
+    <link rel="alternate" hreflang="ar" href="https://kgtoL.info/ar" />
+    <link rel="alternate" hreflang="de" href="https://kgtoL.info/de" />
+    <link rel="alternate" hreflang="es" href="https://kgtoL.info/es" />
+    <link rel="alternate" hreflang="fr" href="https://kgtoL.info/fr" />
+    <link rel="alternate" hreflang="it" href="https://kgtoL.info/it" />
+    <link rel="alternate" hreflang="pt" href="https://kgtoL.info/pt" />
+    <link rel="alternate" hreflang="ru" href="https://kgtoL.info/ru" />
+    <link rel="alternate" hreflang="tr" href="https://kgtoL.info/tr" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+    <meta name="google-site-verification" content="49KC3Wnkoo8QxBc56Q5dkx-LVqsbPxtgJTBs_MG7WBU" />
+    <style>
+        #result-section {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #e9ecef;
+            min-height: 60px;
+            position: relative;
+        }
+        #result-section .result-heading {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-weight: 600;
+            color: var(--primary-color);
+            border-left: 3px solid var(--secondary-color);
+            padding-left: 10px;
+            font-size: 1.1rem;
+        }
+        #result-section .result-value {
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 10px;
+            padding-top: 20px;
+            color: var(--light-text-color);
+            width: 100%;
+        }
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    {% include 'header.html' %}
+    <header class="secondary-header">
+        <div class="container">
+            <h1>Kilogram to Liter Converter</h1>
+            <p>Enter the mass in kilograms below to calculate the volume in liters.</p>
+        </div>
+    </header>
+    <div class="container main-content">
+        <section class="card" id="tool">
+            <h2>Convert Kilograms To Liters</h2>
+            <div class="tool-container">
+                <div class="form-group">
+                    <label for="kgInput"><b>Mass (in kilograms):</b></label>
+                    <input type="number" id="kgInput" placeholder="Enter mass in kilograms" required>
+                </div>
+                <div class="form-group">
+                    <label for="mainSelect"><b>Select Item:</b></label>
+                    <select id="mainSelect">
+                        <option value="">-- Select an Item --</option>
+                        <option value="water" data-density="1000">Water</option>
+                        <optgroup label="Sugars">
+                            <option value="granulated-sugar" data-density="845">Granulated Sugar</option>
+                            <option value="powdered-sugar" data-density="560">Powdered Sugar</option>
+                            <option value="brown-sugar" data-density="850">Brown Sugar</option>
+                            <option value="raw-sugar" data-density="900">Raw Sugar</option>
+                        </optgroup>
+                        <optgroup label="Syrups and Spreads">
+                            <option value="corn-syrup" data-density="1380">Corn Syrup</option>
+                            <option value="honey" data-density="1420">Honey</option>
+                            <option value="nutella" data-density="1200">Nutella</option>
+                            <option value="jelly" data-density="1300">Jelly</option>
+                        </optgroup>
+                        <optgroup label="Flours">
+                            <option value="all-purpose-flour" data-density="529">All Purpose Flour</option>
+                            <option value="wheat-flour" data-density="529">Wheat Flour</option>
+                            <option value="bread-flour" data-density="529">Bread Flour</option>
+                            <option value="type-00-flour" data-density="600">Type 00 Flour</option>
+                            <option value="cake-flour" data-density="480">Cake Flour</option>
+                            <option value="rye-flour" data-density="460">Rye Flour</option>
+                        </optgroup>
+                        <optgroup label="Leaveners & Spices">
+                            <option value="baking-soda" data-density="960">Baking Soda</option>
+                            <option value="baking-powder" data-density="800">Baking Powder</option>
+                            <option value="cream-of-tartar" data-density="750">Cream of Tartar</option>
+                            <option value="cinnamon" data-density="540">Cinnamon</option>
+                            <option value="garlic-powder" data-density="550">Garlic Powder</option>
+                            <option value="salt" data-density="2160">Salt</option>
+                            <option value="spice-blends" data-density="550">Spice Blends</option>
+                            <option value="cocoa-powder" data-density="480">Cocoa Powder</option>
+                            <option value="vanilla" data-density="1200">Vanilla Extract</option>
+                        </optgroup>
+                        <optgroup label="Fats & Oils">
+                            <option value="cooking-oil" data-density="918">Cooking Oil</option>
+                            <option value="olive-oil" data-density="918">Olive Oil</option>
+                            <option value="vegetable-oil" data-density="918">Vegetable Oil</option>
+                            <option value="butter" data-density="911">Butter</option>
+                            <option value="margarine" data-density="940">Margarine</option>
+                            <option value="lard" data-density="920">Lard</option>
+                            <option value="mayonnaise" data-density="920">Mayonnaise</option>
+                            <option value="peanut-butter" data-density="1060">Peanut Butter</option>
+                        </optgroup>
+                        <optgroup label="Dairy & Related">
+                            <option value="milk" data-density="1030">Milk</option>
+                            <option value="buttermilk" data-density="1030">Buttermilk</option>
+                            <option value="light-cream" data-density="1009">Light Cream</option>
+                            <option value="heavy-cream" data-density="994">Heavy Cream</option>
+                            <option value="whipped-cream" data-density="480">Whipped Cream</option>
+                            <option value="ice-cream" data-density="560">Ice Cream</option>
+                            <option value="sour-cream" data-density="1030">Sour Cream</option>
+                            <option value="cottage-cheese" data-density="1060">Cottage Cheese</option>
+                            <option value="cream-cheese" data-density="1040">Cream Cheese</option>
+                            <option value="yogurt" data-density="1030">Yogurt</option>
+                        </optgroup>
+                        <optgroup label="Nuts & Grains">
+                            <option value="almonds" data-density="600">Almonds</option>
+                            <option value="cashews" data-density="600">Cashews</option>
+                            <option value="peanuts" data-density="600">Peanuts</option>
+                            <option value="sunflower-seeds" data-density="500">Sunflower Seeds</option>
+                            <option value="barley" data-density="700">Barley</option>
+                            <option value="bran" data-density="300">Bran</option>
+                            <option value="oats" data-density="450">Oats</option>
+                            <option value="rice" data-density="850">Rice (uncooked)</option>
+                            <option value="rye" data-density="700">Rye</option>
+                            <option value="wheat" data-density="800">Wheat</option>
+                            <option value="breadcrumbs" data-density="420">Breadcrumbs</option>
+                            <option value="corn-flakes" data-density="150">Corn Flakes</option>
+                            <option value="cornstarch" data-density="500">Cornstarch</option>
+                            <option value="rice-krispies" data-density="110">Rice Krispies</option>
+                        </optgroup>
+                        <optgroup label="Other Ingredients">
+                            <option value="dried-apple-slices" data-density="200">Dried Apple Slices</option>
+                            <option value="carrots" data-density="500">Carrots (shredded)</option>
+                            <option value="corn" data-density="750">Corn (kernels)</option>
+                            <option value="kidney-beans" data-density="850">Kidney Beans (dried)</option>
+                            <option value="onions" data-density="700">Onions (chopped)</option>
+                            <option value="potatoes" data-density="750">Potatoes (diced)</option>
+                            <option value="yams" data-density="750">Yams (diced)</option>
+                            <option value="bread" data-density="250">Bread (sliced)</option>
+                            <option value="cake-mix" data-density="800">Cake Mix</option>
+                        </optgroup>
+                        <option value="custom-liquid">Custom Density</option>
+                    </select>
+                </div>
+                <div class="form-group hidden" id="densityGroup">
+                    <label for="densityInput"><b>Density (g/L):</b></label>
+                    <input type="number" id="densityInput" placeholder="Enter density in kg/L" required>
+                </div>
+                <button class="btn" onclick="convertKgToL()">Convert to Liters</button>
+            </div>
+        </section>
+        <p style="color: red;"><b>Note:</b> Density varies with temperature and may differ by material. You can also select <b>Custom Density</b> from the dropdown to enter your own value.</p>
+        <div id="result-section">
+            <div class="result-heading">Result:</div>
+            <div class="result-value" id="result-value">Your result will appear here</div>
+        </div>
+        <section class="card" id="why-choose-us">
+            <p>Welcome to our kg to liters converter that helps you to quickly convert kilograms to liters for substances, based on their density. It simplifies calculations for cooking, science, and industrial applications.</p>
+        </section>
+        <section class="card more-tools" id="more-tools">
+            <h2>More Tools</h2>
+            <div class="tool-cards-container">
+                <a href="/mg-to-ml" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>Mg to Ml</h3>
+                        <p>Convert milligrams to milliliters.</p>
+                    </div>
+                </a>
+                <a href="/g-to-l" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>G to L</h3>
+                        <p>Convert grams to liters.</p>
+                    </div>
+                </a>
+                <a href="/kg-to-l" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Kg to L</h3>
+                        <p>Convert kilograms to liters.</p>
+                    </div>
+                </a>
+                <a href="/l-to-g" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>L to G</h3>
+                        <p>Convert liters to grams.</p>
+                    </div>
+                </a>
+                <a href="/l-to-kg" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>L to Kg</h3>
+                        <p>Convert liters to kilograms.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-g" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>Ml to G</h3>
+                        <p>Convert milliliters to grams.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-oz" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>Ml to Oz</h3>
+                        <p>Convert milliliters to ounces.</p>
+                    </div>
+                </a>
+                <a href="/oz-to-ml" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Oz to Ml</h3>
+                        <p>Convert ounces to milliliters.</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+        <section class="card" id="how-it-works">
+            <h2>Definition of kilograms:</h2>
+            <p>One kilogram is the same as 1,000 grams, 2.204623 pounds, or one-thousandth of a metric ton.</p>
+            <p>In 2019, the official definition of a kilogram changed. Before that, it was based on the weight of a special platinum-iridium metal block called the International Prototype of the Kilogram, which was kept in Sèvres, France.</p>
+            <p>Kilogram or kilogramme is the standard unit of mass in the SI (International System of Units) and it is equal to 1,000 grams. In the metric system, "kilo" means a thousand. The abbreviation of Kilograms is "kg", for example, 1 kilogram is written as 1 kg.</p>
+        </section>
+        <section class="card" id="how-it-works">
+            <h2>Definition of Liter</h2>
+            <p>A liter is a unit of volume that equals 1,000 cubic centimeters or about 0.264172 US gallons. It is the same as the volume of one cubic decimeter (which is 10 centimeters by 10 centimeters by 10 centimeters).</p>
+            <p>The liter is an SI unit of volume used with the metric system. It is also spelled "litre" in some regions. The abbreviation of liter is "L", but it can also be written as "l" or "ℓ". For example, 1 liter can be written as 1 L, 1 l, or 1 ℓ.</p>
+        </section>
+        <section class="card" id="how-to-convert">
+            <h2>How to Convert Kilograms to Liters</h2>
+            <p>To convert measurement from kg to liters you have to know the density of the substance for which you want to make conversions. Density of the substance is an important factor because kilograms measure mass, while liters measure volume.</p>
+           <h3>Formula:</h3>
+             <p style="text-align: center; color: red; font-weight: bold;">Liters = Kilograms​ ÷ Density (kg/L)</p>
+             <p>Every material has a different density. For example:</p>
+             <ul>
+                 <li>Water = 1 kg/L</li>
+                 <li>Milk ≈ 1.03 kg/L</li>
+                 <li>Oil ≈ 0.92 kg/L</li>
+             </ul>
+             <h4>Example:</h4>
+             <p>What is 15 kg in litres for a substance which has a density of 1 kg/l? By using the above formula we will solve this example:</p>
+              <p style="text-align: center; color: red; font-weight: bold;">Liters = 15 ÷ 1 (kg/l)</p>
+              <p><b>15 kg</b> of substance with density <b>1 kg/l</b> is equal to <b>15 liters</b>. </p>
+        </section>
+        
+        <section class="card" id="Table">
+    <h2>Kilogram to Liter Conversion Table</h2>
+    <style>
+        :root {
+            --bg: #ffffff;
+            --text: #1f2937;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+            --stripe: #f9fafb;
+        }
+        body {
+            font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+            color: var(--text);
+            background: var(--bg);
+            margin: 0;
+        }
+        h1 { font-size: 1.25rem; margin: 0 0 12px; }
+        .wrap { max-width: 1100px; margin: 0 auto; }
+        .table-card { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+        .table-scroll { max-height: 70vh; overflow: auto; }
+        table { border-collapse: separate; border-spacing: 0; width: 100%; }
+        thead th { position: sticky; top: 0; background: #f3f4f6; color: #111827; font-weight: 600; text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border); }
+        tbody td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+        tbody tr:nth-child(even) td { background: var(--stripe); }
+        th, td.num { text-align: right; }
+        th:first-child, td:first-child { text-align: center; }
+        caption { caption-side: bottom; padding: 10px; font-size: 0.875rem; color: var(--muted); }
+    </style>
+    <div class="wrap">
+        <div class="table-card">
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Weight (kg)</th>
+                            <th>Water (L)</th>
+                            <th>Milk (L)</th>
+                            <th>Cooking Oil (L)</th>
+                            <th>All Purpose Flour (L)</th>
+                            <th>Granulated Sugar (L)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Start of Rows -->
+                        <tr><td>1</td><td class="num">1</td><td class="num">0.970874</td><td class="num">1.1364</td><td class="num">1.8904</td><td class="num">1.4184</td></tr>
+                        <tr><td>2</td><td class="num">2</td><td class="num">1.9417</td><td class="num">2.2727</td><td class="num">3.7807</td><td class="num">2.8369</td></tr>
+                        <tr><td>3</td><td class="num">3</td><td class="num">2.9126</td><td class="num">3.4091</td><td class="num">5.6711</td><td class="num">4.2553</td></tr>
+                        <tr><td>4</td><td class="num">4</td><td class="num">3.8835</td><td class="num">4.5455</td><td class="num">7.5614</td><td class="num">5.6738</td></tr>
+                        <tr><td>5</td><td class="num">5</td><td class="num">4.8544</td><td class="num">5.6818</td><td class="num">9.4518</td><td class="num">7.0922</td></tr>
+                        <tr><td>6</td><td class="num">6</td><td class="num">5.8252</td><td class="num">6.8182</td><td class="num">11.34</td><td class="num">8.5106</td></tr>
+                        <tr><td>7</td><td class="num">7</td><td class="num">6.7961</td><td class="num">7.9545</td><td class="num">13.23</td><td class="num">9.9291</td></tr>
+                        <tr><td>8</td><td class="num">8</td><td class="num">7.767</td><td class="num">9.0909</td><td class="num">15.12</td><td class="num">11.35</td></tr>
+                        <tr><td>9</td><td class="num">9</td><td class="num">8.7379</td><td class="num">10.23</td><td class="num">17.01</td><td class="num">12.77</td></tr>
+                        <tr><td>10</td><td class="num">10</td><td class="num">9.7087</td><td class="num">11.36</td><td class="num">18.9</td><td class="num">14.18</td></tr>
+                        <tr><td>11</td><td class="num">11</td><td class="num">10.68</td><td class="num">12.5</td><td class="num">20.79</td><td class="num">15.6</td></tr>
+                        <tr><td>12</td><td class="num">12</td><td class="num">11.65</td><td class="num">13.64</td><td class="num">22.68</td><td class="num">17.02</td></tr>
+                        <tr><td>13</td><td class="num">13</td><td class="num">12.62</td><td class="num">14.77</td><td class="num">24.57</td><td class="num">18.44</td></tr>
+                        <tr><td>14</td><td class="num">14</td><td class="num">13.59</td><td class="num">15.91</td><td class="num">26.47</td><td class="num">19.86</td></tr>
+                        <tr><td>15</td><td class="num">15</td><td class="num">14.56</td><td class="num">17.05</td><td class="num">28.36</td><td class="num">21.28</td></tr>
+                        <tr><td>16</td><td class="num">16</td><td class="num">15.53</td><td class="num">18.18</td><td class="num">30.25</td><td class="num">22.7</td></tr>
+                        <tr><td>17</td><td class="num">17</td><td class="num">16.5</td><td class="num">19.32</td><td class="num">32.14</td><td class="num">24.11</td></tr>
+                        <tr><td>18</td><td class="num">18</td><td class="num">17.48</td><td class="num">20.45</td><td class="num">34.03</td><td class="num">25.53</td></tr>
+                        <tr><td>19</td><td class="num">19</td><td class="num">18.45</td><td class="num">21.59</td><td class="num">35.92</td><td class="num">26.95</td></tr>
+                        <tr><td>20</td><td class="num">20</td><td class="num">19.42</td><td class="num">22.73</td><td class="num">37.81</td><td class="num">28.37</td></tr>
+                        <tr><td>21</td><td class="num">21</td><td class="num">20.39</td><td class="num">23.86</td><td class="num">39.7</td><td class="num">29.79</td></tr>
+                        <tr><td>22</td><td class="num">22</td><td class="num">21.36</td><td class="num">25</td><td class="num">41.59</td><td class="num">31.21</td></tr>
+                        <tr><td>23</td><td class="num">23</td><td class="num">22.33</td><td class="num">26.14</td><td class="num">43.48</td><td class="num">32.62</td></tr>
+                        <tr><td>24</td><td class="num">24</td><td class="num">23.3</td><td class="num">27.27</td><td class="num">45.37</td><td class="num">34.04</td></tr>
+                        <tr><td>25</td><td class="num">25</td><td class="num">24.27</td><td class="num">28.41</td><td class="num">47.26</td><td class="num">35.46</td></tr>
+                        <tr><td>26</td><td class="num">26</td><td class="num">25.24</td><td class="num">29.55</td><td class="num">49.15</td><td class="num">36.88</td></tr>
+                        <tr><td>27</td><td class="num">27</td><td class="num">26.21</td><td class="num">30.68</td><td class="num">51.04</td><td class="num">38.3</td></tr>
+                        <tr><td>28</td><td class="num">28</td><td class="num">27.18</td><td class="num">31.82</td><td class="num">52.93</td><td class="num">39.72</td></tr>
+                        <tr><td>29</td><td class="num">29</td><td class="num">28.16</td><td class="num">32.95</td><td class="num">54.82</td><td class="num">41.13</td></tr>
+                        <tr><td>30</td><td class="num">30</td><td class="num">29.13</td><td class="num">34.09</td><td class="num">56.71</td><td class="num">42.55</td></tr>
+                        <tr><td>31</td><td class="num">31</td><td class="num">30.1</td><td class="num">35.23</td><td class="num">58.6</td><td class="num">43.97</td></tr>
+                        <tr><td>32</td><td class="num">32</td><td class="num">31.07</td><td class="num">36.36</td><td class="num">60.49</td><td class="num">45.39</td></tr>
+                        <tr><td>33</td><td class="num">33</td><td class="num">32.04</td><td class="num">37.5</td><td class="num">62.38</td><td class="num">46.81</td></tr>
+                        <tr><td>34</td><td class="num">34</td><td class="num">33.01</td><td class="num">38.64</td><td class="num">64.27</td><td class="num">48.23</td></tr>
+                        <tr><td>35</td><td class="num">35</td><td class="num">33.98</td><td class="num">39.77</td><td class="num">66.16</td><td class="num">49.65</td></tr>
+                        <tr><td>36</td><td class="num">36</td><td class="num">34.95</td><td class="num">40.91</td><td class="num">68.05</td><td class="num">51.06</td></tr>
+                        <tr><td>37</td><td class="num">37</td><td class="num">35.92</td><td class="num">42.05</td><td class="num">69.94</td><td class="num">52.48</td></tr>
+                        <tr><td>38</td><td class="num">38</td><td class="num">36.89</td><td class="num">43.18</td><td class="num">71.83</td><td class="num">53.9</td></tr>
+                        <tr><td>39</td><td class="num">39</td><td class="num">37.86</td><td class="num">44.32</td><td class="num">73.72</td><td class="num">55.32</td></tr>
+                        <tr><td>40</td><td class="num">40</td><td class="num">38.83</td><td class="num">45.45</td><td class="num">75.61</td><td class="num">56.74</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+        <section class="card" id="faq">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item">
+        <div class="faq-question" onclick="toggleFAQ(this)">
+            <h4>Q: Is kilogram equal to liter?</h4>
+            <span class="toggle-icon">-</span>
+        </div>
+        <div class="faq-answer">
+            <p>A: No, a kilogram is not equal to a liter. They are units for different types of measurements:</p>
+            <ul>
+                <li><b>Kilogram (kg)</b> is a unit of mass (how much matter something contains).</li>
+                <li><b>Liter (L)</b> is a unit of volume (how much space something occupies).</li>
+            </ul>
+            <p>However, for substances with a density of 1 kg/L (like water), 1 kilogram equals 1 liter.</p>
+        </div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-question" onclick="toggleFAQ(this)">
+            <h4>Q: Can I convert liters to kilograms too?</h4>
+            <span class="toggle-icon">-</span>
+        </div>
+        <div class="faq-answer">
+            <p>A: Yes, you can convert liters to kilograms using the formula:</p>
+            <p style="text-align: center; color: red; font-weight: bold;">Mass (kg) = Volume (L) × Density (kg/L)</p>
+            <p>Or use our <a href="https://mltomg.info/l-to-kg">L to KG converter</a> for quick results.</p>
+        </div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-question" onclick="toggleFAQ(this)">
+            <h4>Q: What’s a typical use case of this kg to liters converter?</h4>
+            <span class="toggle-icon">-</span>
+        </div>
+        <div class="faq-answer">
+            <p>A: It's useful in:</p>
+            <ul>
+                <li>Cooking (e.g., converting kg of oil to liters)</li>
+                <li>Fuel calculations</li>
+                <li>Science and lab work</li>
+                <li>Industrial fluid measurements</li>
+            </ul>
+        </div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-question" onclick="toggleFAQ(this)">
+            <h4>Q: What is 5 kg in L?</h4>
+        </div>
+        <div class="faq-answer">
+            <p>A: The conversion depends on the density. For water (density ≈ 1 kg/L), the conversion would be: <b>liters</b> = 5 kg / 1 kg/L = <b>5 L</b>.</p>
+        </div>
+    </div>
+</section>
+
+        <section class="card" id="reference">
+            <h2>Reference:</h2>
+            <p>For milk density:- <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7466286/">visit</a></p>
+            <p>For cooking oil density:- <a href="https://hypertextbook.com/facts/2000/IngaDorfman.shtml">visit</a></p>
+        </section>
+    </div>
+    {% include 'footer.html' %}
+    <script>
+        const mainSelect = document.getElementById('mainSelect');
+        const densityGroup = document.getElementById('densityGroup');
+        const densityInput = document.getElementById('densityInput');
+        const kgInput = document.getElementById('kgInput');
+        const resultValue = document.getElementById('result-value');
+
+        mainSelect.addEventListener('change', () => {
+            const selectedValue = mainSelect.value;
+            densityGroup.classList.add('hidden');
+            densityInput.value = '';
+
+            if (selectedValue === 'custom-liquid') {
+                densityGroup.classList.remove('hidden');
+                densityInput.placeholder = 'Enter custom density';
+            } else if (selectedValue !== '') {
+                densityGroup.classList.remove('hidden');
+                densityInput.value = mainSelect.options[mainSelect.selectedIndex].dataset.density;
+            }
+        });
+
+        function convertKgToL() {
+            const kg = parseFloat(kgInput.value);
+            const density = parseFloat(densityInput.value);
+            let calculationType = 'Density';
+
+            if (mainSelect.value === '') {
+                resultValue.innerHTML = 'Please select an item or enter a custom density.';
+                resultValue.style.color = 'red';
+                return;
+            }
+
+            if (isNaN(kg) || isNaN(density) || kg <= 0 || density <= 0) {
+                resultValue.innerHTML = `Please enter valid positive numbers for mass and density.`;
+                resultValue.style.color = 'red';
+                return;
+            }
+
+            const L = kg * 1000 / density;
+            resultValue.innerHTML = `${kg} kg = ${L.toFixed(4)} L`;
+            resultValue.style.color = 'green';
+            document.getElementById('result-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.png') }}" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="index, follow">
+    <title>Teaspoon To Milligram Converter | Tsp to Mg Conversion</title>
+    <meta name="description" content="Use this teaspoon to milligram converter to calculate the mass (in mg) from volume (in tsp) for various ingredients based on their density in g/mL." />
+    <meta name="keywords" content="teaspoon to milligram converter, tsp to mg conversion, tsp to mg table, cooking conversions, baking conversions, ingredient mass chart, density conversion" />
+    <link rel="canonical" href="https://kgtoL.info/tsp-to-mg" />
+    <link rel="alternate" hreflang="x-default" href="https://kgtoL.info/tsp-to-mg" />
+    <link rel="alternate" hreflang="en" href="https://kgtoL.info/tsp-to-mg" />
+    <link rel="alternate" hreflang="ar" href="https://kgtoL.info/ar/tsp-to-mg" />
+    <link rel="alternate" hreflang="de" href="https://kgtoL.info/de/tsp-to-mg" />
+    <link rel="alternate" hreflang="es" href="https://kgtoL.info/es/tsp-to-mg" />
+    <link rel="alternate" hreflang="fr" href="https://kgtoL.info/fr/tsp-to-mg" />
+    <link rel="alternate" hreflang="it" href="https://kgtoL.info/it/tsp-to-mg" />
+    <link rel="alternate" hreflang="pt" href="https://kgtoL.info/pt/tsp-to-mg" />
+    <link rel="alternate" hreflang="ru" href="https://kgtoL.info/ru/tsp-to-mg" />
+    <link rel="alternate" hreflang="tr" href="https://kgtoL.info/tr/tsp-to-mg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+    <meta name="google-site-verification" content="49KC3Wnkoo8QxBc56Q5dkx-LVqsbPxtgJTBs_MG7WBU" />
+    <style>
+        #result-section {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #e9ecef;
+            min-height: 60px;
+            position: relative;
+        }
+        #result-section .result-heading {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-weight: 600;
+            color: var(--primary-color);
+            border-left: 3px solid var(--secondary-color);
+            padding-left: 10px;
+            font-size: 1.1rem;
+        }
+        #result-section .result-value {
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 10px;
+            padding-top: 20px;
+            color: var(--light-text-color);
+            width: 100%;
+        }
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    {% include 'header.html' %}
+    <header class="secondary-header">
+        <div class="container">
+            <h1>Teaspoon to Milligram Converter</h1>
+            <p>Enter the volume in teaspoons below to calculate the mass in milligrams.</p>
+        </div>
+    </header>
+    <div class="container main-content">
+        <section class="card" id="tool">
+            <h2>Convert Teaspoons To Milligrams</h2>
+            <div class="tool-container">
+                <div class="form-group">
+                    <label for="tspInput"><b>Volume (in teaspoons):</b></label>
+                    <input type="number" id="tspInput" placeholder="Enter volume in teaspoons" required>
+                </div>
+                <div class="form-group">
+                    <label for="mainSelect"><b>Select Item:</b></label>
+                    <select id="mainSelect">
+                        <option value="">-- Select an Item --</option>
+                        <option value="water" data-density="1.00">Water</option>
+                        <option value="custom-liquid">Custom Density</option>
+                        <optgroup label="Sugars">
+                            <option value="granulated-sugar" data-density="0.93">Granulated Sugar</option>
+                            <option value="powdered-sugar" data-density="0.56">Powdered Sugar</option>
+                            <option value="brown-sugar" data-density="0.91">Brown Sugar</option>
+                            <option value="raw-sugar" data-density="0.98">Raw Sugar</option>
+                        </optgroup>
+                        <optgroup label="Syrups and Spreads">
+                            <option value="corn-syrup" data-density="1.48">Corn Syrup</option>
+                            <option value="honey" data-density="1.42">Honey</option>
+                            <option value="nutella" data-density="1.20">Nutella</option>
+                            <option value="jelly" data-density="1.48">Jelly</option>
+                        </optgroup>
+                        <optgroup label="Flours">
+                            <option value="all-purpose-flour" data-density="0.53">All Purpose Flour</option>
+                            <option value="wheat-flour" data-density="0.59">Wheat Flour</option>
+                            <option value="bread-flour" data-density="0.59">Bread Flour</option>
+                            <option value="type-00-flour" data-density="0.57">Type 00 Flour</option>
+                            <option value="cake-flour" data-density="0.46">Cake Flour</option>
+                            <option value="rye-flour" data-density="0.45">Rye Flour</option>
+                        </optgroup>
+                        <optgroup label="Leaveners & Spices">
+                            <option value="baking-soda" data-density="2.20">Baking Soda</option>
+                            <option value="baking-powder" data-density="2.20">Baking Powder</option>
+                            <option value="cream-of-tartar" data-density="2.17">Cream of Tartar</option>
+                            <option value="cinnamon" data-density="0.56">Cinnamon</option>
+                            <option value="garlic-powder" data-density="0.56">Garlic Powder</option>
+                            <option value="salt" data-density="1.20">Salt</option>
+                            <option value="spice-blends" data-density="0.56">Spice Blends</option>
+                            <option value="cocoa-powder" data-density="0.48">Cocoa Powder</option>
+                            <option value="vanilla" data-density="1.03">Vanilla Extract</option>
+                        </optgroup>
+                        <optgroup label="Fats & Oils">
+                            <option value="cooking-oil" data-density="0.92">Cooking Oil</option>
+                            <option value="olive-oil" data-density="0.92">Olive Oil</option>
+                            <option value="vegetable-oil" data-density="0.92">Vegetable Oil</option>
+                            <option value="butter" data-density="0.91">Butter</option>
+                            <option value="margarine" data-density="0.91">Margarine</option>
+                            <option value="lard" data-density="0.92">Lard</option>
+                            <option value="mayonnaise" data-density="0.96">Mayonnaise</option>
+                            <option value="peanut-butter" data-density="1.10">Peanut Butter</option>
+                        </optgroup>
+                        <optgroup label="Dairy & Related">
+                            <option value="milk" data-density="1.03">Milk</option>
+                            <option value="buttermilk" data-density="1.03">Buttermilk</option>
+                            <option value="light-cream" data-density="1.02">Light Cream</option>
+                            <option value="heavy-cream" data-density="0.994">Heavy Cream</option>
+                            <option value="whipped-cream" data-density="0.45">Whipped Cream</option>
+                            <option value="ice-cream" data-density="0.56">Ice Cream</option>
+                            <option value="sour-cream" data-density="0.99">Sour Cream</option>
+                            <option value="cottage-cheese" data-density="1.06">Cottage Cheese</option>
+                            <option value="cream-cheese" data-density="1.04">Cream Cheese</option>
+                            <option value="yogurt" data-density="1.03">Yogurt</option>
+                        </optgroup>
+                        <optgroup label="Nuts & Grains">
+                            <option value="almonds" data-density="0.46">Almonds</option>
+                            <option value="cashews" data-density="0.56">Cashews</option>
+                            <option value="peanuts" data-density="0.58">Peanuts</option>
+                            <option value="sunflower-seeds" data-density="0.46">Sunflower Seeds</option>
+                            <option value="barley" data-density="0.72">Barley</option>
+                            <option value="bran" data-density="0.16">Bran</option>
+                            <option value="oats" data-density="0.45">Oats</option>
+                            <option value="rice" data-density="0.85">Rice (uncooked)</option>
+                            <option value="rye" data-density="0.77">Rye</option>
+                            <option value="wheat" data-density="0.77">Wheat</option>
+                            <option value="breadcrumbs" data-density="0.27">Breadcrumbs</option>
+                            <option value="corn-flakes" data-density="0.14">Corn Flakes</option>
+                            <option value="cornstarch" data-density="0.54">Cornstarch</option>
+                            <option value="rice-krispies" data-density="0.11">Rice Krispies</option>
+                        </optgroup>
+                        <optgroup label="Other Ingredients">
+                            <option value="dried-apple-slices" data-density="0.31">Dried Apple Slices</option>
+                            <option value="carrots" data-density="0.62">Carrots (shredded)</option>
+                            <option value="corn" data-density="0.72">Corn (kernels)</option>
+                            <option value="kidney-beans" data-density="0.72">Kidney Beans (dried)</option>
+                            <option value="onions" data-density="0.72">Onions (chopped)</option>
+                            <option value="potatoes" data-density="0.71">Potatoes (diced)</option>
+                            <option value="yams" data-density="0.72">Yams (diced)</option>
+                            <option value="bread" data-density="0.27">Bread (sliced)</option>
+                            <option value="cake-mix" data-density="0.66">Cake Mix</option>
+                        </optgroup>
+                    </select>
+                </div>
+                <div class="form-group hidden" id="densityGroup">
+                    <label for="densityInput"><b>Density (g/mL):</b></label>
+                    <input type="number" id="densityInput" placeholder="Enter density in g/mL" required>
+                </div>
+                <button class="btn" onclick="convertTspToMg()">Convert to Milligrams</button>
+            </div>
+        </section>
+        <p style="color: red;"><b>Note:</b> Density varies with temperature and may differ by material. You can also select <b>Custom Density</b> from the dropdown to enter your own value.</p>
+        <div id="result-section">
+            <div class="result-heading">Result:</div>
+            <div class="result-value" id="result-value">Your result will appear here</div>
+        </div>
+        <section class="card" id="why-choose-us">
+            <p>Welcome to our teaspoon to milligrams converter that helps you to quickly convert a volume measurement (teaspoon) into a mass measurement (milligrams) for substances, based on their density. This is essential for accurate measuring in labs, kitchens, and when dosing medication.</p>
+        </section>
+        <section class="card more-tools" id="more-tools">
+            <h2>More Tools</h2>
+            <div class="tool-cards-container">
+                <a href="/mg-to-tsp" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>Mg to Tsp</h3>
+                        <p>Convert milligrams to teaspoons.</p>
+                    </div>
+                </a>
+                <a href="/g-to-l" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>G to L</h3>
+                        <p>Convert grams to liters.</p>
+                    </div>
+                </a>
+                <a href="/kg-to-l" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Kg to L</h3>
+                        <p>Convert kilograms to liters.</p>
+                    </div>
+                </a>
+                <a href="/l-to-g" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>L to G</h3>
+                        <p>Convert liters to grams.</p>
+                    </div>
+                </a>
+                <a href="/l-to-kg" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>L to Kg</h3>
+                        <p>Convert liters to kilograms.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-g" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>Ml to G</h3>
+                        <p>Convert milliliters to grams.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-oz" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>Ml to Oz</h3>
+                        <p>Convert milliliters to ounces.</p>
+                    </div>
+                </a>
+                <a href="/oz-to-ml" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Oz to Ml</h3>
+                        <p>Convert ounces to milliliters.</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+        <section class="card" id="how-it-works">
+            <h2>Definition of Teaspoon:</h2>
+            <p>A teaspoon (tsp) is a unit of volume most commonly used in cooking recipes and for dosing medicine.</p>
+            <p>A US customary teaspoon is officially defined as **4.92892 milliliters (mL)**.</p>
+            <p>In many contexts, a rounded value of 5 mL is often used for approximation, especially in pharmaceutical dosing.</p>
+        </section>
+        <section class="card" id="how-it-works">
+            <h2>Definition of Milligram:</h2>
+            <p>A milligram (mg) is a unit of mass in the metric system equal to one-thousandth of a gram (0.001 g).</p>
+            <p>1 milligram is equal to 0.000001 kilograms, or 0.000035274 ounces.</p>
+            <p>The milligram is often used in medicine and for measuring very small amounts of ingredients in cooking and science.</p>
+        </section>
+        <section class="card" id="how-to-convert">
+            <h2>How to Convert Teaspoons to Milligrams</h2>
+            <p>To convert measurement from tsp to milligrams, you must know the density of the substance, because teaspoons measure volume, while milligrams measure mass.</p>
+           <h3>Formula:</h3>
+             <p style="text-align: center; color: red; font-weight: bold;">Mass (mg) = Volume (tsp) × Density (g/mL) × 4928.92</p>
+             <p>Where 4928.92 is the factor to convert Density in g/mL to mg/tsp (4928.92 = 1000 mg/g × 4.92892 mL/tsp).</p>
+             <p>Every material has a different density. For example (from your provided image):</p>
+             <ul>
+                 <li>Water = 1.00 g/mL</li>
+                 <li>Salt ≈ 1.20 g/mL</li>
+                 <li>All Purpose Flour ≈ 0.53 g/mL</li>
+             </ul>
+             <h4>Example:</h4>
+             <p>What is 2 teaspoons in milligrams for a substance which has a density of 1.00 g/mL (Water)?</p>
+              <p style="text-align: center; color: red; font-weight: bold;">Mass (mg) = 2 tsp × 1.00 g/mL × 4928.92</p>
+              <p><b>2 tsp</b> of substance with density **1.00 g/mL** is equal to **9857.84** milligrams. </p>
+        </section>
+        
+        <section class="card" id="Table">
+    <h2>Teaspoon to Milligram Conversion Table (Water)</h2>
+    <style>
+        :root {
+            --bg: #ffffff;
+            --text: #1f2937;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+            --stripe: #f9fafb;
+        }
+        body {
+            font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+            color: var(--text);
+            background: var(--bg);
+            margin: 0;
+        }
+        h1 { font-size: 1.25rem; margin: 0 0 12px; }
+        .wrap { max-width: 1100px; margin: 0 auto; }
+        .table-card { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+        .table-scroll { max-height: 70vh; overflow: auto; }
+        table { border-collapse: separate; border-spacing: 0; width: 100%; }
+        thead th { position: sticky; top: 0; background: #f3f4f6; color: #111827; font-weight: 600; text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border); }
+        tbody td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+        tbody tr:nth-child(even) td { background: var(--stripe); }
+        th, td.num { text-align: right; }
+        th:first-child, td:first-child { text-align: center; }
+        caption { caption-side: bottom; padding: 10px; font-size: 0.875rem; color: var(--muted); }
+    </style>
+    <div class="wrap">
+        <div class="table-card">
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Volume (tsp)</th>
+                            <th>Water (mg)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>0.1</td><td class="num">492.89</td></tr>
+                        <tr><td>0.25</td><td class="num">1232.23</td></tr>
+                        <tr><td>0.5</td><td class="num">2464.46</td></tr>
+                        <tr><td>1</td><td class="num">4928.92</td></tr>
+                        <tr><td>2</td><td class="num">9857.84</td></tr>
+                        <tr><td>5</td><td class="num">24644.60</td></tr>
+                        <tr><td>10</td><td class="num">49289.20</td></tr>
+                        <tr><td>25</td><td class="num">123223.00</td></tr>
+                        <tr><td>50</td><td class="num">246446.00</td></tr>
+                        <tr><td>100</td><td class="num">492892.00</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <caption>Note: Calculations are based on a water density of 1.00 g/mL and 1 US Teaspoon = 4.92892 mL.</caption>
+        </div>
+    </div>
+</section>
+
+        <section class="card" id="faq">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item">
+        <div class="faq-question" onclick="toggleFAQ(this)">
+            <h4>Q: How many milligrams are in one teaspoon of water?</h4>
+            <span class="toggle-icon">-</span>
+        </div>
+        <div class="faq-answer">
+            <p>A: One US teaspoon of pure water (density $\approx 1.00\ \text{g/mL}$) is equal to approximately **4928.92 milligrams** (or about $4.93\ \text{grams}$).</p>
+        </div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-question" onclick="toggleFAQ(this)">
+            <h4>Q: Can I use the same conversion factor for all liquids?</h4>
+            <span class="toggle-icon">-</span>
+        </div>
+        <div class="faq-answer">
+            <p>A: No, you cannot. Liquids and dry goods have different densities. For example, 1 tsp of water has a different mass than 1 tsp of cooking oil because oil has a lower density (around $0.92\ \text{g/mL}$).</p>
+        </div>
+    </div>
+</section>
+
+        <section class="card" id="reference">
+            <h2>Reference:</h2>
+            <p>For milk density:- <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7466286/">visit</a></p>
+            <p>For cooking oil density:- <a href="https://hypertextbook.com/facts/2000/IngaDorfman.shtml">visit</a></p>
+        </section>
+    </div>
+    {% include 'footer.html' %}
+    <script>
+        const mainSelect = document.getElementById('mainSelect');
+        const densityGroup = document.getElementById('densityGroup');
+        const densityInput = document.getElementById('densityInput');
+        const tspInput = document.getElementById('tspInput');
+        const resultValue = document.getElementById('result-value');
+        const TSP_IN_ML = 4.92892; // 1 US Teaspoon in mL
+        const FACTOR = 1000 * TSP_IN_ML; // 1000 (mg/g) * 4.92892 (mL/tsp) = 4928.92
+
+        mainSelect.addEventListener('change', () => {
+            const selectedValue = mainSelect.value;
+            densityGroup.classList.add('hidden');
+            densityInput.value = '';
+
+            if (selectedValue === 'custom-liquid') {
+                densityGroup.classList.remove('hidden');
+                densityInput.placeholder = 'Enter custom density (g/mL)';
+            } else if (selectedValue !== '') {
+                // Density is stored as g/mL in data-density.
+                densityGroup.classList.remove('hidden');
+                // Set the input field value from the selected option's data-density
+                densityInput.value = mainSelect.options[mainSelect.selectedIndex].dataset.density; 
+            }
+        });
+
+        function convertTspToMg() {
+            const tsp = parseFloat(tspInput.value);
+            const density_g_per_mL = parseFloat(densityInput.value); 
+            // density_g_per_mL is in g/mL.
+
+            if (mainSelect.value === '') {
+                resultValue.innerHTML = 'Please select an item or enter a custom density.';
+                resultValue.style.color = 'red';
+                return;
+            }
+
+            if (isNaN(tsp) || isNaN(density_g_per_mL) || tsp <= 0 || density_g_per_mL <= 0) {
+                resultValue.innerHTML = `Please enter valid positive numbers for volume and density.`;
+                resultValue.style.color = 'red';
+                return;
+            }
+
+            // Formula: Mass (mg) = Volume (tsp) * Density (g/mL) * FACTOR
+            // FACTOR = 4928.92. This formula calculates: tsp * (4.92892 mL/tsp) * density (g/mL) * (1000 mg/g) = mg
+            const mg = tsp * density_g_per_mL * FACTOR; 
+            
+            resultValue.innerHTML = `${tsp} tsp = ${mg.toFixed(2)} mg`;
+            resultValue.style.color = 'green';
+            document.getElementById('result-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    </script>
+</body>
+</html>

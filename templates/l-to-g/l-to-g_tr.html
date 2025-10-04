@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.png') }}" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Litre - Gram Dönüştürücü | L - G Dönüşümü</title>
+    <meta name="description" content="Çeşitli maddelerin yoğunluklarına göre litreden grama dönüşümlerini yapmak için bu litreden grama dönüştürücüyü kullanın." />
+    <meta name="keywords" content="litre - gram dönüştürücü, l - g dönüşümü, l - g tablosu, su dönüşümü, süt dönüşümü, yemeklik yağ dönüşümü, un dönüşümü, mutfak ölçüm tablosu, pişirme dönüşümleri, malzeme kütle tablosu" />
+    <link rel="canonical" href="https://kgtoL.info/l-to-g" />
+    <link rel="alternate" hreflang="x-default" href="https://kgtoL.info/l-to-g" />
+    <link rel="alternate" hreflang="tr" href="https://kgtoL.info/l-to-g" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <meta name="google-site-verification" content="49KC3Wnkoo8QxBc56Q5dkx-LVqsbPxtgJTBs_MG7WBU" />
+    <style>
+        #result-section {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #e9ecef;
+            min-height: 60px;
+            position: relative;
+        }
+        #result-section .result-heading {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-weight: 600;
+            color: var(--primary-color);
+            border-left: 3px solid var(--secondary-color);
+            padding-left: 10px;
+            font-size: 1.1rem;
+        }
+        #result-section .result-value {
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 10px;
+            padding-top: 20px;
+            color: var(--light-text-color);
+            width: 100%;
+        }
+        .hidden {
+            display: none !important;
+        }
+        :root {
+            --bg: #ffffff;
+            --text: #1f2937;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+            --stripe: #f9fafb;
+        }
+    </style>
+</head>
+<body>
+    {% include 'header.html' %}
+    <header class="secondary-header">
+        <div class="container">
+            <h1>Litre - Gram Dönüştürücü</h1>
+            <p>Kütleyi gram cinsinden hesaplamak için hacmi aşağıya litre cinsinden girin.</p>
+        </div>
+    </header>
+    <div class="container main-content">
+        <section class="card" id="tool">
+            <h2>Litre Gram'a Dönüştür</h2>
+            <div class="tool-container">
+                <div class="form-group">
+                    <label for="lInput"><b>Hacim (litre olarak):</b></label>
+                    <input type="number" id="lInput" placeholder="Litre cinsinden hacim girin" required>
+                </div>
+                <div class="form-group">
+                    <label for="mainSelect"><b>Madde Seçin:</b></label>
+                    <select id="mainSelect">
+                        <option value="">-- Madde Seçin --</option>
+                        <optgroup label="Yaygın">
+                            <option value="water" data-density="1000">Su</option>
+                        </optgroup>
+                        <optgroup label="Şekerler">
+                            <option value="granulated-sugar" data-density="845">Toz Şeker</option>
+                            <option value="powdered-sugar" data-density="560">Pudra Şekeri</option>
+                            <option value="brown-sugar" data-density="850">Esmer Şeker</option>
+                            <option value="raw-sugar" data-density="900">Ham Şeker</option>
+                        </optgroup>
+                        <optgroup label="Şuruplar ve Yayıklar">
+                            <option value="corn-syrup" data-density="1380">Mısır Şurubu</option>
+                            <option value="honey" data-density="1420">Bal</option>
+                            <option value="nutella" data-density="1200">Nutella</option>
+                            <option value="jelly" data-density="1300">Jöle</option>
+                        </optgroup>
+                        <optgroup label="Unlar">
+                            <option value="all-purpose-flour" data-density="529">Çok Amaçlı Un</option>
+                            <option value="wheat-flour" data-density="529">Buğday Unu</option>
+                            <option value="bread-flour" data-density="529">Ekmek Unu</option>
+                            <option value="type-00-flour" data-density="600">Tip 00 Un</option>
+                            <option value="cake-flour" data-density="480">Pasta Unu</option>
+                            <option value="rye-flour" data-density="460">Çavdar Unu</option>
+                        </optgroup>
+                        <optgroup label="Kabartıcılar ve Baharatlar">
+                            <option value="baking-soda" data-density="960">Kabartma Tozu</option>
+                            <option value="baking-powder" data-density="800">Kabartma Tozu (Baking Powder)</option>
+                            <option value="cream-of-tartar" data-density="750">Krem Tartar</option>
+                            <option value="cinnamon" data-density="540">Tarçın</option>
+                            <option value="garlic-powder" data-density="550">Sarımsak Tozu</option>
+                            <option value="salt" data-density="2160">Tuz</option>
+                            <option value="spice-blends" data-density="550">Baharat Karışımları</option>
+                            <option value="cocoa-powder" data-density="480">Kakao Tozu</option>
+                            <option value="vanilla" data-density="1200">Vanilya Özütü</option>
+                        </optgroup>
+                        <optgroup label="Yağlar">
+                            <option value="cooking-oil" data-density="918">Yemeklik Yağ</option>
+                            <option value="olive-oil" data-density="918">Zeytinyağı</option>
+                            <option value="vegetable-oil" data-density="918">Sebze Yağı</option>
+                            <option value="butter" data-density="911">Tereyağı</option>
+                            <option value="margarine" data-density="940">Margarin</option>
+                            <option value="lard" data-density="920">Don Yağı</option>
+                            <option value="mayonnaise" data-density="920">Mayonez</option>
+                            <option value="peanut-butter" data-density="1060">Fıstık Ezmesi</option>
+                        </optgroup>
+                        <optgroup label="Süt ve İlgili Ürünler">
+                            <option value="milk" data-density="1030">Süt</option>
+                            <option value="buttermilk" data-density="1030">Ayran</option>
+                            <option value="light-cream" data-density="1009">Hafif Krema</option>
+                            <option value="heavy-cream" data-density="994">Ağır Krema</option>
+                            <option value="whipped-cream" data-density="480">Krem Şanti</option>
+                            <option value="ice-cream" data-density="560">Dondurma</option>
+                            <option value="sour-cream" data-density="1030">Ekşi Krema</option>
+                            <option value="cottage-cheese" data-density="1060">Lor Pebyniri</option>
+                            <option value="cream-cheese" data-density="1040">Krema Pebyniri</option>
+                            <option value="yogurt" data-density="1030">Yoğurt</option>
+                        </optgroup>
+                        <optgroup label="Kuruyemişler ve Tahıllar">
+                            <option value="almonds" data-density="600">Badem</option>
+                            <option value="cashews" data-density="600">Kaju</option>
+                            <option value="peanuts" data-density="600">Fıstık</option>
+                            <option value="sunflower-seeds" data-density="500">Ayçiçeği Tohumu</option>
+                            <option value="barley" data-density="700">Arpa</option>
+                            <option value="bran" data-density="300">Kepek</option>
+                            <option value="oats" data-density="450">Yulaf</option>
+                            <option value="rice" data-density="850">Pirinç (pişmemiş)</option>
+                            <option value="rye" data-density="700">Çavdar</option>
+                            <option value="wheat" data-density="800">Buğday</option>
+                            <option value="breadcrumbs" data-density="420">Galeta Unu</option>
+                            <option value="corn-flakes" data-density="150">Mısır Gevreği</option>
+                            <option value="cornstarch" data-density="500">Mısır Nişastası</option>
+                            <option value="rice-krispies" data-density="110">Rice Krispies</option>
+                        </optgroup>
+                        <optgroup label="Diğer Malzemeler">
+                            <option value="dried-apple-slices" data-density="200">Kurutulmuş Elma Dilimleri</option>
+                            <option value="carrots" data-density="500">Havuç (rendelenmiş)</option>
+                            <option value="corn" data-density="750">Mısır (taneler)</option>
+                            <option value="kidney-beans" data-density="850">Kırmızı Fasulye (kuru)</option>
+                            <option value="onions" data-density="700">Soğan (doğranmış)</option>
+                            <option value="potatoes" data-density="750">Patates (küp doğranmış)</option>
+                            <option value="yams" data-density="750">Tatlı Patates (küp doğranmış)</option>
+                            <option value="bread" data-density="250">Ekmek (dilimlenmiş)</option>
+                            <option value="cake-mix" data-density="800">Pasta Karışımı</option>
+                        </optgroup>
+                        <option value="custom-liquid">Özel Yoğunluk (g/L)</option>
+                    </select>
+                </div>
+                <div class="form-group hidden" id="densityGroup">
+                    <label for="densityInput"><b>Yoğunluk (g/L):</b></label>
+                    <input type="number" id="densityInput" placeholder="Yoğunluğu g/L cinsinden girin" required>
+                </div>
+                <button class="btn" onclick="convertLToG()">Gram'a Dönüştür</button>
+            </div>
+
+        <p style="color: red;"><b>Not:</b> Yoğunluk, sıcaklıkla değişir ve malzemeye göre farklılık gösterebilir. Özel yoğunluk seçeneğini kullanarak kendi değerinizi girebilirsiniz.</p>
+        <div id="result-section">
+            <div class="result-heading">Sonuç:</div>
+            <div class="result-value" id="result-value">Sonuç burada görünecek</div>
+        </div>
+        <section class="card" id="why-choose-us">
+            <p>Bu litreden grama (L-G) dönüştürücü, maddenin veya malzemenin yoğunluğuna göre litreyi grama hızlı bir şekilde dönüştürmenize yardımcı olur.</p>
+        </section>
+        <section class="card more-tools" id="more-tools">
+            <h2>Daha Fazla Araç</h2>
+            <div class="tool-cards-container">
+                <a href="/mg-to-ml" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>Mg - Ml</h3>
+                        <p>Miligramı mililitreye dönüştür.</p>
+                    </div>
+                </a>
+                <a href="/g-to-l" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>G - L</h3>
+                        <p>Gramı litreye dönüştür.</p>
+                    </div>
+                </a>
+                <a href="/kg-to-l" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Kg - L</h3>
+                        <p>Kilogramı litreye dönüştür.</p>
+                    </div>
+                </a>
+                <a href="/l-to-g" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>L - G</h3>
+                        <p>Litreyi grama dönüştür.</p>
+                    </div>
+                </a>
+                <a href="/l-to-kg" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>L - Kg</h3>
+                        <p>Litreyi kilograma dönüştür.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-g" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>Ml - G</h3>
+                        <p>Mililitreyi grama dönüştür.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-oz" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>Ml - Oz</h3>
+                        <p>Mililitreyi onsa dönüştür.</p>
+                    </div>
+                </a>
+                <a href="/oz-to-ml" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Oz - Ml</h3>
+                        <p>Onsu mililitreye dönüştür.</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+        <section class="card" id="why-choose-us">
+            <h2>Litre Gram'a Nasıl Dönüştürülür?</h2>
+            <p>Litreyi grama dönüştürmek için, dönüşümü yapmak istediğiniz maddenin yoğunluğunu bilmeniz gerekir çünkü litre hacmi, gram ise ağırlığı ölçer.</p>
+            <h3>Formül:</h3>
+            <p style="text-align: center; color: red; font-weight: bold;">Gram = Litre × 1000 × Yoğunluk (g/mL)</p>
+            <h4>Örnek:</h4>
+            <p>Formülü bir örnek çözerek anlayalım: Mesela 2 litre zeytinyağını grama nasıl çeviririz.</p>
+            <p>Şimdi yukarıdaki formülü kullanarak bu örneği çözelim:</p>
+            <ul>
+                <li>Gram = 2 x 1000 x 0,918 g/ml</li>
+                <li>Gram = 1836</li>
+            </ul>
+            <p>Yani 2 litre zeytinyağı 1836 grama eşittir çünkü zeytinyağının yoğunluğu 0,918'dir.</p>
+        </section>
+        <section class="card" id="how-it-works">
+            <h2>Litre Tanımı:</h2>
+            <p>Litre, hacim birimidir ve 1.000 mililitre (mL) veya 1 desimetreküp (1 dm³)'e eşittir. Litre genellikle su, süt, yağ ve içecekler gibi sıvıları ölçmek için kullanılır; ayrıca gazların ve katıların hacmini temsil etmek için de kullanılabilir.</p>
+        </section>
+        <section class="card" id="how-it-works">
+            <h2>Gram Tanımı:</h2>
+            <p>Gram (g), metrik sistemde bir kütle birimidir ve genellikle nesnelerin ve maddelerin ağırlığını ölçmek için kullanılır. Bir gram, bir kilogramın (kg) 1/1000'ine eşittir.</p>
+            <p>Genellikle yemek pişirmede, beslenmede, bilimde ve günlük yaşamda küçük miktarlardaki katıları, tozları ve hatta sıvıları (yoğunluk dikkate alındığında) ölçmek için kullanılır.</p>
+        </section>
+        <section class="card" id="Table">
+            <h2>Litre - Gram Dönüşüm Tablosu</h2>
+            <style>
+                :root {
+                    --bg: #ffffff;
+                    --text: #1f2937;
+                    --muted: #6b7280;
+                    --border: #e5e7eb;
+                    --stripe: #f9fafb;
+                }
+                body {
+                    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+                    color: var(--text);
+                    background: var(--bg);
+                    margin: 0;
+                }
+                h1 { font-size: 1.25rem; margin: 0 0 12px; }
+                .wrap { max-width: 1100px; margin: 0 auto; }
+                .table-card { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+                .table-scroll { max-height: 70vh; overflow: auto; }
+                table { border-collapse: separate; border-spacing: 0; width: 100%; }
+                thead th { position: sticky; top: 0; background: var(--border); color: #111827; font-weight: 600; text-align: center; padding: 10px 12px; border-bottom: 1px solid var(--border); }
+                tbody td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; text-align: center; }
+                tbody tr:nth-child(even) td { background: var(--stripe); }
+                th, td.num { text-align: right; }
+                th:first-child, td:first-child { text-align: center; }
+                caption { caption-side: bottom; padding: 10px; font-size: 0.875rem; color: var(--muted); }
+            </style>
+            <div class="wrap">
+                <div class="table-card">
+                    <div class="table-scroll">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Hacim (Litre)</th>
+                                    <th>Su (g)</th>
+                                    <th>Süt (g)</th>
+                                    <th>Yemeklik Yağ (g)</th>
+                                    <th>Çok Amaçlı Un (g)</th>
+                                    <th>Toz Şeker (g)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>1 L</td><td>1,000</td><td>1,030</td><td>880</td><td>529</td><td>705</td></tr>
+                                <tr><td>2 L</td><td>2,000</td><td>2,060</td><td>1,760</td><td>1,058</td><td>1,410</td></tr>
+                                <tr><td>3 L</td><td>3,000</td><td>3,090</td><td>2,640</td><td>1,587</td><td>2,115</td></tr>
+                                <tr><td>4 L</td><td>4,000</td><td>4,120</td><td>3,520</td><td>2,116</td><td>2,820</td></tr>
+                                <tr><td>5 L</td><td>5,000</td><td>5,150</td><td>4,400</td><td>2,645</td><td>3,525</td></tr>
+                                <tr><td>6 L</td><td>6,000</td><td>6,180</td><td>5,280</td><td>3,174</td><td>4,230</td></tr>
+                                <tr><td>7 L</td><td>7,000</td><td>7,210</td><td>6,160</td><td>3,703</td><td>4,935</td></tr>
+                                <tr><td>8 L</td><td>8,000</td><td>8,240</td><td>7,040</td><td>4,232</td><td>5,640</td></tr>
+                                <tr><td>9 L</td><td>9,000</td><td>9,270</td><td>7,920</td><td>4,761</td><td>6,345</td></tr>
+                                <tr><td>10 L</td><td>10,000</td><td>10,300</td><td>8,800</td><td>5,290</td><td>7,050</td></tr>
+                                <tr><td>11 L</td><td>11,000</td><td>11,330</td><td>9,680</td><td>5,819</td><td>7,755</td></tr>
+                                <tr><td>12 L</td><td>12,000</td><td>12,360</td><td>10,560</td><td>6,348</td><td>8,460</td></tr>
+                                <tr><td>13 L</td><td>13,000</td><td>13,390</td><td>11,440</td><td>6,877</td><td>9,165</td></tr>
+                                <tr><td>14 L</td><td>14,000</td><td>14,420</td><td>12,320</td><td>7,406</td><td>9,870</td></tr>
+                                <tr><td>15 L</td><td>15,000</td><td>15,450</td><td>13,200</td><td>7,935</td><td>10,575</td></tr>
+                                <tr><td>16 L</td><td>16,000</td><td>16,480</td><td>14,080</td><td>8,464</td><td>11,280</td></tr>
+                                <tr><td>17 L</td><td>17,000</td><td>17,510</td><td>14,960</td><td>8,993</td><td>11,985</td></tr>
+                                <tr><td>18 L</td><td>18,000</td><td>18,540</td><td>15,840</td><td>9,522</td><td>12,690</td></tr>
+                                <tr><td>19 L</td><td>19,000</td><td>19,570</td><td>16,720</td><td>10,051</td><td>13,395</td></tr>
+                                <tr><td>20 L</td><td>20,000</td><td>20,600</td><td>17,600</td><td>10,580</td><td>14,100</td></tr>
+                                <tr><td>21 L</td><td>21,000</td><td>21,630</td><td>18,480</td><td>11,109</td><td>14,805</td></tr>
+                                <tr><td>22 L</td><td>22,000</td><td>22,660</td><td>19,360</td><td>11,638</td><td>15,510</td></tr>
+                                <tr><td>23 L</td><td>23,000</td><td>23,690</td><td>20,240</td><td>12,167</td><td>16,215</td></tr>
+                                <tr><td>24 L</td><td>24,000</td><td>24,720</td><td>21,120</td><td>12,696</td><td>16,920</td></tr>
+                                <tr><td>25 L</td><td>25,000</td><td>25,750</td><td>22,000</td><td>13,225</td><td>17,625</td></tr>
+                                <tr><td>26 L</td><td>26,000</td><td>26,780</td><td>22,880</td><td>13,754</td><td>18,330</td></tr>
+                                <tr><td>27 L</td><td>27,000</td><td>27,810</td><td>23,760</td><td>14,283</td><td>19,035</td></tr>
+                                <tr><td>28 L</td><td>28,000</td><td>28,840</td><td>24,640</td><td>14,812</td><td>19,740</td></tr>
+                                <tr><td>29 L</td><td>29,000</td><td>29,870</td><td>25,520</td><td>15,341</td><td>20,445</td></tr>
+                                <tr><td>30 L</td><td>30,000</td><td>30,900</td><td>26,400</td><td>15,870</td><td>21,150</td></tr>
+                                <tr><td>31 L</td><td>31,000</td><td>31,930</td><td>27,280</td><td>16,399</td><td>21,855</td></tr>
+                                <tr><td>32 L</td><td>32,000</td><td>32,960</td><td>28,160</td><td>16,928</td><td>22,560</td></tr>
+                                <tr><td>33 L</td><td>33,000</td><td>33,990</td><td>29,040</td><td>17,457</td><td>23,265</td></tr>
+                                <tr><td>34 L</td><td>34,000</td><td>35,020</td><td>29,920</td><td>17,986</td><td>23,970</td></tr>
+                                <tr><td>35 L</td><td>35,000</td><td>36,050</td><td>30,800</td><td>18,515</td><td>24,675</td></tr>
+                                <tr><td>36 L</td><td>36,000</td><td>37,080</td><td>31,680</td><td>19,044</td><td>25,380</td></tr>
+                                <tr><td>37 L</td><td>37,000</td><td>38,110</td><td>32,560</td><td>19,573</td><td>26,085</td></tr>
+                                <tr><td>38 L</td><td>38,000</td><td>39,140</td><td>33,440</td><td>20,102</td><td>26,790</td></tr>
+                                <tr><td>39 L</td><td>39,000</td><td>40,170</td><td>34,320</td><td>20,631</td><td>27,495</td></tr>
+                                <tr><td>40 L</td><td>40,000</td><td>41,200</td><td>35,200</td><td>21,160</td><td>28,200</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="card" id="faq">
+            <h2>Sıkça Sorulan Sorular</h2>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>S: 1 litre her zaman 1000 grama eşit midir?</h4>
+                    <span class="toggle-icon">-</span>
+                </div>
+                <div class="faq-answer">
+                    <p>A: Bu durum yalnızca (4°C) sıcaklıktaki su için geçerlidir. Süt, yağ veya bal gibi diğer maddeler için ise 1 litrenin ağırlığı, yoğunluk nedeniyle 1000 grama eşit değildir.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>S: Sıcaklık dönüşümü etkiler mi?</h4>
+                    <span class="toggle-icon">-</span>
+                </div>
+                <div class="faq-answer">
+                    <p>A: Evet, bazı durumlarda. Sıvıların yoğunluğu sıcaklıkla birlikte hafifçe değişir ve bu da gram değerini etkileyebilir.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+    {% include 'footer.html' %}
+    <script>
+        const mainSelect = document.getElementById('mainSelect');
+        const densityGroup = document.getElementById('densityGroup');
+        const densityInput = document.getElementById('densityInput');
+        const lInput = document.getElementById('lInput');
+        const resultValue = document.getElementById('result-value');
+
+        mainSelect.addEventListener('change', () => {
+            const selectedValue = mainSelect.value;
+            densityGroup.classList.add('hidden');
+            densityInput.value = '';
+            if (selectedValue === 'custom-liquid') {
+                densityGroup.classList.remove('hidden');
+                densityInput.placeholder = 'Özel yoğunluğu g/L cinsinden girin';
+            } else if (selectedValue !== '') {
+                densityGroup.classList.remove('hidden');
+                densityInput.value = mainSelect.options[mainSelect.selectedIndex].dataset.density;
+            }
+        });
+
+        function convertLToG() {
+            const L = parseFloat(lInput.value);
+            const density = parseFloat(densityInput.value);
+
+            if (mainSelect.value === '') {
+                resultValue.innerHTML = 'Lütfen bir madde seçin veya özel yoğunluk girin.';
+                resultValue.style.color = 'red';
+                return;
+            }
+            if (isNaN(L) || isNaN(density) || L <= 0 || density <= 0) {
+                resultValue.innerHTML = 'Lütfen hacim ve yoğunluk için geçerli pozitif sayılar girin.';
+                resultValue.style.color = 'red';
+                return;
+            }
+            const G = L * density;
+
+            resultValue.innerHTML = `${L} L = ${G.toFixed(4)} g`;
+            resultValue.style.color = 'green';
+            document.getElementById('result-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function toggleFAQ(element) {
+            const answer = element.nextElementSibling;
+            const icon = element.querySelector('.toggle-icon');
+            if (answer.style.maxHeight) {
+                answer.style.maxHeight = null;
+                icon.textContent = '+';
+            } else {
+                answer.style.maxHeight = answer.scrollHeight + "px";
+                icon.textContent = '-';
+            }
+        }
+    </script>
+</body>
+</html>

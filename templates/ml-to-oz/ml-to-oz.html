@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.png') }}" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Milliliter To Ounce Converter | mL to Oz Conversion</title>
+    <meta name="description" content="Use this milliliter to ounce converter to quickly convert volume from milliliters (mL) to US Fluid Ounces (fl oz)." />
+    <meta name="keywords" content="milliliter to ounce converter, ml to oz conversion, volume converter, kitchen measurement, cooking conversions, ml to fl oz" />
+    <link rel="canonical" href="https://kgtoL.info/ml-to-oz" />
+    <link rel="alternate" hreflang="x-default" href="https://kgtoL.info/ml-to-oz" />
+    <link rel="alternate" hreflang="en" href="https://kgtoL.info/ml-to-oz" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <meta name="google-site-verification" content="49KC3Wnkoo8QxBc56Q5dkx-LVqsbPxtgJTBs_MG7WBU" />
+    <style>
+        /* Common styles for the tool */
+        #result-section {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #e9ecef;
+            min-height: 60px;
+            position: relative;
+        }
+        #result-section .result-heading {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-weight: 600;
+            color: var(--primary-color);
+            border-left: 3px solid var(--secondary-color);
+            padding-left: 10px;
+            font-size: 1.1rem;
+        }
+        #result-section .result-value {
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 10px;
+            padding-top: 20px;
+            color: var(--light-text-color);
+            width: 100%;
+        }
+        .hidden {
+            display: none !important;
+        }
+        
+        /* Table styles */
+        :root {
+            --bg: #ffffff;
+            --text: #1f2937;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+            --stripe: #f9fafb;
+        }
+        body {
+            font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+            color: var(--text);
+            background: var(--bg);
+            margin: 0;
+        }
+        h1 { font-size: 1.25rem; margin: 0 0 12px; }
+        .wrap { max-width: 1100px; margin: 0 auto; }
+        .table-card { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+        .table-scroll { max-height: 70vh; overflow: auto; }
+        table { border-collapse: separate; border-spacing: 0; width: 100%; }
+        thead th { position: sticky; top: 0; background: var(--border); color: #111827; font-weight: 600; text-align: center; padding: 10px 12px; border-bottom: 1px solid var(--border); }
+        tbody td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; text-align: center; }
+        tbody tr:nth-child(even) td { background: var(--stripe); }
+        th, td.num { text-align: right; }
+        th:first-child, td:first-child { text-align: center; }
+        caption { caption-side: bottom; padding: 10px; font-size: 0.875rem; color: var(--muted); }
+    </style>
+</head>
+<body>
+    {% include 'header.html' %}
+    <header class="secondary-header">
+        <div class="container">
+            <h1>Milliliter to Ounce Converter</h1>
+            <p>Enter the volume in milliliters below to convert it to US Fluid Ounces.</p>
+        </div>
+    </header>
+    <div class="container main-content">
+        <section class="card" id="tool">
+            <h2>Convert Milliliters To Fluid Ounces</h2>
+            <div class="tool-container">
+                <div class="form-group">
+                    <label for="mlInput"><b>Volume (in milliliters):</b></label>
+                    <input type="number" id="mlInput" placeholder="Enter volume in milliliters" required>
+                </div>
+                <div class="form-group">
+                    <label for="mainSelect"><b>Select Item:</b></label>
+                    <select id="mainSelect" onchange="convertMlToOz()">
+                        <option value="">-- Select an Item (Volume is always the same) --</option>
+                        <option value="Water">Water</option>
+                        <option value="Granulated Sugar">Granulated Sugar</option>
+                        <option value="Powdered Sugar">Powdered Sugar</option>
+                        <option value="Brown Sugar">Brown Sugar</option>
+                        <option value="Raw Sugar">Raw Sugar</option>
+                        <option value="Corn Syrup">Corn Syrup</option>
+                        <option value="Honey">Honey</option>
+                        <option value="Nutella">Nutella</option>
+                        <option value="Jelly">Jelly</option>
+                        <option value="All Purpose Flour">All Purpose Flour</option>
+                        <option value="Wheat Flour">Wheat Flour</option>
+                        <option value="Bread Flour">Bread Flour</option>
+                        <option value="Type 00 Flour">Type 00 Flour</option>
+                        <option value="Cake Flour">Cake Flour</option>
+                        <option value="Rye Flour">Rye Flour</option>
+                        <option value="Baking Soda">Baking Soda</option>
+                        <option value="Baking Powder">Baking Powder</option>
+                        <option value="Cream of Tartar">Cream of Tartar</option>
+                        <option value="Cooking Oil">Cooking Oil</option>
+                        <option value="Olive Oil">Olive Oil</option>
+                        <option value="Vegetable Oil">Vegetable Oil</option>
+                        <option value="Butter">Butter</option>
+                        <option value="Margarine">Margarine</option>
+                        <option value="Lard">Lard</option>
+                        <option value="Mayonnaise">Mayonnaise</option>
+                        <option value="Peanut Butter">Peanut Butter</option>
+                        <option value="Milk">Milk</option>
+                        <option value="Buttermilk">Buttermilk</option>
+                        <option value="Light Cream">Light Cream</option>
+                        <option value="Heavy Cream">Heavy Cream</option>
+                        <option value="Whipped Cream">Whipped Cream</option>
+                        <option value="Ice Cream">Ice Cream</option>
+                        <option value="Sour Cream">Sour Cream</option>
+                        <option value="Cottage Cheese">Cottage Cheese</option>
+                        <option value="Cream Cheese">Cream Cheese</option>
+                        <option value="Yogurt">Yogurt</option>
+                        <option value="Cinnamon">Cinnamon</option>
+                        <option value="Garlic Powder">Garlic Powder</option>
+                        <option value="Salt">Salt</option>
+                        <option value="Spice Blends">Spice Blends</option>
+                        <option value="Cocoa Powder">Cocoa Powder</option>
+                        <option value="Vanilla">Vanilla</option>
+                        <option value="Almonds">Almonds</option>
+                        <option value="Cashews">Cashews</option>
+                        <option value="Peanuts">Peanuts</option>
+                        <option value="Sunflower Seeds">Sunflower Seeds</option>
+                        <option value="Dried Apple Slices">Dried Apple Slices</option>
+                        <option value="Carrots">Carrots</option>
+                        <option value="Corn">Corn</option>
+                        <option value="Kidney Beans">Kidney Beans</option>
+                        <option value="Onions">Onions</option>
+                        <option value="Potatoes">Potatoes</option>
+                        <option value="Yams">Yams</option>
+                        <option value="Barley">Barley</option>
+                        <option value="Bran">Bran</option>
+                        <option value="Bread">Bread</option>
+                        <option value="Breadcrumbs">Breadcrumbs</option>
+                        <option value="Corn Flakes">Corn Flakes</option>
+                        <option value="Cornstarch">Cornstarch</option>
+                        <option value="Cake Mix">Cake Mix</option>
+                        <option value="Oats">Oats</option>
+                        <option value="Rice">Rice</option>
+                        <option value="Rice Krispies">Rice Krispies</option>
+                        <option value="Rye">Rye</option>
+                        <option value="Wheat">Wheat</option>
+                        <option value="Custom ingredient">Custom ingredient</option> 
+                    </select>
+                </div>
+                <button class="btn" onclick="convertMlToOz()">Convert to Ounces</button>
+            </div>
+        
+        <p style="color: red;"><b>Note:</b> Density varies with temperature and may differ by material. You can also select <b>Custom Density</b> from the dropdown to enter your own value.</p>
+        <div id="result-section">
+            <div class="result-heading">Result:</div>
+            <div class="result-value" id="result-value">Your result will appear here</div>
+        </div>
+        <section class="card" id="why-choose-us">
+            <p>This milliliters to fluid ounces ( mL to fl oz ) converter helps you to quickly convert volume from the metric system to the imperial system.</p>
+        </section>
+
+        <section class="card more-tools" id="more-tools">
+            <h2>More Tools</h2>
+            <div class="tool-cards-container">
+                <a href="/mg-to-ml" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>Mg to Ml</h3>
+                        <p>Convert milligrams to milliliters.</p>
+                    </div>
+                </a>
+                <a href="/g-to-l" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>G to L</h3>
+                        <p>Convert grams to liters.</p>
+                    </div>
+                </a>
+                <a href="/kg-to-l" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Kg to L</h3>
+                        <p>Convert kilograms to liters.</p>
+                    </div>
+                </a>
+                <a href="/l-to-g" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>L to G</h3>
+                        <p>Convert liters to grams.</p>
+                    </div>
+                </a>
+                <a href="/l-to-kg" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>L to Kg</h3>
+                        <p>Convert liters to kilograms.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-g" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>Ml to G</h3>
+                        <p>Convert milliliters to grams.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-oz" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>Ml to Oz</h3>
+                        <p>Convert milliliters to ounces.</p>
+                    </div>
+                </a>
+                <a href="/oz-to-ml" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Oz to Ml</h3>
+                        <p>Convert ounces to milliliters.</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <section class="card" id="how-to-convert">
+            <h2>How to Convert Milliliters to Fluid Ounces</h2>
+            <p>Converting milliliters to fluid ounces is a simple volume conversion. The type of substance (water, oil, etc.) does not matter.</p>
+            <h3>Conversion Factor:</h3>
+            <p>1 milliliter (mL) is equal to approximately 0.033814 US Fluid Ounces (fl oz).</p>
+            <h3>Formula:</h3>
+            <p style="text-align: center; color: red; font-weight: bold;">Ounces (fl oz) = Milliliters (mL) ÷ 29.5735</p>
+            <h4>Example:</h4>
+            <p>Let’s convert 500 milliliters to fluid ounces:</p>
+            <ul>
+                <li>Fluid Ounces = 500 mL ÷ 29.5735</li>
+                <li>Fluid Ounces ≈ 16.907</li>
+            </ul>
+            <p>So, 500 milliliters is approximately equal to **16.907** US Fluid Ounces.</p>
+            
+        </section>
+        
+        <section class="card" id="definition-milliliter">
+            <h2>Definition Of Milliliter:</h2>
+            <p>A **milliliter (mL)** is a metric unit of volume equal to one thousandth of a liter ($\mathbf{1/1000\ \text{L}}$). It is commonly used for measuring small amounts of liquid, especially in cooking and science.</p>
+        </section>
+        <section class="card" id="definition-ounce">
+            <h2>Definition Of Fluid Ounce:</h2>
+            <p>A **fluid ounce (fl oz)** is an imperial and US customary unit of volume. In the US Customary system, one fluid ounce is exactly $\mathbf{1/128}$ of a US gallon, which is approximately **$29.5735\ \text{mL}$**.</p>
+        </section>
+
+        <section class="card" id="Table">
+        <h2>Milliliters to Fluid Ounces Conversion Table</h2>
+        <div class="wrap">
+            <div class="table-card">
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Volume (Milliliters)</th>
+                                <th>Volume (US Fluid Ounces)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>1 mL</td><td>0.034 fl oz</td></tr>
+                            <tr><td>5 mL</td><td>0.169 fl oz</td></tr>
+                            <tr><td>15 mL</td><td>0.507 fl oz</td></tr>
+                            <tr><td>30 mL</td><td>1.014 fl oz</td></tr>
+                            <tr><td>50 mL</td><td>1.691 fl oz</td></tr>
+                            <tr><td>100 mL</td><td>3.381 fl oz</td></tr>
+                            <tr><td>236.59 mL ($\approx 1$ cup)</td><td>8.000 fl oz</td></tr>
+                            <tr><td>250 mL</td><td>8.454 fl oz</td></tr>
+                            <tr><td>500 mL</td><td>16.907 fl oz</td></tr>
+                            <tr><td>750 mL</td><td>25.361 fl oz</td></tr>
+                            <tr><td>1000 mL (1 L)</td><td>33.814 fl oz</td></tr>
+                            <tr><td>1500 mL</td><td>50.721 fl oz</td></tr>
+                            <tr><td>2000 mL (2 L)</td><td>67.628 fl oz</td></tr>
+                            <tr><td>2500 mL</td><td>84.535 fl oz</td></tr>
+                            <tr><td>3785.41 mL ($\approx 1$ gallon)</td><td>128.000 fl oz</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        </section>
+
+
+        <section class="card" id="faq">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFAQ(this)">
+                <h4>Q: Do I need to know the density to convert mL to fl oz?</h4>
+                <span class="toggle-icon">-</span>
+            </div>
+            <div class="faq-answer">
+                <p>A: No. Converting milliliters to fluid ounces is a direct **volume-to-volume** conversion. The density of the substance (like water or oil) is only needed when converting between **volume** (mL, L, fl oz) and **mass** (g, kg, oz, lb).</p>
+            </div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFAQ(this)">
+                <h4>Q: Is a US Fluid Ounce different from an Imperial Fluid Ounce?</h4>
+                <span class="toggle-icon">-</span>
+            </div>
+            <div class="faq-answer">
+                <p>A: Yes. A US fluid ounce is approximately **$29.57\ \text{mL}$**, whereas an Imperial (UK/Canadian) fluid ounce is slightly larger at approximately **$28.41\ \text{mL}$**. This converter uses the more common US Fluid Ounce.</p>
+            </div>
+        </div>
+        </section>
+
+    </div>
+    {% include 'footer.html' %}
+    <script>
+        const mlInput = document.getElementById('mlInput'); // Volume in Milliliters
+        const resultValue = document.getElementById('result-value');
+
+        // Conversion function: Milliliters to Fluid Ounces
+        function convertMlToOz() {
+            const mL = parseFloat(mlInput.value); // Volume in Milliliters
+            const CONVERSION_FACTOR = 29.5735; // 1 US Fluid Ounce = 29.5735 mL
+            
+            if (isNaN(mL) || mL < 0) {
+                resultValue.innerHTML = `Please enter a valid positive number for volume.`;
+                resultValue.style.color = 'red';
+                return;
+            }
+            
+            if (mL === 0) {
+                resultValue.innerHTML = `0 mL = 0 fl oz`;
+                resultValue.style.color = 'green';
+                return;
+            }
+
+            // Formula: Ounces (fl oz) = Milliliters (mL) / 29.5735
+            const flOz = mL / CONVERSION_FACTOR; 
+            
+            resultValue.innerHTML = `${mL} mL = ${flOz.toFixed(4)} fl oz`;
+            resultValue.style.color = 'green';
+            document.getElementById('result-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        
+        // Add event listener to input field so conversion runs instantly
+        mlInput.addEventListener('input', convertMlToOz);
+    </script>
+    <script>
+        // FAQ toggle function ko yahaan add kar diya hai
+        function toggleFAQ(element) {
+            const answer = element.nextElementSibling;
+            const icon = element.querySelector('.toggle-icon');
+            if (answer.style.maxHeight) {
+                answer.style.maxHeight = null;
+                icon.textContent = '+';
+            } else {
+                answer.style.maxHeight = answer.scrollHeight + "px";
+                icon.textContent = '-';
+            }
+        }
+    </script>
+</body>
+</html>

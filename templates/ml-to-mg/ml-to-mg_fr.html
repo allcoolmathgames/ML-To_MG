@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.png') }}" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="index, follow">
+    <title>Convertir ml en mg | Conversion mL en Mg</title>
+    <meta name="description" content="Utilisez ce convertir ml en mg pour effectuer des conversions de millilitres en milligrammes en un seul clic." />
+    <meta name="keywords" content="Convertisseur ml en mg, conversion ml en mg, tableau mL en mg, conversion eau, conversion lait, conversion huile de cuisson, conversion farine, conversion sucre, tableau des mesures de cuisine, conversions pâtisserie, tableau poids ingrédients" />
+    <link rel="canonical" href="https://mltomg.info/fr" />
+    <link rel="alternate" hreflang="x-default" href="https://mltomg.info/" />
+    <link rel="alternate" hreflang="en" href="https://mltomg.info/" />
+    <link rel="alternate" hreflang="ar" href="https://mltomg.info/ar" />
+    <link rel="alternate" hreflang="de" href="https://mltomg.info/de" />
+    <link rel="alternate" hreflang="es" href="https://mltomg.info/es" />
+    <link rel="alternate" hreflang="fr" href="https://mltomg.info/fr" />
+    <link rel="alternate" hreflang="it" href="https://mltomg.info/it" />
+    <link rel="alternate" hreflang="pt" href="https://mltomg.info/pt" />
+    <link rel="alternate" hreflang="ru" href="https://mltomg.info/ru" />
+    <link rel="alternate" hreflang="tr" href="https://mltomg.info/tr" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+    <meta name="google-site-verification" content="49KC3Wnkoo8QxBc56Q5dkx-LVqsbPxtgJTBs_MG7WBU" />
+    <style>
+        #result-section {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #e9ecef;
+            min-height: 60px;
+            position: relative;
+        }
+        #result-section .result-heading {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-weight: 600;
+            color: var(--primary-color);
+            border-left: 3px solid var(--secondary-color);
+            padding-left: 10px;
+            font-size: 1.1rem;
+        }
+        #result-section .result-value {
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 10px;
+            padding-top: 20px;
+            color: var(--light-text-color);
+            width: 100%;
+        }
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    {% include 'header.html' %}
+    <header class="secondary-header">
+        <div class="container">
+            <h1>Convertisseur de Ml en Mg</h1>
+            <p>Entrez le volume en millilitres ci-dessous pour calculer le poids en milligrammes.</p>
+        </div>
+    </header>
+    <div class="container main-content">
+        <section class="card" id="tool">
+            <h2>Convertir Ml en Mg</h2>
+            <div class="tool-container">
+                <div class="form-group">
+                    <label for="mlInput"><b>Volume (en ml):</b></label>
+                    <input type="number" id="mlInput" placeholder="Entrez le volume en ml" required>
+                </div>
+                <div class="form-group">
+                    <label for="mainSelect"><b>Sélectionner un élément :</b></label>
+                    <select id="mainSelect">
+                        <option value="">-- Sélectionner un élément --</option>
+                        <option value="water" data-density="1000">Eau</option>
+                        <option value="ethanol" data-density="789">Éthanol</option>
+                        <option value="olive-oil" data-density="918">Huile d'olive</option>
+                        <option value="milk" data-density="1030">Lait</option>
+                        <option value="honey" data-density="1300">Chérie</option>
+                        <option value="glycerin" data-density="1800">Glycérine</option>
+                        <option value="medication">Glycérine</option>
+                        <option value="custom-liquid">Densité personnalisée</option>
+                    </select>
+                </div>
+
+                <div class="form-group hidden" id="medicationGroup">
+                    <label for="medicationSelect"><b>Sélectionnez un médicament:</b></label>
+                    <select id="medicationSelect">
+                        <option value="">-- Sélectionnez un médicament --</option>
+                        <option value="acetaminophen" data-concentration="10">Acetaminophen (Tylenol) 10 mg/mL</option>
+                        <option value="amoxicillin" data-concentration="80">Amoxicillin suspension 400 mg/5 mL</option>
+                        <option value="benadryl-oral" data-concentration="12.5">Benadryl (Oral liquid, 12.5 mg/5 mL)</option>
+                        <option value="benadryl-injection" data-concentration="50">Benadryl (Injection, 50 mg/mL or 500 mg/10 mL)</option>
+                        <option value="cetirizine" data-concentration="1">Cetirizine HCL 1 mg/mL</option>
+                        <option value="ibuprofen-oral-1" data-concentration="20">Ibuprofen (Oral liquid, 100 mg/5 mL)</option>
+                        <option value="ibuprofen-oral-2" data-concentration="40">Ibuprofen (Oral liquid, 50 mg/1.25 mL)</option>
+                        <option value="ibuprofen-injection-1" data-concentration="5">Ibuprofen (Injection, 10 mg/2 mL)</option>
+                        <option value="ibuprofen-injection-2" data-concentration="100">Ibuprofen (Injection, 800 mg/8 mL)</option>
+                        <option value="morphine" data-concentration="20">Morphine sulfate soln 20 mg/mL</option>
+                        <option value="testosterone" data-concentration="200">Testosterone 200 mg/mL</option>
+                        <option value="custom-medication">Concentration personnalisée</option>
+                    </select>
+                </div>
+
+                <div class="form-group hidden" id="densityGroup">
+                    <label for="densityInput"><b>Densité (mg/mL):</b></label>
+                    <input type="number" id="densityInput" placeholder="Enter density in mg/mL" required>
+                </div>
+
+                <div class="form-group hidden" id="concentrationGroup">
+                    <label for="concentrationInput"><b>Concentration (mg/mL):</b></label>
+                    <input type="number" id="concentrationInput" placeholder="Enter concentration in mg/mL" required>
+                </div>
+
+                <button class="btn" onclick="convertMlToMg()">Convertir en mg</button>
+            </div>
+        </section>
+        <div id="result-section">
+            <div class="result-heading">Résultat:</div>
+            <div class="result-value" id="result-value">Votre résultat apparaîtra ici</div>
+        </div>
+        <section class="card" id="why-choose-us">
+            <p>Saisissez simplement le nombre total de millilitres (mL) dans le convertisseur ml-mg pour convertir ml en mg selon votre densité. Vous pouvez également convertir <a href="https://mltomg.info/mg-to-ml">mg en ml</a> sur mltomg.info.</p>
+        </section>
+        <section class="card" id="formula">
+            <h2>Formule mL en mg :</h2>
+            <p><b>Mg = mL × d (mg/mL)</b></p>
+            <p>Where;</p>
+            <p>1. <b>mg</b> = Milligrammes</p>
+            <p>2. <b>ml</b> = Millilitres</p>
+            <p>3. <b>d</b> = Masse volumique (mg/ml)</p>
+            <p>Pour convertir des ml en mg, la masse volumique doit être en mg/ml. Si elle est en g/ml, convertissez-la d'abord en mg/ml en multipliant la masse volumique par 1 000.</p>
+        </section>
+        <section class="card" id="why-choose-us">
+            <h2>Comment convertir des ml en mg ?</h2>
+<ul>
+<li><b>Trouver le volume :</b> Déterminer le volume total (ml) de la substance donnée.</li>
+<li><b>Trouver la masse volumique :</b> Mesurer la masse volumique de la substance donnée. Les étiquettes des produits ou la littérature scientifique indiquent généralement cette valeur.</li>
+<li><b>Déterminer la masse :</b> Insérer les valeurs connues dans la formule pour calculer la masse.</li>
+            </ul>
+        </section>
+        <section class="card" id="example">
+            <h3>Exemple :</h3>
+<p>Comprenons cela en résolvant un exemple :</p>
+<p>Supposons que vous ayez <b>5 ml</b> d'un liquide de masse volumique de <b>1.5 g/ml</b>. La conversion serait :</p>
+<p><b>Milligrammes (mg)</b> = 5 ml × 1 000 × 1.5 g/ml = <b>7500 mg</b></p>
+        </section>
+        <section class="card more-tools" id="more-tools">
+            <h2>More Tools</h2>
+            <div class="tool-cards-container">
+                <a href="/mg-to-ml" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                      <h3>Mg en ml</h3>
+<p>Convertir des milligrammes en millilitres.</p>
+                    </div>
+                </a>
+                <a href="/g-to-l" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                       <h3>G en L</h3>
+<p>Convertir des grammes en litres.</p>
+                    </div>
+                </a>
+                <a href="/kg-to-l" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                       <h3>Kg en L</h3>
+<p>Convertir des kilogrammes en litres.</p>
+                    </div>
+                </a>
+                <a href="/l-to-g" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>L en G</h3>
+<p>Convertir des litres en grammes.</p>
+                    </div>
+                </a>
+                <a href="/l-to-kg" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                    <h3>L en Kg</h3>
+                    <p>Convertir des litres en kilogrammes.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-g" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                     <h3>Ml en G</h3>
+                     <p>Convertir des millilitres en grammes.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-oz" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+<h3>Ml en Oz</h3>
+<p>Convertir des millilitres en onces.</p>
+                    </div>
+                </a>
+                <a href="/oz-to-ml" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                      <h3>Oz en ml</h3>
+<p>Convertir des onces en millilitres.</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+        <section class="card" id="Table">
+            <h2>Tableau de conversion des millilitres en milligrammes</h2>
+            <style>
+                :root {
+                    --bg: #ffffff;
+                    --text: #1f2937;
+                    --muted: #6b7280;
+                    --border: #e5e7eb;
+                    --stripe: #f9fafb;
+                }
+                body {
+                    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+                    color: var(--text);
+                    background: var(--bg);
+                    margin: 0;
+                }
+                h1 { font-size: 1.25rem; margin: 0 0 12px; }
+                .wrap { max-width: 1100px; margin: 0 auto; }
+                .table-card { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+                .table-scroll { max-height: 70vh; overflow: auto; }
+                table { border-collapse: separate; border-spacing: 0; width: 100%; }
+                thead th { position: sticky; top: 0; background: #f3f4f6; color: #111827; font-weight: 600; text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border); }
+                tbody td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+                tbody tr:nth-child(even) td { background: var(--stripe); }
+                th, td.num { text-align: right; }
+                th:first-child, td:first-child { text-align: center; }
+                caption { caption-side: bottom; padding: 10px; font-size: 0.875rem; color: var(--muted); }
+            </style>
+            <div class="wrap">
+                <div class="table-card">
+                    <div class="table-scroll">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Volume (mL)</th>
+                                    <th>Eau (mg)</th>
+                                    <th>Lait (mg)</th>
+                                    <th>Huile de cuisson (mg)</th>
+                                    <th>Farine tout usage (mg)</th>
+                                    <th>Sucre cristallisé (mg)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>1</td><td class="num">1,000</td><td class="num">1,030</td><td class="num">880</td><td class="num">529</td><td class="num">845.35</td></tr>
+                                <tr><td>2</td><td class="num">2,000</td><td class="num">2,060</td><td class="num">1,760</td><td class="num">1,058</td><td class="num">1,691</td></tr>
+                                <tr><td>3</td><td class="num">3,000</td><td class="num">3,090</td><td class="num">2,640</td><td class="num">1,587</td><td class="num">2,536</td></tr>
+                                <tr><td>4</td><td class="num">4,000</td><td class="num">4,120</td><td class="num">3,520</td><td class="num">2,116</td><td class="num">3,381</td></tr>
+                                <tr><td>5</td><td class="num">5,000</td><td class="num">5,150</td><td class="num">4,400</td><td class="num">2,645</td><td class="num">4,227</td></tr>
+                                <tr><td>6</td><td class="num">6,000</td><td class="num">6,180</td><td class="num">5,280</td><td class="num">3,174</td><td class="num">5,072</td></tr>
+                                <tr><td>7</td><td class="num">7,000</td><td class="num">7,210</td><td class="num">6,160</td><td class="num">3,703</td><td class="num">5,917</td></tr>
+                                <tr><td>8</td><td class="num">8,000</td><td class="num">8,240</td><td class="num">7,040</td><td class="num">4,232</td><td class="num">6,763</td></tr>
+                                <tr><td>9</td><td class="num">9,000</td><td class="num">9,270</td><td class="num">7,920</td><td class="num">4,761</td><td class="num">7,608</td></tr>
+                                <tr><td>10</td><td class="num">10,000</td><td class="num">10,300</td><td class="num">8,800</td><td class="num">5,290</td><td class="num">8,454</td></tr>
+                                <tr><td>11</td><td class="num">11,000</td><td class="num">11,330</td><td class="num">9,680</td><td class="num">5,819</td><td class="num">9,299</td></tr>
+                                <tr><td>12</td><td class="num">12,000</td><td class="num">12,360</td><td class="num">10,560</td><td class="num">6,348</td><td class="num">10,144</td></tr>
+                                <tr><td>13</td><td class="num">13,000</td><td class="num">13,390</td><td class="num">11,440</td><td class="num">6,877</td><td class="num">10,990</td></tr>
+                                <tr><td>14</td><td class="num">14,000</td><td class="num">14,420</td><td class="num">12,320</td><td class="num">7,406</td><td class="num">11,835</td></tr>
+                                <tr><td>15</td><td class="num">15,000</td><td class="num">15,450</td><td class="num">13,200</td><td class="num">7,935</td><td class="num">12,680</td></tr>
+                                <tr><td>16</td><td class="num">16,000</td><td class="num">16,480</td><td class="num">14,080</td><td class="num">8,464</td><td class="num">13,526</td></tr>
+                                <tr><td>11</td><td class="num">11,000</td><td class="num">11,330</td><td class="num">9,680</td><td class="num">5,819</td><td class="num">9,299</td></tr>
+                                <tr><td>17</td><td class="num">17,000</td><td class="num">17,510</td><td class="num">14,960</td><td class="num">8,993</td><td class="num">14,371</td></tr>
+                                <tr><td>18</td><td class="num">18,000</td><td class="num">18,540</td><td class="num">15,840</td><td class="num">9,522</td><td class="num">15,216</td></tr>
+                                <tr><td>19</td><td class="num">19,000</td><td class="num">19,570</td><td class="num">16,720</td><td class="num">10,051</td><td class="num">16,062</td></tr>
+                                <tr><td>20</td><td class="num">20,000</td><td class="num">20,600</td><td class="num">17,600</td><td class="num">10,580</td><td class="num">16,907</td></tr>
+                                <tr><td>21</td><td class="num">21,000</td><td class="num">21,630</td><td class="num">18,480</td><td class="num">11,109</td><td class="num">17,752</td></tr>
+                                <tr><td>22</td><td class="num">22,000</td><td class="num">22,660</td><td class="num">19,360</td><td class="num">11,638</td><td class="num">18,598</td></tr>
+                                <tr><td>23</td><td class="num">23,000</td><td class="num">23,690</td><td class="num">20,240</td><td class="num">12,167</td><td class="num">19,443</td></tr>
+                                <tr><td>24</td><td class="num">24,000</td><td class="num">24,720</td><td class="num">21,120</td><td class="num">12,696</td><td class="num">20,288</td></tr>
+                                <tr><td>25</td><td class="num">25,000</td><td class="num">25,750</td><td class="num">22,000</td><td class="num">13,225</td><td class="num">21,134</td></tr>
+                                <tr><td>26</td><td class="num">26,000</td><td class="num">26,780</td><td class="num">22,880</td><td class="num">13,754</td><td class="num">21,979</td></tr>
+                                <tr><td>27</td><td class="num">27,000</td><td class="num">27,810</td><td class="num">23,760</td><td class="num">14,283</td><td class="num">22,824</td></tr>
+                                <tr><td>28</td><td class="num">28,000</td><td class="num">28,840</td><td class="num">24,640</td><td class="num">14,812</td><td class="num">23,670</td></tr>
+                                <tr><td>29</td><td class="num">29,000</td><td class="num">29,870</td><td class="num">25,520</td><td class="num">15,341</td><td class="num">24,515</td></tr>
+                                <tr><td>30</td><td class="num">30,000</td><td class="num">30,900</td><td class="num">26,400</td><td class="num">15,870</td><td class="num">25,361</td></tr>
+                                <tr><td>31</td><td class="num">31,000</td><td class="num">31,930</td><td class="num">27,280</td><td class="num">16,399</td><td class="num">26,206</td></tr>
+                                <tr><td>32</td><td class="num">32,000</td><td class="num">32,960</td><td class="num">28,160</td><td class="num">16,928</td><td class="num">27,051</td></tr>
+                                <tr><td>33</td><td class="num">33,000</td><td class="num">33,990</td><td class="num">29,040</td><td class="num">17,457</td><td class="num">27,897</td></tr>
+                                <tr><td>34</td><td class="num">34,000</td><td class="num">35,020</td><td class="num">29,920</td><td class="num">17,986</td><td class="num">28,742</td></tr>
+                                <tr><td>35</td><td class="num">35,000</td><td class="num">36,050</td><td class="num">30,800</td><td class="num">18,515</td><td class="num">29,587</td></tr>
+                                <tr><td>36</td><td class="num">36,000</td><td class="num">37,080</td><td class="num">31,680</td><td class="num">19,044</td><td class="num">30,433</td></tr>
+                                <tr><td>37</td><td class="num">37,000</td><td class="num">38,110</td><td class="num">32,560</td><td class="num">19,573</td><td class="num">31,278</td></tr>
+                                <tr><td>38</td><td class="num">38,000</td><td class="num">39,140</td><td class="num">33,440</td><td class="num">20,102</td><td class="num">32,123</td></tr>
+                                <tr><td>39</td><td class="num">39,000</td><td class="num">40,170</td><td class="num">34,320</td><td class="num">20,631</td><td class="num">32,969</td></tr>
+                                <tr><td>40</td><td class="num">40,000</td><td class="num">41,200</td><td class="num">35,200</td><td class="num">21,160</td><td class="num">33,814</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="card" id="faq">
+            <h2>Questions fréquemment posées</h2>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>Q : Est-ce que 1 ml équivaut à 1 mg ?</h4>
+                    <span class="toggle-icon">-</span>
+                </div>
+                <div class="faq-answer">
+                    <p>R : Non, 1 ml n'est pas égal à 1 mg. La conversion de ml en mg dépend entièrement de la densité de la substance.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>Q : Est-il possible de convertir des millilitres (mL) en milligrammes (mg) ?</h4>
+                    <span class="toggle-icon">-</span>
+                </div>
+                <div class="faq-answer">
+                    <p>R : Oui, vous pouvez facilement convertir des ml en mg grâce à la formule ci-dessus. Vous pouvez également utiliser notre convertisseur ml en mg pour une conversion rapide et facile.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>Q : Que signifie 50 ml en mg ?</h4>
+                </div>
+                <div class="faq-answer">
+                   <p>A : 50 ml en mg pour une substance d'une densité de 0.7 g/mL sont les suivants :</p>
+                    <p><b>milligrammes</b> = 50 mL × 1,000 × 0.7 g/mL = <b>35,000 mg</b></p>
+                </div>
+            </div>
+        </section>
+        <section class="card" id="reference">
+            <h2>Référence:</h2>
+            <p>Pour la densité du lait :- <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7466286/">visit</a></p>
+            <p>Pour la densité de l'huile de cuisson:- <a href="https://hypertextbook.com/facts/2000/IngaDorfman.shtml">visit</a></p>
+        </section>
+    </div>
+    {% include 'footer.html' %}
+    <script>
+        const mainSelect = document.getElementById('mainSelect');
+        const medicationGroup = document.getElementById('medicationGroup');
+        const medicationSelect = document.getElementById('medicationSelect');
+        const densityGroup = document.getElementById('densityGroup');
+        const densityInput = document.getElementById('densityInput');
+        const concentrationGroup = document.getElementById('concentrationGroup');
+        const concentrationInput = document.getElementById('concentrationInput');
+        const mlInput = document.getElementById('mlInput');
+        const resultValue = document.getElementById('result-value');
+
+        // Event listener for the main dropdown
+        mainSelect.addEventListener('change', () => {
+            const selectedValue = mainSelect.value;
+            // Reset all groups and inputs
+            medicationGroup.classList.add('hidden');
+            densityGroup.classList.add('hidden');
+            concentrationGroup.classList.add('hidden');
+            densityInput.value = '';
+            concentrationInput.value = '';
+
+            if (selectedValue === 'medication') {
+                medicationGroup.classList.remove('hidden');
+            } else if (selectedValue === 'custom-liquid') {
+                densityGroup.classList.remove('hidden');
+            } else if (selectedValue !== '') {
+                // For other liquids, show density input and set value
+                densityGroup.classList.remove('hidden');
+                densityInput.value = mainSelect.options[mainSelect.selectedIndex].dataset.density;
+            }
+        });
+
+        // Event listener for the medication dropdown
+        medicationSelect.addEventListener('change', () => {
+            const selectedValue = medicationSelect.value;
+            // Reset concentration input first
+            concentrationInput.value = '';
+            concentrationGroup.classList.remove('hidden');
+
+            if (selectedValue === 'custom-medication') {
+                concentrationInput.placeholder = 'Enter custom concentration';
+            } else if (selectedValue !== '') {
+                concentrationInput.value = medicationSelect.options[medicationSelect.selectedIndex].dataset.concentration;
+            }
+        });
+
+        function convertMlToMg() {
+            const ml = parseFloat(mlInput.value);
+            let factor;
+            let calculationType;
+
+            const mainSelection = mainSelect.value;
+            const medicationSelection = medicationSelect.value;
+
+            if (mainSelection === 'medication') {
+                if (medicationSelection === '') {
+                    resultValue.innerHTML = 'Please select a medication.';
+                    resultValue.style.color = 'red';
+                    return;
+                }
+                factor = parseFloat(concentrationInput.value);
+                calculationType = 'Concentration';
+            } else { // It's a liquid or custom liquid
+                if (mainSelection === '') {
+                    resultValue.innerHTML = 'Please select an item.';
+                    resultValue.style.color = 'red';
+                    return;
+                }
+                factor = parseFloat(densityInput.value);
+                calculationType = 'Density';
+            }
+
+            if (isNaN(ml) || isNaN(factor) || ml <= 0 || factor <= 0) {
+                resultValue.innerHTML = `Please enter valid positive numbers for volume and ${calculationType}.`;
+                resultValue.style.color = 'red';
+                return;
+            }
+
+            const mg = ml * factor;
+            resultValue.innerHTML = `${ml} ml = ${mg.toLocaleString()} mg`;
+            resultValue.style.color = 'green';
+            document.getElementById('result-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.png') }}" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Litre Kilogram Dönüştürücü | L - Kg Dönüşümü</title>
+    <meta name="description" content="Çeşitli maddelerin yoğunluklarına göre litreden kilograma dönüşümlerini yapmak için bu litreden kilograma dönüştürücüyü kullanın." />
+    <meta name="keywords" content="litre kilogram dönüştürücü, l kg dönüşümü, l kg tablosu, su dönüşümü, süt dönüşümü, yemeklik yağ dönüşümü, un dönüşümü, mutfak ölçüm tablosu, pişirme dönüşümleri, malzeme kütle tablosu" />
+    <link rel="canonical" href="https://kgtoL.info/l-to-kg" />
+    <link rel="alternate" hreflang="x-default" href="https://kgtoL.info/l-to-kg" />
+    <link rel="alternate" hreflang="tr" href="https://kgtoL.info/l-to-kg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <meta name="google-site-verification" content="49KC3Wnkoo8QxBc56Q5dkx-LVqsbPxtgJTBs_MG7WBU" />
+    <style>
+        #result-section {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #e9ecef;
+            min-height: 60px;
+            position: relative;
+        }
+        #result-section .result-heading {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-weight: 600;
+            color: var(--primary-color);
+            border-left: 3px solid var(--secondary-color);
+            padding-left: 10px;
+            font-size: 1.1rem;
+        }
+        #result-section .result-value {
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 10px;
+            padding-top: 20px;
+            color: var(--light-text-color);
+            width: 100%;
+        }
+        .hidden {
+            display: none !important;
+        }
+
+        :root {
+            --bg: #ffffff;
+            --text: #1f2937;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+            --stripe: #f9fafb;
+        }
+        body {
+            font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+            color: var(--text);
+            background: var(--bg);
+            margin: 0;
+        }
+        h1 { font-size: 1.25rem; margin: 0 0 12px; }
+        .wrap { max-width: 1100px; margin: 0 auto; }
+        .table-card { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+        .table-scroll { max-height: 70vh; overflow: auto; }
+        table { border-collapse: separate; border-spacing: 0; width: 100%; }
+        thead th { position: sticky; top: 0; background: var(--border); color: #111827; font-weight: 600; text-align: center; padding: 10px 12px; border-bottom: 1px solid var(--border); }
+        tbody td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; text-align: center; }
+        tbody tr:nth-child(even) td { background: var(--stripe); }
+        th, td.num { text-align: right; }
+        th:first-child, td:first-child { text-align: center; }
+        caption { caption-side: bottom; padding: 10px; font-size: 0.875rem; color: var(--muted); }
+    </style>
+</head>
+<body>
+    {% include 'header.html' %}
+    <header class="secondary-header">
+        <div class="container">
+            <h1>Litre - Kilogram Dönüştürücü</h1>
+            <p>Kütleyi kilogram cinsinden hesaplamak için aşağıdaki hacmi litre cinsinden girin.</p>
+        </div>
+    </header>
+    <div class="container main-content">
+        <section class="card" id="tool">
+            <h2>Litre - Kilogram Dönüştürücü</h2>
+            <div class="tool-container">
+                <div class="form-group">
+                    <label for="lInput"><b>Hacim (litre cinsinden):</b></label>
+                    <input type="number" id="lInput" placeholder="Hacmi litre cinsinden girin" required>
+                </div>
+                <div class="form-group">
+                    <label for="mainSelect"><b>Madde Seçin:</b></label>
+                    <select id="mainSelect">
+                        <option value="">-- Madde Seçin --</option>
+                        <optgroup label="Yaygın">
+                            <option value="water" data-density="1.000">Su</option>
+                        </optgroup>
+                        <optgroup label="Şekerler">
+                            <option value="granulated-sugar" data-density="0.845">Toz Şeker</option>
+                            <option value="powdered-sugar" data-density="0.560">Pudra Şekeri</option>
+                            <option value="brown-sugar" data-density="0.850">Esmer Şeker</option>
+                            <option value="raw-sugar" data-density="0.900">Ham Şeker</option>
+                        </optgroup>
+                        <optgroup label="Şuruplar ve Yayıklar">
+                            <option value="corn-syrup" data-density="1.380">Mısır Şurubu</option>
+                            <option value="honey" data-density="1.420">Bal</option>
+                            <option value="nutella" data-density="1.200">Nutella</option>
+                            <option value="jelly" data-density="1.300">Jöle</option>
+                        </optgroup>
+                        <optgroup label="Un Çeşitleri">
+                            <option value="all-purpose-flour" data-density="0.529">Çok Amaçlı Un</option>
+                            <option value="wheat-flour" data-density="0.529">Buğday Unu</option>
+                            <option value="bread-flour" data-density="0.529">Ekmek Unu</option>
+                            <option value="type-00-flour" data-density="0.600">Tip 00 Unu</option>
+                            <option value="cake-flour" data-density="0.480">Pasta Unu</option>
+                            <option value="rye-flour" data-density="0.460">Çavdar Unu</option>
+                        </optgroup>
+                        <optgroup label="Kabartma Tozları ve Baharatlar">
+                            <option value="baking-soda" data-density="0.960">Kabartma Tozu</option>
+                            <option value="baking-powder" data-density="0.800">Kabartma Tozu</option>
+                            <option value="cream-of-tartar" data-density="0.750">Krem Tartar</option>
+                            <option value="cinnamon" data-density="0.540">Tarçın</option>
+                            <option value="garlic-powder" data-density="0.550">Sarımsak Tozu</option>
+                            <option value="salt" data-density="2.160">Tuz</option>
+                            <option value="spice-blends" data-density="0.550">Baharat Karışımları</option>
+                            <option value="cocoa-powder" data-density="0.480">Kakao Tozu</option>
+                            <option value="vanilla" data-density="1.200">Vanilya Özütü</option>
+                        </optgroup>
+                        <optgroup label="Yağlar">
+                            <option value="cooking-oil" data-density="0.918">Yemeklik Yağ</option>
+                            <option value="olive-oil" data-density="0.918">Zeytinyağı</option>
+                            <option value="vegetable-oil" data-density="0.918">Bitkisel Yağ</option>
+                            <option value="butter" data-density="0.911">Tereyağı</option>
+                            <option value="margarine" data-density="0.940">Margarin</option>
+                            <option value="lard" data-density="0.920">İç Yağı</option>
+                            <option value="mayonnaise" data-density="0.920">Mayonez</option>
+                            <option value="peanut-butter" data-density="1.060">Fıstık Ezmesi</option>
+                        </optgroup>
+                        <optgroup label="Süt Ürünleri">
+                            <option value="milk" data-density="1.030">Süt</option>
+                            <option value="buttermilk" data-density="1.030">Ayran</option>
+                            <option value="light-cream" data-density="1.009">Hafif Krema</option>
+                            <option value="heavy-cream" data-density="0.994">Ağır Krema</option>
+                            <option value="whipped-cream" data-density="0.480">Şantili Krema</option>
+                            <option value="ice-cream" data-density="0.560">Dondurma</option>
+                            <option value="sour-cream" data-density="1.030">Ekşi Krema</option>
+                            <option value="cottage-cheese" data-density="1.060">Lor Pebiri</option>
+                            <option value="cream-cheese" data-density="1.040">Krema Pebiri</option>
+                            <option value="yogurt" data-density="1.030">Yoğurt</option>
+                        </optgroup>
+                        <optgroup label="Kuruyemişler ve Tahıllar">
+                            <option value="almonds" data-density="0.600">Badem</option>
+                            <option value="cashews" data-density="0.600">Kaju</option>
+                            <option value="peanuts" data-density="0.600">Fıstık</option>
+                            <option value="sunflower-seeds" data-density="0.500">Ayçiçeği Çekirdeği</option>
+                            <option value="barley" data-density="0.700">Arpa</option>
+                            <option value="bran" data-density="0.300">Kepek</option>
+                            <option value="oats" data-density="0.450">Yulaf</option>
+                            <option value="rice" data-density="0.850">Pirinç (pişmemiş)</option>
+                            <option value="rye" data-density="0.700">Çavdar</option>
+                            <option value="wheat" data-density="0.800">Buğday</option>
+                            <option value="breadcrumbs" data-density="0.420">Galeta Unu</option>
+                            <option value="corn-flakes" data-density="0.150">Mısır Gevreği</option>
+                            <option value="cornstarch" data-density="0.500">Mısır Nişastası</option>
+                            <option value="rice-krispies" data-density="0.110">Pirinç Gevreği</option>
+                        </optgroup>
+                        <optgroup label="Diğer Malzemeler">
+                            <option value="dried-apple-slices" data-density="0.200">Kurutulmuş Elma Dilimleri</option>
+                            <option value="carrots" data-density="0.500">Havuç (rendelenmiş)</option>
+                            <option value="corn" data-density="0.750">Mısır (taneli)</option>
+                            <option value="kidney-beans" data-density="0.850">Kırmızı Fasulye (kuru)</option>
+                            <option value="onions" data-density="0.700">Soğan (doğranmış)</option>
+                            <option value="potatoes" data-density="0.750">Patates (küp doğranmış)</option>
+                            <option value="yams" data-density="0.750">Tatlı Patates (küp doğranmış)</option>
+                            <option value="bread" data-density="0.250">Ekmek (dilimlenmiş)</option>
+                            <option value="cake-mix" data-density="0.800">Pasta Karışımı</option>
+                        </optgroup>
+                        <option value="custom-liquid">Özel Yoğunluk (kg/L)</option>
+                    </select>
+                </div>
+                <div class="form-group hidden" id="densityGroup">
+                    <label for="densityInput"><b>Yoğunluk (kg/L):</b></label>
+                    <input type="number" id="densityInput" placeholder="Yoğunluğu kg/L cinsinden girin" required>
+                </div>
+                <button class="btn" onclick="convertLToKg()">Kilograma Dönüştür</button>
+            </div>
+
+        <p style="color: red;"><b>Not:</b> Yoğunluk sıcaklığa göre değişir ve malzemeye göre farklılık gösterebilir. Ayrıca, <b>Özel Yoğunluk</b> seçeneğini kullanarak kendi değerinizi de girebilirsiniz.</p>
+        <div id="result-section">
+            <div class="result-heading">Sonuç:</div>
+            <div class="result-value" id="result-value">Sonucunuz burada görünecek</div>
+        </div>
+        <section class="card" id="why-choose-us">
+            <p>Litre - kg Dönüştürücü, bir maddenin veya malzemenin hacmini litre cinsinden eşdeğer bir ağırlığa kilogram cinsinden dönüştürmek için kullanışlı bir araçtır. L - kg dönüştürücümüz, dönüşümün doğruluğunu ve verimliliğini sağlamak için seçilen madde veya malzemenin yoğunluğunu da gösterir. Ters hesaplamalar için kilogram - litre dönüştürücümüzü de kullanabilirsiniz.</p>
+        </section>
+        <section class="card more-tools" id="more-tools">
+            <h2>Daha Fazla Araç</h2>
+            <div class="tool-cards-container">
+                <a href="/mg-to-ml" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>Mg - Ml</h3>
+                        <p>Miligramı mililitreye dönüştür.</p>
+                    </div>
+                </a>
+                <a href="/g-to-l" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>G - L</h3>
+                        <p>Gramı litreye dönüştür.</p>
+                    </div>
+                </a>
+                <a href="/kg-to-l" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Kg - L</h3>
+                        <p>Kilogramı litreye dönüştür.</p>
+                    </div>
+                </a>
+                <a href="/l-to-g" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>L - G</h3>
+                        <p>Litreyi grama dönüştür.</p>
+                    </div>
+                </a>
+                <a href="/l-to-kg" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>L - Kg</h3>
+                        <p>Litreyi kilograma dönüştür.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-g" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>Ml - G</h3>
+                        <p>Mililitreyi grama dönüştür.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-oz" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>Ml - Oz</h3>
+                        <p>Mililitreyi onsa dönüştür.</p>
+                    </div>
+                </a>
+                <a href="/oz-to-ml" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Oz - Ml</h3>
+                        <p>Onsu mililitreye dönüştür.</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+        <section class="card" id="why-choose-us">
+            <h2>Litre - KG Dönüşümü:</h2>
+            <p>Bir litre (ℓ) hacim, bir kilogram (kg) ise kütleyi ölçer. Her ikisi de farklı birimleri temsil ettiğinden, doğrudan dönüşümler mümkün değildir. Dönüşüm yapmak için maddenin veya malzemenin yoğunluğunun bilinmesi zorunludur.</p>
+            <h3>Formül:</h3>
+            <p style="text-align: center; color: red;">Kilogram = Litre × Yoğunluk</p>
+            <p>Formülü uygulayabilmek için maddenin yoğunluğunu bilmeniz gerekir.</p>
+            <h4>Örnekler:</h4>
+            <ul>
+                <li>Litresi 1 kg olan bir maddenin 1 litresini kg'a çeviriniz.</li>
+            </ul>
+            <p><b>Çözüm:</b></p>
+            <p>Yukarıdaki formülü kullanarak bu örneği çözeceğiz:</p>
+            <p style="text-align: center; color: red;">Kilogram = 1 x 1</p>
+            <p style="text-align: center; color: red;">Kilogram = 1</p>
+            <p>Nerede</p>
+            <ul>
+                <li>1 = Maddenin litresi</li>
+                <li>1 = Maddenin yoğunluğu</li>
+            </ul>
+            <p>Yani yoğunluğu litre başına 1 kg olan 1 litre madde 1 kilograma eşittir.</p>
+            <ul>
+                <li>Litre başına yoğunluğu 1,38 kg olan bir madde için 5 litreyi kg'a dönüştürün</li>
+            </ul>
+            <p><b>Çözüm:</b></p>
+            <p>Yukarıdaki formülü kullanarak bu örneği çözeceğiz:</p>
+            <p style="text-align: center; color: red;">Kilogram = 5 x 1,38</p>
+            <p style="text-align: center; color: red;">Kilogram = 6,90</p>
+            <p>Nerede;</p>
+            <ul>
+                <li>5 = Maddenin litresi</li>
+                <li>1,38 = Maddenin yoğunluğu</li>
+            </ul>
+            <p>Yani litre başına yoğunluğu 1,38 kg olan 5 litrelik madde 6,90 kilograma eşittir.</p>
+        </section>
+        <section class="card" id="how-it-works">
+            <h2>Mltomg.info'nun Litre - KG Dönüştürücüsünün Kullanım Örnekleri</h2>
+            <p>Litre-kg dönüştürücünün bazı kullanım örnekleri şunlardır:</p>
+            <h3>Nakliye ve Taşımacılık</h3>
+            <p>Litreyi kg'a çevirmek, araçların güvenli ağırlık sınırları içinde kalmasına ve kurallara uymasına yardımcı olur. Örneğin, bir tanker 1000 litre kimyasal taşıyorsa, yolculuk için güvenlik ve yasal gereklilikleri karşıladığından emin olmak için ağırlığın kilograma çevrilmesi gerekir.</p>
+            <h3>Yemek pişirme ve fırınlama</h3>
+            <p>Litre genellikle su, süt veya yağ gibi sıvılar için kullanılırken, kilogram un ve şeker gibi kuru ürünler için kullanılır. Litreyi kilograma dönüştürmek, özellikle hassas ölçüler gerektiren tariflerde doğru oranları elde etmek için önemlidir.</p>
+            <h3>Bilim ve Eğitim</h3>
+            <p>Hacmin (litre) kütleye (kilogram) dönüştürülmesi gereken laboratuvar deneyleri veya sınıf içi alıştırmaları yapmak.</p>
+            <h3>Alışveriş ve satın alma</h3>
+            <p>Diyelim ki markette iki yemeklik yağ markasını karşılaştırıyorsunuz. 1. Marka 2 litrelik şişede 5 dolara, 2. Marka ise 2,5 kilogramlık bir kapta 7 dolara satılıyor. Hangisinin size daha uygun olduğunu bulmak için, her iki seçeneği de adil bir şekilde karşılaştırabilmek adına litreyi kilograma dönüştürmeniz gerekiyor.</p>
+        </section>
+        <section class="card" id="table">
+            <h2>L'den KG'ye Dönüşüm Tablosu</h2>
+            <table border="1" cellpadding="8" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Madde</th>
+                        <th>Yoğunluk (kg/L)</th>
+                        <th>0.5 L (kg)</th>
+                        <th>1 L (kg)</th>
+                        <th>2 L (kg)</th>
+                        <th>5 L (kg)</th>
+                        <th>10 L (kg)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Su</td>
+                        <td>1.00</td>
+                        <td>0.50</td>
+                        <td>1.00</td>
+                        <td>2.00</td>
+                        <td>5.00</td>
+                        <td>10.00</td>
+                    </tr>
+                    <tr>
+                        <td>Süt</td>
+                        <td>1.03</td>
+                        <td>0.52</td>
+                        <td>1.03</td>
+                        <td>2.06</td>
+                        <td>5.15</td>
+                        <td>10.30</td>
+                    </tr>
+                    <tr>
+                        <td>Yemeklik Yağ</td>
+                        <td>0.92</td>
+                        <td>0.46</td>
+                        <td>0.92</td>
+                        <td>1.84</td>
+                        <td>4.60</td>
+                        <td>9.20</td>
+                    </tr>
+                    <tr>
+                        <td>Bal</td>
+                        <td>1.42</td>
+                        <td>0.71</td>
+                        <td>1.42</td>
+                        <td>2.84</td>
+                        <td>7.10</td>
+                        <td>14.20</td>
+                    </tr>
+                    <tr>
+                        <td>Un (sıvı form/bulamaç)</td>
+                        <td>0.59</td>
+                        <td>0.30</td>
+                        <td>0.59</td>
+                        <td>1.18</td>
+                        <td>2.95</td>
+                        <td>5.90</td>
+                    </tr>
+                    <tr>
+                        <td>Şeker Çözeltisi</td>
+                        <td>0.85</td>
+                        <td>0.43</td>
+                        <td>0.85</td>
+                        <td>1.70</td>
+                        <td>4.25</td>
+                        <td>8.50</td>
+                    </tr>
+                    <tr>
+                        <td>Zeytinyağı</td>
+                        <td>0.91</td>
+                        <td>0.46</td>
+                        <td>0.91</td>
+                        <td>1.82</td>
+                        <td>4.55</td>
+                        <td>9.10</td>
+                    </tr>
+                    <tr>
+                        <td>Benzin</td>
+                        <td>0.74</td>
+                        <td>0.37</td>
+                        <td>0.74</td>
+                        <td>1.48</td>
+                        <td>3.70</td>
+                        <td>7.40</td>
+                    </tr>
+                    <tr>
+                        <td>Dizel</td>
+                        <td>0.83</td>
+                        <td>0.42</td>
+                        <td>0.83</td>
+                        <td>1.66</td>
+                        <td>4.15</td>
+                        <td>8.30</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        <section class="card" id="faq">
+            <h2>Sıkça Sorulan Sorular</h2>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>S: 1 litre her zaman 1 kilograma eşit olabilir mi?</h4>
+                    <span class="toggle-icon">-</span>
+                </div>
+                <div class="faq-answer">
+                    <p>C: Hayır. Sadece standart koşullarda (4°C) saf su 1 litre = 1 kilogramdır. Süt, yağ veya bal gibi diğer sıvıların yoğunlukları farklı olduğundan, ağırlıkları da değişecektir.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>S: mltomg.info'nun L'den KG'ye dönüştürücüsü tüm maddeler için doğru mudur?</h4>
+                    <span class="toggle-icon">-</span>
+                </div>
+                <div class="faq-answer">
+                    <p>C: Evet, maddenin doğru yoğunluğu kullanıldığı sürece. Yoğunluk sıcaklıkla değişebileceğinden, bazı durumlarda sonuçlar yaklaşık değerlerdir. Ancak ekibimiz, uzmanların yardımıyla bu dönüştürücünün doğruluğundan emin olur.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+    {% include 'footer.html' %}
+    <script>
+        const mainSelect = document.getElementById('mainSelect');
+        const densityGroup = document.getElementById('densityGroup');
+        const densityInput = document.getElementById('densityInput');
+        const lInput = document.getElementById('lInput');
+        const resultValue = document.getElementById('result-value');
+
+        mainSelect.addEventListener('change', () => {
+            const selectedValue = mainSelect.value;
+            densityGroup.classList.add('hidden');
+            densityInput.value = '';
+            if (selectedValue === 'custom-liquid') {
+                densityGroup.classList.remove('hidden');
+                densityInput.placeholder = 'Yoğunluğu kg/L cinsinden girin';
+            } else if (selectedValue !== '') {
+                densityGroup.classList.remove('hidden');
+                densityInput.value = mainSelect.options[mainSelect.selectedIndex].dataset.density;
+            }
+        });
+
+        function convertLToKg() {
+            const L = parseFloat(lInput.value);
+            const density = parseFloat(densityInput.value);
+
+            if (mainSelect.value === '') {
+                resultValue.innerHTML = 'Lütfen bir madde seçin veya özel yoğunluk girin.';
+                resultValue.style.color = 'red';
+                return;
+            }
+            if (isNaN(L) || isNaN(density) || L <= 0 || density <= 0) {
+                resultValue.innerHTML = `Lütfen hacim ve yoğunluk için geçerli pozitif sayılar girin.`;
+                resultValue.style.color = 'red';
+                return;
+            }
+
+            const Kg = L * density;
+
+            resultValue.innerHTML = `${L} L = ${Kg.toFixed(4)} kg`;
+            resultValue.style.color = 'green';
+            document.getElementById('result-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function toggleFAQ(element) {
+            const answer = element.nextElementSibling;
+            const icon = element.querySelector('.toggle-icon');
+            if (answer.style.maxHeight) {
+                answer.style.maxHeight = null;
+                icon.textContent = '+';
+            } else {
+                answer.style.maxHeight = answer.scrollHeight + "px";
+                icon.textContent = '-';
+            }
+        }
+    </script>
+</body>
+</html>

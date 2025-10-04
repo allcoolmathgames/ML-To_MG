@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.png') }}" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Fluid Ounce To Milliliter Converter | Oz to mL, cL, L Conversion</title>
+    <meta name="description" content="Use this fluid ounce to milliliter converter to convert volume from US or UK fluid ounces (fl oz) to milliliters (mL), centiliters (cL), or liters (L)." />
+    <meta name="keywords" content="ounce to ml converter, oz to ml, oz to cl, oz to l, US fl oz to ml, UK fl oz to ml, volume converter, fluid ounces conversion" />
+    <link rel="canonical" href="https://kgtoL.info/oz-to-ml" />
+    <link rel="alternate" hreflang="x-default" href="https://kgtoL.info/oz-to-ml" />
+    <link rel="alternate" hreflang="en" href="https://kgtoL.info/oz-to-ml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <meta name="google-site-verification" content="49KC3Wnkoo8QxBc56Q5dkx-LVqsbPxtgJTBs_MG7WBU" />
+    <style>
+        /* Common styles for the tool */
+        #result-section {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #e9ecef;
+            min-height: 60px;
+            position: relative;
+        }
+        #result-section .result-heading {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-weight: 600;
+            color: var(--primary-color);
+            border-left: 3px solid var(--secondary-color);
+            padding-left: 10px;
+            font-size: 1.1rem;
+        }
+        #result-section .result-value {
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 10px;
+            padding-top: 20px;
+            color: var(--light-text-color);
+            width: 100%;
+        }
+        .hidden {
+            display: none !important;
+        }
+        .two-column-group {
+            display: flex;
+            gap: 20px;
+        }
+        .two-column-group .form-group {
+            flex: 1;
+            min-width: 48%;
+        }
+        
+        /* Table styles */
+        :root {
+            --bg: #ffffff;
+            --text: #1f2937;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+            --stripe: #f9fafb;
+        }
+        body {
+            font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+            color: var(--text);
+            background: var(--bg);
+            margin: 0;
+        }
+        h1 { font-size: 1.25rem; margin: 0 0 12px; }
+        .wrap { max-width: 1100px; margin: 0 auto; }
+        .table-card { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+        .table-scroll { max-height: 70vh; overflow: auto; }
+        table { border-collapse: separate; border-spacing: 0; width: 100%; }
+        thead th { position: sticky; top: 0; background: var(--border); color: #111827; font-weight: 600; text-align: center; padding: 10px 12px; border-bottom: 1px solid var(--border); }
+        tbody td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; text-align: center; }
+        tbody tr:nth-child(even) td { background: var(--stripe); }
+        th, td.num { text-align: right; }
+        th:first-child, td:first-child { text-align: center; }
+        caption { caption-side: bottom; padding: 10px; font-size: 0.875rem; color: var(--muted); }
+    </style>
+</head>
+<body>
+    {% include 'header.html' %}
+    <header class="secondary-header">
+        <div class="container">
+            <h1>Fluid Ounce to Milliliter Converter</h1>
+            <p>Enter the volume in ounces and select the type of ounce and the desired output unit.</p>
+        </div>
+    </header>
+    <div class="container main-content">
+        <section class="card" id="tool">
+            <h2>Convert Fluid Ounces to Metric Volume</h2>
+            <div class="tool-container">
+                <div class="form-group">
+                    <label for="ozInput"><b>Volume (in ounces):</b></label>
+                    <input type="number" id="ozInput" placeholder="Enter volume in ounces" required>
+                </div>
+                
+                <div class="two-column-group">
+                    <div class="form-group">
+                        <label for="inputUnitSelect"><b>Input Unit:</b></label>
+                        <select id="inputUnitSelect">
+                            <option value="US">US Fluid Ounce (fl oz)</option>
+                            <option value="UK">UK/Imperial Fluid Ounce (fl oz)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="outputUnitSelect"><b>Output Unit:</b></label>
+                        <select id="outputUnitSelect">
+                            <option value="mL">Milliliters (mL)</option>
+                            <option value="cL">Centiliters (cL)</option>
+                            <option value="L">Liters (L)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <button class="btn" onclick="convertOzToMl()">Convert</button>
+            </div>
+        
+        <p style="color: red;"><b>Note:</b> Density varies with temperature and may differ by material. You can also select <b>Custom Density</b> from the dropdown to enter your own value.</p>
+        <div id="result-section">
+            <div class="result-heading">Result:</div>
+            <div class="result-value" id="result-value">Your result will appear here</div>
+        </div>
+        <section class="card" id="why-choose-us">
+            <p>This fluid ounce to milliliter converter allows accurate conversions between US/UK ounces and metric units (mL, cL, L).</p>
+        </section>
+
+        <section class="card more-tools" id="more-tools">
+            <h2>More Tools</h2>
+            <div class="tool-cards-container">
+                <a href="/mg-to-ml" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>Mg to Ml</h3>
+                        <p>Convert milligrams to milliliters.</p>
+                    </div>
+                </a>
+                <a href="/g-to-l" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>G to L</h3>
+                        <p>Convert grams to liters.</p>
+                    </div>
+                </a>
+                <a href="/kg-to-l" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Kg to L</h3>
+                        <p>Convert kilograms to liters.</p>
+                    </div>
+                </a>
+                <a href="/l-to-g" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>L to G</h3>
+                        <p>Convert liters to grams.</p>
+                    </div>
+                </a>
+                <a href="/l-to-kg" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>L to Kg</h3>
+                        <p>Convert liters to kilograms.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-g" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>Ml to G</h3>
+                        <p>Convert milliliters to grams.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-oz" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>Ml to Oz</h3>
+                        <p>Convert milliliters to ounces.</p>
+                    </div>
+                </a>
+                <a href="/oz-to-ml" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Oz to Ml</h3>
+                        <p>Convert ounces to milliliters.</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <section class="card" id="how-to-convert">
+            <h2>How to Convert Fluid Ounces to Milliliters (and other metric units)</h2>
+            <p>The conversion depends on whether you are using the US Fluid Ounce or the UK/Imperial Fluid Ounce.</p>
+            <h3>Conversion Factors:</h3>
+            <ul>
+                <li>$\mathbf{1\ \text{US fl oz}} \approx \mathbf{29.5735\ \text{mL}}$</li>
+                <li>$\mathbf{1\ \text{UK fl oz}} \approx \mathbf{28.4131\ \text{mL}}$</li>
+            </ul>
+            <h3>Formula (Ounces to Milliliters):</h3>
+            <p style="text-align: center; color: red; font-weight: bold;">Milliliters (mL) = Ounces (fl oz) × Conversion Factor</p>
+            <h4>Metric Unit Conversions:</h4>
+            <ul>
+                <li>Centiliters (cL) = mL / 10</li>
+                <li>Liters (L) = mL / 1000</li>
+            </ul>
+        </section>
+        
+        <section class="card" id="definition-ounce">
+            <h2>Definition Of Fluid Ounce:</h2>
+            <p>A **fluid ounce (fl oz)** is an imperial and US customary unit of volume. It is important to distinguish between the two: the **US Fluid Ounce** is commonly used in the United States and is roughly $\mathbf{29.57\ \text{mL}}$, while the slightly smaller **UK/Imperial Fluid Ounce** is used in the UK and Canada and is approximately $\mathbf{28.41\ \text{mL}}$.</p>
+        </section>
+        <section class="card" id="definition-milliliter">
+            <h2>Definition Of Milliliter:</h2>
+            <p>A **milliliter (mL)** is a metric unit of volume equal to one thousandth of a liter ($\mathbf{1/1000\ \text{L}}$). It is the base unit for small metric volume measurements.</p>
+        </section>
+
+        <section class="card" id="Table">
+        <h2>Ounce to Metric Conversion Table (mL)</h2>
+        <div class="wrap">
+            <div class="table-card">
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Volume (Ounces)</th>
+                                <th>US fl oz (mL)</th>
+                                <th>UK fl oz (mL)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>1 fl oz</td><td>29.57 mL</td><td>28.41 mL</td></tr>
+                            <tr><td>2 fl oz</td><td>59.15 mL</td><td>56.83 mL</td></tr>
+                            <tr><td>4 fl oz</td><td>118.29 mL</td><td>113.65 mL</td></tr>
+                            <tr><td>8 fl oz (1 cup US)</td><td>236.59 mL</td><td>227.31 mL</td></tr>
+                            <tr><td>16 fl oz (1 pint US)</td><td>473.18 mL</td><td>454.61 mL</td></tr>
+                            <tr><td>32 fl oz (1 quart US)</td><td>946.35 mL</td><td>909.22 mL</td></tr>
+                            <tr><td>128 fl oz (1 gallon US)</td><td>3785.41 mL</td><td>3636.87 mL</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        </section>
+
+
+        <section class="card" id="faq">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFAQ(this)">
+                <h4>Q: Why are US and UK fluid ounces different?</h4>
+                <span class="toggle-icon">-</span>
+            </div>
+            <div class="faq-answer">
+                <p>A: The difference stems from historical variations in the definition of the base volume units (gallons). The US fluid ounce is based on the US wine gallon, while the UK/Imperial fluid ounce is based on the Imperial gallon.</p>
+            </div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFAQ(this)">
+                <h4>Q: What is the relationship between mL, cL, and L?</h4>
+                <span class="toggle-icon">-</span>
+            </div>
+            <div class="faq-answer">
+                <p>A: These are all metric units of volume: 
+                <ul>
+                    <li>1 Liter (L) = 100 Centiliters (cL)</li>
+                    <li>1 Liter (L) = 1000 Milliliters (mL)</li>
+                    <li>1 Centiliter (cL) = 10 Milliliters (mL)</li>
+                </ul>
+                </p>
+            </div>
+        </div>
+        </section>
+
+    </div>
+    {% include 'footer.html' %}
+    <script>
+        const ozInput = document.getElementById('ozInput');
+        const inputUnitSelect = document.getElementById('inputUnitSelect');
+        const outputUnitSelect = document.getElementById('outputUnitSelect');
+        const resultValue = document.getElementById('result-value');
+
+        // Conversion factors to convert Ounce to Milliliter (mL)
+        const US_FL_OZ_TO_ML = 29.5735;
+        const UK_FL_OZ_TO_ML = 28.4131;
+
+        // Conversion function: Ounce to Metric Volume (mL, cL, L)
+        function convertOzToMl() {
+            const oz = parseFloat(ozInput.value);
+            const inputUnit = inputUnitSelect.value;
+            const outputUnit = outputUnitSelect.value;
+            let mlValue = 0;
+            
+            if (isNaN(oz) || oz < 0) {
+                resultValue.innerHTML = `Please enter a valid positive number for volume.`;
+                resultValue.style.color = 'red';
+                return;
+            }
+            
+            if (oz === 0) {
+                resultValue.innerHTML = `0 fl oz = 0 ${outputUnit}`;
+                resultValue.style.color = 'green';
+                return;
+            }
+            
+            // Step 1: Convert input Ounces to Milliliters (mL)
+            if (inputUnit === 'US') {
+                mlValue = oz * US_FL_OZ_TO_ML;
+            } else if (inputUnit === 'UK') {
+                mlValue = oz * UK_FL_OZ_TO_ML;
+            }
+            
+            let finalResult = 0;
+            let unitLabel = '';
+
+            // Step 2: Convert Milliliters (mL) to the final output unit
+            if (outputUnit === 'mL') {
+                finalResult = mlValue;
+                unitLabel = 'mL';
+            } else if (outputUnit === 'cL') {
+                finalResult = mlValue / 10;
+                unitLabel = 'cL';
+            } else if (outputUnit === 'L') {
+                finalResult = mlValue / 1000;
+                unitLabel = 'L';
+            }
+            
+            // Format input value for display
+            const ozUnitLabel = inputUnit === 'US' ? 'US fl oz' : 'UK fl oz';
+
+            resultValue.innerHTML = `${oz} ${ozUnitLabel} = ${finalResult.toFixed(4)} ${unitLabel}`;
+            resultValue.style.color = 'green';
+            document.getElementById('result-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        
+        // Add event listeners to input field and dropdowns
+        ozInput.addEventListener('input', convertOzToMl);
+        inputUnitSelect.addEventListener('change', convertOzToMl);
+        outputUnitSelect.addEventListener('change', convertOzToMl);
+    </script>
+    <script>
+        // FAQ toggle function ko yahaan add kar diya hai
+        function toggleFAQ(element) {
+            const answer = element.nextElementSibling;
+            const icon = element.querySelector('.toggle-icon');
+            if (answer.style.maxHeight) {
+                answer.style.maxHeight = null;
+                icon.textContent = '+';
+            } else {
+                answer.style.maxHeight = answer.scrollHeight + "px";
+                icon.textContent = '-';
+            }
+        }
+    </script>
+</body>
+</html>

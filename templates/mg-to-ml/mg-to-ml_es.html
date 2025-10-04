@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.png') }}" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Conversor de mg a ml | Conversión de miligramos a mililitros</title>
+    <meta name="description" content="Este conversor de mg a ml te ayuda a convertir miligramos a mililitros de forma fácil y rápida. Conversiones precisas, sencillas y rápidas para agua, leche, aceite, harina, azúcar, medicamentos y más.">
+    <meta name="keywords" content="mg a ml, convertidor de mg a ml, miligramos a mililitros, convertir mg a ml, mg en ml, calculadora de mg/ml, herramienta de conversión de mg, convertidor en línea de mg a ml, tabla de mg a ml, fórmula de mg a ml, conversión de medicamentos, calculadora de dosis de medicamentos">
+    <link rel="canonical" href="https://mltomg.info/mg-to-ml" />
+    <link rel="alternate" hreflang="x-default" href="https://mltomg.info/mg-to-ml" />
+    <link rel="alternate" hreflang="en" href="https://mltomg.info/mg-to-ml" />
+    <link rel="alternate" hreflang="ar" href="https://mltomg.info/ar/mg-to-ml" />
+    <link rel="alternate" hreflang="de" href="https://mltomg.info/de/mg-to-ml" />
+    <link rel="alternate" hreflang="es" href="https://mltomg.info/es/mg-to-ml" />
+    <link rel="alternate" hreflang="fr" href="https://mltomg.info/fr/mg-to-ml" />
+    <link rel="alternate" hreflang="it" href="https://mltomg.info/it/mg-to-ml" />
+    <link rel="alternate" hreflang="pt" href="https://mltomg.info/pt/mg-to-ml" />
+    <link rel="alternate" hreflang="ru" href="https://mltomg.info/ru/mg-to-ml" />
+    <link rel="alternate" hreflang="tr" href="https://mltomg.info/tr/mg-to-ml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+    <meta name="google-site-verification" content="49KC3Wnkoo8QxBc56Q5dkx-LVqsbPxtgJTBs_MG7WBU" />
+    <style>
+        #result-section {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #e9ecef;
+            min-height: 60px;
+            position: relative;
+        }
+        #result-section .result-heading {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-weight: 600;
+            color: var(--primary-color);
+            border-left: 3px solid var(--secondary-color);
+            padding-left: 10px;
+            font-size: 1.1rem;
+        }
+        #result-section .result-value {
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 10px;
+            padding-top: 20px;
+            color: var(--light-text-color);
+            width: 100%;
+        }
+        .hidden {
+            display: none !important;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #333;
+            padding: 6px;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        caption {
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    {% include 'header.html' %}
+    <header class="secondary-header">
+        <div class="container">
+            <h1>Conversor de mg a mL</h1>
+            <p>Ingrese el peso en miligramos a continuación para calcular el volumen en mililitros de líquidos, medicamentos y más.</p>
+        </div>
+    </header>
+    <div class="container main-content">
+        <section class="card" id="tool">
+            <h2>Convertir mg a mL</h2>
+            <div class="tool-container">
+                <div class="form-group">
+                    <label for="mgInput"><b>Peso (en mg):</b></label>
+                    <input type="number" id="mgInput" placeholder="Ingrese el peso en mg" required>
+                </div>
+                <div class="form-group">
+                    <label for="mainSelect"><b>Seleccione el elemento:</b></label>
+                    <select id="mainSelect">
+                        <option value="">-- Seleccione un elemento --</option>
+                        <option value="water" data-density="1000">Agua</option>
+                        <option value="ethanol" data-density="789">Etanol</option>
+                        <option value="olive-oil" data-density="918">Aceite de oliva</option>
+                        <option value="milk" data-density="1030">Leche</option>
+                        <option value="honey" data-density="1300">Miel</option>
+                        <option value="glycerin" data-density="1800">Glicerina</option>
+                        <option value="medication">Medicamentos</option>
+                        <option value="custom-liquid">Densidad personalizada</option>
+                    </select>
+                </div>
+                <div class="form-group hidden" id="medicationGroup">
+                    <label for="medicationSelect"><b>Seleccione el medicamento:</b></label>
+                    <select id="medicationSelect">
+                        <option value="">-- Seleccione un medicamento --</option>
+                        <option value="acetaminophen" data-concentration="10">Paracetamol (Tylenol) 10 mg/mL</option>
+                        <option value="amoxicillin" data-concentration="80">Suspensión de amoxicilina 400 mg/5 mL</option>
+                        <option value="benadryl-oral" data-concentration="12.5">Benadryl (Líquido oral, 12,5 mg/5 mL)</option>
+                        <option value="benadryl-injection" data-concentration="50">Benadryl (Inyección, 50 mg/mL o 500 mg/10 mL)</option>
+                        <option value="cetirizine" data-concentration="1">Clorhidrato de cetirizina 1 mg/mL</option>
+                        <option value="ibuprofen-oral-1" data-concentration="20">Ibuprofeno (Líquido oral, 100 mg/5 mL)</option>
+                        <option value="ibuprofen-oral-2" data-concentration="40">Ibuprofeno (Líquido oral, 50 mg/1,25 mL)</option>
+                        <option value="ibuprofen-injection-1" data-concentration="5">Ibuprofeno (Inyección, 10 mg/2 mL)</option>
+                        <option value="ibuprofen-injection-2" data-concentration="100">Ibuprofeno (Inyección, 800 mg/8 mL)</option>
+                        <option value="morphine" data-concentration="20">Sulfato de morfina soln 20 mg/mL</option>
+                        <option value="testosterone" data-concentration="200">Testosterona 200 mg/mL</option>
+                        <option value="custom-medication">Concentración personalizada</option>
+                    </select>
+                </div>
+                <div class="form-group hidden" id="densityGroup">
+                    <label for="densityInput"><b>Densidad (mg/mL):</b></label>
+                    <input type="number" id="densityInput" placeholder="Ingrese la densidad en mg/mL" required>
+                </div>
+                <div class="form-group hidden" id="concentrationGroup">
+                    <label for="concentrationInput"><b>Concentración (mg/mL):</b></label>
+                    <input type="number" id="concentrationInput" placeholder="Ingrese la concentración en mg/mL" required>
+                </div>
+                <button class="btn" onclick="convertMgToMl()">Convertir a mL</button>
+            </div>
+            <p style="color: red;"><b>Nota:</b> La densidad varía con la temperatura y puede diferir según el material. También puede seleccionar <b>Densidad personalizada</b> del menú desplegable para ingresar su propio valor.</p>
+            <div id="result-section">
+                <div class="result-heading">Resultado:</div>
+                <div class="result-value" id="result-value">Su resultado aparecerá aquí</div>
+            </div>
+        </section>
+        <section class="card" id="intention">
+            <p>Necesita saber la densidad de una sustancia que desea convertir de miligramos a mililitros. Este conversor de mg a ml le ayuda a convertir fácilmente la cantidad de miligramos a mililitros.</p>
+        </section>
+        <section class="card" id="intention">
+            <h2>¿Qué son miligramos?</h2>
+            <p>En el Sistema Internacional de Unidades (SI), el miligramo se define como la unidad de peso y masa. Se abrevia con el símbolo «mg». En nuestra vida diaria, el mg se encuentra en medicamentos como las tabletas de 400 mg.</p>
+            <p>Un miligramo equivale a una milésima de gramo. Podemos escribirlo simplemente como:</p>
+            <ul>
+                <li>1 gramo = 1000 miligramos</li>
+            </ul>
+        </section>
+        <section class="card" id="intention">
+            <h2>¿Qué es mililitro?</h2>
+            <p>Un mililitro se utiliza para medir el volumen de un líquido y se abrevia con el símbolo «ml». Podemos escribirlo simplemente como:</p>
+            <ul>
+                <li>1 litro = 1000 mililitros</li>
+            </ul>
+        </section>
+        <section class="card" id="how-to-use">
+            <h2>Conversión de miligramos a mililitros:</h2>
+            <p>El miligramo es la unidad de masa y el mililitro es la unidad de líquido. Ambas son cantidades físicas diferentes. Por lo tanto, necesitamos conocer una cantidad física más del ingrediente para realizar la conversión de miligramos a mililitros.</p>
+            <h3>Fórmula de MG a ML:</h3>
+            <p>Para convertir una medida de miligramos a mililitros, se debe dividir el peso entre la densidad del ingrediente o material. Sin embargo, tenga en cuenta que la densidad debe expresarse en miligramos por mililitro (mg/mL).</p>
+            <p>Si tiene la densidad en (g/mL), entonces multiplique la densidad por 1000 para convertirla en mg/mL.</p>
+            <p>La siguiente fórmula se utiliza para convertir mg a ml para la densidad expresada en g/mL.</p>
+            <p style="text-align: center; color: red; font-weight: bold;">mililitros = miligramos / 1.000 × densidad</p>
+            <h4>Ejemplo:</h4>
+            <p>Convertir <b>1000 mg</b> a mililitros para una sustancia con una densidad de <b>0,7 g/mL</b>:</p>
+            <ul>
+                <li>mililitros = 1000 mg / (0,7 g/mL × 1000) = <b>1,42 mL</b></li>
+            </ul>
+        </section>
+        <section class="card" id="mg-in-ml">
+            <h2>Beneficios de usar este conversor de MG a ML:</h2>
+            <h3>Exactitud:</h3>
+            <p>Nuestro conversor de mg a ml le proporciona resultados precisos con bajas posibilidades de errores de conversión.</p>
+            <h3>Ahorro de tiempo:</h3>
+            <p>Este conversor de miligramos a mililitros le permite ahorrar tiempo al obtener resultados precisos rápidamente. Así que, ahorre tiempo usando esta calculadora de mg a ml.</p>
+            <h3>Fácil de usar:</h3>
+            <p>Nuestros usuarios pueden usar este conversor de mg a ml fácilmente gracias a su interfaz muy sencilla. Por lo tanto, no se requieren conocimientos técnicos para realizar la conversión.</p>
+        </section>
+        <section class="card" id="drug-conversion">
+            <h2>Conversión de fármacos/medicamentos de mg a ml</h2>
+            <p>En el caso de los medicamentos, la <b>concentración</b> (mg/mL) es crucial. A diferencia del agua, los medicamentos tienen concentraciones específicas. Utilice esta fórmula:</p>
+            <h3>Fórmula:</h3>
+            <p style="text-align: center; color: red; font-weight: bold;">Volumen (mL) = Dosis (mg) ÷ Concentración (mg/mL)</p>
+            <h4>Ejemplo:</h4>
+            <p>Si un medicamento tiene una concentración de <b>50 mg/mL</b> y necesita <b>100 mg</b>:</p>
+            <p><b>100 ÷ 50 = 2 mL</b></p>
+            <p><b>⚠️ Descargo de responsabilidad:</b> Siga siempre la etiqueta de la prescripción o consulte a un profesional de la salud para las conversiones de medicamentos.</p>
+        </section>
+        <section class="card" id="Table">
+            <h2>Tabla de conversión de mililitros a miligramos</h2>
+            <style>
+                :root {
+                    --bg: #ffffff;
+                    --text: #1f2937;
+                    --muted: #6b7280;
+                    --border: #e5e7eb;
+                    --stripe: #f9fafb;
+                }
+                body {
+                    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+                    color: var(--text);
+                    background: var(--bg);
+                    margin: 0;
+                }
+                h1 { font-size: 1.25rem; margin: 0 0 12px; }
+                .wrap { max-width: 1100px; margin: 0 auto; }
+                .table-card { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+                .table-scroll { max-height: 70vh; overflow: auto; }
+                table { border-collapse: separate; border-spacing: 0; width: 100%; }
+                thead th { position: sticky; top: 0; background: #f3f4f6; color: #111827; font-weight: 600; text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border); }
+                tbody td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+                tbody tr:nth-child(even) td { background: var(--stripe); }
+                th, td.num { text-align: right; }
+                th:first-child, td:first-child { text-align: center; }
+                caption { caption-side: bottom; padding: 10px; font-size: 0.875rem; color: var(--muted); }
+            </style>
+            <table border="1" cellspacing="0" cellpadding="5">
+                <thead>
+                    <tr>
+                        <th>Volumen en Miligramos</th>
+                        <th>Agua (mL)</th>
+                        <th>Leche (mL)</th>
+                        <th>Aceite de cocina (mL)</th>
+                        <th>Harina para todo uso (mL)</th>
+                        <th>Azúcar granulada (mL)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>10 mg</td><td>0.01</td><td>0.009709</td><td>0.011364</td><td>0.018904</td><td>0.011829</td></tr>
+                    <tr><td>20 mg</td><td>0.02</td><td>0.019417</td><td>0.022727</td><td>0.037807</td><td>0.023659</td></tr>
+                    <tr><td>30 mg</td><td>0.03</td><td>0.029126</td><td>0.034091</td><td>0.056711</td><td>0.035488</td></tr>
+                    <tr><td>40 mg</td><td>0.04</td><td>0.038835</td><td>0.045455</td><td>0.075614</td><td>0.047318</td></tr>
+                    <tr><td>50 mg</td><td>0.05</td><td>0.048544</td><td>0.056818</td><td>0.094518</td><td>0.059147</td></tr>
+                    <tr><td>60 mg</td><td>0.06</td><td>0.058252</td><td>0.068182</td><td>0.113422</td><td>0.070976</td></tr>
+                    <tr><td>70 mg</td><td>0.07</td><td>0.067961</td><td>0.079545</td><td>0.132325</td><td>0.082806</td></tr>
+                    <tr><td>80 mg</td><td>0.08</td><td>0.07767</td><td>0.090909</td><td>0.151229</td><td>0.094635</td></tr>
+                    <tr><td>90 mg</td><td>0.09</td><td>0.087379</td><td>0.102273</td><td>0.170132</td><td>0.106465</td></tr>
+                    <tr><td>100 mg</td><td>0.1</td><td>0.097087</td><td>0.113636</td><td>0.189036</td><td>0.118294</td></tr>
+                    <tr><td>110 mg</td><td>0.11</td><td>0.106796</td><td>0.125</td><td>0.20794</td><td>0.130124</td></tr>
+                    <tr><td>120 mg</td><td>0.12</td><td>0.116505</td><td>0.136364</td><td>0.226843</td><td>0.141953</td></tr>
+                    <tr><td>130 mg</td><td>0.13</td><td>0.126214</td><td>0.147727</td><td>0.245747</td><td>0.153782</td></tr>
+                    <tr><td>140 mg</td><td>0.14</td><td>0.135922</td><td>0.159091</td><td>0.26465</td><td>0.165612</td></tr>
+                    <tr><td>150 mg</td><td>0.15</td><td>0.145631</td><td>0.170455</td><td>0.283554</td><td>0.177441</td></tr>
+                    <tr><td>160 mg</td><td>0.16</td><td>0.15534</td><td>0.181818</td><td>0.302457</td><td>0.189271</td></tr>
+                    <tr><td>170 mg</td><td>0.17</td><td>0.165049</td><td>0.193182</td><td>0.321361</td><td>0.2011</td></tr>
+                    <tr><td>180 mg</td><td>0.18</td><td>0.174757</td><td>0.204545</td><td>0.340265</td><td>0.212929</td></tr>
+                    <tr><td>190 mg</td><td>0.19</td><td>0.184466</td><td>0.215909</td><td>0.359168</td><td>0.224759</td></tr>
+                    <tr><td>200 mg</td><td>0.2</td><td>0.194175</td><td>0.227273</td><td>0.378072</td><td>0.236588</td></tr>
+                    <tr><td>210 mg</td><td>0.21</td><td>0.203883</td><td>0.238636</td><td>0.396975</td><td>0.248418</td></tr>
+                    <tr><td>220 mg</td><td>0.22</td><td>0.213592</td><td>0.25</td><td>0.415879</td><td>0.260247</td></tr>
+                    <tr><td>230 mg</td><td>0.23</td><td>0.223301</td><td>0.261364</td><td>0.434783</td><td>0.272076</td></tr>
+                    <tr><td>240 mg</td><td>0.24</td><td>0.23301</td><td>0.272727</td><td>0.453686</td><td>0.283906</td></tr>
+                    <tr><td>250 mg</td><td>0.25</td><td>0.242718</td><td>0.284091</td><td>0.47259</td><td>0.295735</td></tr>
+                    <tr><td>260 mg</td><td>0.26</td><td>0.252427</td><td>0.295455</td><td>0.491493</td><td>0.307565</td></tr>
+                    <tr><td>270 mg</td><td>0.27</td><td>0.262136</td><td>0.306818</td><td>0.510397</td><td>0.319394</td></tr>
+                    <tr><td>280 mg</td><td>0.28</td><td>0.271845</td><td>0.318182</td><td>0.529301</td><td>0.331224</td></tr>
+                    <tr><td>290 mg</td><td>0.29</td><td>0.281553</td><td>0.329545</td><td>0.548204</td><td>0.343053</td></tr>
+                    <tr><td>300 mg</td><td>0.3</td><td>0.291262</td><td>0.340909</td><td>0.567108</td><td>0.354882</td></tr>
+                    <tr><td>310 mg</td><td>0.31</td><td>0.300971</td><td>0.352273</td><td>0.586011</td><td>0.366712</td></tr>
+                    <tr><td>320 mg</td><td>0.32</td><td>0.31068</td><td>0.363636</td><td>0.604915</td><td>0.378541</td></tr>
+                    <tr><td>330 mg</td><td>0.33</td><td>0.320388</td><td>0.375</td><td>0.623819</td><td>0.390371</td></tr>
+                    <tr><td>340 mg</td><td>0.34</td><td>0.330097</td><td>0.386364</td><td>0.642722</td><td>0.4022</td></tr>
+                    <tr><td>350 mg</td><td>0.35</td><td>0.339806</td><td>0.397727</td><td>0.661626</td><td>0.414029</td></tr>
+                    <tr><td>360 mg</td><td>0.36</td><td>0.349515</td><td>0.409091</td><td>0.680529</td><td>0.425859</td></tr>
+                    <tr><td>370 mg</td><td>0.37</td><td>0.359223</td><td>0.420455</td><td>0.699433</td><td>0.437688</td></tr>
+                    <tr><td>380 mg</td><td>0.38</td><td>0.368932</td><td>0.431818</td><td>0.718336</td><td>0.449518</td></tr>
+                    <tr><td>390 mg</td><td>0.39</td><td>0.378641</td><td>0.443182</td><td>0.73724</td><td>0.461347</td></tr>
+                    <tr><td>400 mg</td><td>0.4</td><td>0.38835</td><td>0.454545</td><td>0.756144</td><td>0.473176</td></tr>
+                </tbody>
+            </table>
+        </section>
+        <section class="card more-tools" id="more-tools">
+            <h2>Más herramientas</h2>
+            <div class="tool-cards-container">
+                <a href="/mg-to-ml" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>Mg a Ml</h3>
+                        <p>Convertir miligramos a mililitros.</p>
+                    </div>
+                </a>
+                <a href="/g-to-l" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>G a L</h3>
+                        <p>Convertir gramos a litros.</p>
+                    </div>
+                </a>
+                <a href="/kg-to-l" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Kg a L</h3>
+                        <p>Convertir kilogramos a litros.</p>
+                    </div>
+                </a>
+                <a href="/l-to-g" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>L a G</h3>
+                        <p>Convertir litros a gramos.</p>
+                    </div>
+                </a>
+                <a href="/l-to-kg" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>L a Kg</h3>
+                        <p>Convertir litros a kilogramos.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-g" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>Ml a G</h3>
+                        <p>Convertir mililitros a gramos.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-oz" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>Ml a Oz</h3>
+                        <p>Convertir mililitros a onzas.</p>
+                    </div>
+                </a>
+                <a href="/oz-to-ml" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Oz a Ml</h3>
+                        <p>Convertir onzas a mililitros.</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+        <section class="card" id="faq">
+            <h2>Preguntas frecuentes</h2>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>P: ¿Cuánto es 50 mg convertido a mL?</h4>
+                    <span class="toggle-icon">-</span>
+                </div>
+                <div class="faq-answer">
+                    <p>R: 50 mg convertidos a mL son <b>0,05 mL</b> para sustancias con una densidad de 1000 mg/mL (como el agua).</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>P: ¿Cuánto son 20 mg de aceite de cocina en mL?</h4>
+                    <span class="toggle-icon">-</span>
+                </div>
+                <div class="faq-answer">
+                    <p>R: El aceite de cocina tiene una densidad de aproximadamente 920 mg/mL. Por lo tanto, <b>20 mg = 0,021 mL</b>.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>P: ¿1 mg equivale a 1 mL?</h4>
+                    <span class="toggle-icon">-</span>
+                </div>
+                <div class="faq-answer">
+                    <p>R: No, 1 mg <b>no</b> equivale a 1 mL. La conversión depende de la densidad de la sustancia.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>P: ¿Es posible convertir mg a mL?</h4>
+                    <span class="toggle-icon">-</span>
+                </div>
+                <div class="faq-answer">
+                    <p>R: ¡Sí! Utilice la fórmula <b>mL = mg / densidad (mg/mL)</b> o nuestro conversor para obtener resultados rápidos.</p>
+                </div>
+            </div>
+        </section>
+        <section class="card" id="reference">
+            <h2>Referencias</h2>
+            <p>Para la densidad de la leche: <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7466286/">NCBI</a></p>
+            <p>Para la densidad del aceite de cocina: <a href="https://hypertextbook.com/facts/2000/IngaDorfman.shtml">HyperTextBook</a></p>
+        </section>
+    </div>
+    {% include 'footer.html' %}
+    <script>
+        // Lógica del menú desplegable
+        const mainSelect = document.getElementById('mainSelect');
+        const medicationGroup = document.getElementById('medicationGroup');
+        const medicationSelect = document.getElementById('medicationSelect');
+        const densityGroup = document.getElementById('densityGroup');
+        const densityInput = document.getElementById('densityInput');
+        const concentrationGroup = document.getElementById('concentrationGroup');
+        const concentrationInput = document.getElementById('concentrationInput');
+        const mgInput = document.getElementById('mgInput');
+        const resultValue = document.getElementById('result-value');
+        mainSelect.addEventListener('change', () => {
+            const selectedValue = mainSelect.value;
+            medicationGroup.classList.add('hidden');
+            densityGroup.classList.add('hidden');
+            concentrationGroup.classList.add('hidden');
+            densityInput.value = '';
+            concentrationInput.value = '';
+            if (selectedValue === 'medication') {
+                medicationGroup.classList.remove('hidden');
+            } else if (selectedValue === 'custom-liquid') {
+                densityGroup.classList.remove('hidden');
+            } else if (selectedValue !== '') {
+                densityGroup.classList.remove('hidden');
+                densityInput.value = mainSelect.options[mainSelect.selectedIndex].dataset.density;
+            }
+        });
+        medicationSelect.addEventListener('change', () => {
+            const selectedValue = medicationSelect.value;
+            concentrationInput.value = '';
+            concentrationGroup.classList.remove('hidden');
+            if (selectedValue === 'custom-medication') {
+                concentrationInput.placeholder = 'Ingrese concentración personalizada';
+            } else if (selectedValue !== '') {
+                concentrationInput.value = medicationSelect.options[medicationSelect.selectedIndex].dataset.concentration;
+            }
+        });
+        function convertMgToMl() {
+            const mg = parseFloat(mgInput.value);
+            let factor;
+            let calculationType;
+            const mainSelection = mainSelect.value;
+            const medicationSelection = medicationSelect.value;
+            if (mainSelection === 'medication') {
+                if (medicationSelection === '') {
+                    resultValue.innerHTML = 'Seleccione un medicamento.';
+                    resultValue.style.color = 'red';
+                    return;
+                }
+                factor = parseFloat(concentrationInput.value);
+                calculationType = 'concentración';
+            } else {
+                if (mainSelection === '') {
+                    resultValue.innerHTML = 'Seleccione un elemento.';
+                    resultValue.style.color = 'red';
+                    return;
+                }
+                factor = parseFloat(densityInput.value);
+                calculationType = 'densidad';
+            }
+            if (isNaN(mg) || isNaN(factor) || mg <= 0 || factor <= 0) {
+                resultValue.innerHTML = `Ingrese números positivos válidos para peso y ${calculationType}.`;
+                resultValue.style.color = 'red';
+                return;
+            }
+            const ml = mg / factor;
+            resultValue.innerHTML = `${mg} mg = ${ml.toFixed(2)} mL`;
+            resultValue.style.color = 'green';
+            document.getElementById('result-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        // Función para las FAQ
+        function toggleFAQ(element) {
+            const answer = element.nextElementSibling;
+            const icon = element.querySelector('.toggle-icon');
+            if (answer.style.display === 'block') {
+                answer.style.display = 'none';
+                icon.textContent = '+';
+            } else {
+                answer.style.display = 'block';
+                icon.textContent = '-';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.png') }}" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Конвертер мл в мг | Конвертация мл в мг</title>
+<meta name="description" content="Используйте этот конвертер мл в мг, чтобы выполнить преобразование миллилитров в миллиграммы всего одним кликом." />
+<meta name="keywords" content="конвертер мл в мг, преобразование мл в мг, таблица мл в мг, преобразование воды, преобразование молока, преобразование растительного масла, преобразование муки, преобразование сахара, кухонная таблица измерений, кулинарные преобразования, таблица веса ингредиентов" />
+<link rel="canonical" href="https://mltomg.info/ru" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+<meta name="google-site-verification" content="49KC3Wnkoo8QxBc56Q5dkx-LVqsbPxtgJTBs_MG7WBU" />
+<style>
+    <style>
+        #result-section {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #e9ecef;
+            min-height: 60px;
+            position: relative;
+        }
+        #result-section .result-heading {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-weight: 600;
+            color: var(--primary-color);
+            border-left: 3px solid var(--secondary-color);
+            padding-left: 10px;
+            font-size: 1.1rem;
+        }
+        #result-section .result-value {
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 10px;
+            padding-top: 20px;
+            color: var(--light-text-color);
+            width: 100%;
+        }
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</style>
+</head>
+<body>
+    {% include 'header.html' %}
+    <header class="secondary-header">
+        <div class="container">
+            <h1>Конвертер мл в мг</h1>
+            <p>Введите объем в миллилитрах ниже, чтобы рассчитать вес в миллиграммах.</p>
+        </div>
+    </header>
+    <div class="container main-content">
+        <section class="card" id="tool">
+            <h2>Преобразовать мл в мг</h2>
+            <div class="tool-container">
+                <div class="form-group">
+                    <label for="mlInput"><b>Объем (в мл):</b></label>
+                    <input type="number" id="mlInput" placeholder="Введите объем в мл" required>
+                </div>
+                <div class="form-group">
+                    <label for="mainSelect"><b>Выберите продукт:</b></label>
+                    <select id="mainSelect">
+                        <option value="">-- Выберите продукт --</option>
+                        <option value="water" data-density="1000">Вода</option>
+                        <option value="ethanol" data-density="789">Этанол</option>
+                        <option value="olive-oil" data-density="918">Оливковое масло</option>
+                        <option value="milk" data-density="1030">Молоко</option>
+                        <option value="honey" data-density="1300">Мёд</option>
+                        <option value="glycerin" data-density="1800">Глицерин</option>
+                        <option value="medication">Лекарства</option>
+                        <option value="custom-liquid">Своя плотность</option>
+                    </select>
+                </div>
+
+                <div class="form-group hidden" id="medicationGroup">
+                    <label for="medicationSelect"><b>Выберите лекарство:</b></label>
+                    <select id="medicationSelect">
+                        <option value="">-- Выберите лекарство --</option>
+                        <option value="acetaminophen" data-concentration="10">Acetaminophen (Tylenol) 10 mg/mL</option>
+                        <option value="amoxicillin" data-concentration="80">Amoxicillin suspension 400 mg/5 mL</option>
+                        <option value="benadryl-oral" data-concentration="12.5">Benadryl (Oral liquid, 12.5 mg/5 mL)</option>
+                        <option value="benadryl-injection" data-concentration="50">Benadryl (Injection, 50 mg/mL or 500 mg/10 mL)</option>
+                        <option value="cetirizine" data-concentration="1">Cetirizine HCL 1 mg/mL</option>
+                        <option value="ibuprofen-oral-1" data-concentration="20">Ibuprofen (Oral liquid, 100 mg/5 mL)</option>
+                        <option value="ibuprofen-oral-2" data-concentration="40">Ibuprofen (Oral liquid, 50 mg/1.25 mL)</option>
+                        <option value="ibuprofen-injection-1" data-concentration="5">Ibuprofen (Injection, 10 mg/2 mL)</option>
+                        <option value="ibuprofen-injection-2" data-concentration="100">Ibuprofen (Injection, 800 mg/8 mL)</option>
+                        <option value="morphine" data-concentration="20">Morphine sulfate soln 20 mg/mL</option>
+                        <option value="testosterone" data-concentration="200">Testosterone 200 mg/mL</option>
+                        <option value="custom-medication">Своя концентрация</option>
+                    </select>
+                </div>
+
+                <div class="form-group hidden" id="densityGroup">
+                    <label for="densityInput"><b>Плотность (мг/мл):</b></label>
+                    <input type="number" id="densityInput" placeholder="Введите плотность в мг/мл" required>
+                </div>
+
+                <div class="form-group hidden" id="concentrationGroup">
+                    <label for="concentrationInput"><b>Концентрация (мг/мл):</b></label>
+                    <input type="number" id="concentrationInput" placeholder="Введите концентрацию в мг/мл" required>
+                </div>
+
+                <button class="btn" onclick="convertMlToMg()">Преобразовать в мг</button>
+            </div>
+        </section>
+        <div id="result-section">
+            <div class="result-heading">Результат:</div>
+            <div class="result-value" id="result-value">Ваш результат появится здесь</div>
+        </div>
+        <section class="card" id="why-choose-us">
+            <p>Просто введите количество миллилитров (мл) в конвертер мл в мг, чтобы преобразовать мл в мг согласно плотности. Вы также можете конвертировать <a href="https://mltomg.info/mg-to-ml">мг в мл</a> на mltomg.info.</p>
+        </section>
+        <section class="card" id="formula">
+            <h2>Формула мл в мг:</h2>
+            <p><b>Мг = мл × d (мг/мл)</b></p>
+            <p>Где:</p>
+            <p>1. <b>мг</b> = миллиграммы</p>
+            <p>2. <b>мл</b> = миллилитры</p>
+            <p>3. <b>d</b> = плотность (мг/мл)</p>
+            <p>Чтобы преобразовать мл в мг, плотность должна быть в мг/мл. Если плотность указана в г/мл, то сначала переведите её в мг/мл, умножив на 1000.</p>
+        </section>
+        <section class="card" id="why-choose-us">
+            <h2>Как сделать преобразование мл в мг?</h2>
+            <ul>
+                <li><b>Найдите объем:</b> Определите общий объем мл для данного вещества.</li>
+                <li><b>Найдите плотность:</b> Измерьте плотность вещества. Обычно она указана на этикетках продуктов или в научной литературе.</li>
+                <li><b>Определите массу:</b> Подставьте известные значения в формулу, чтобы рассчитать массу.</li>
+            </ul>
+        </section>
+        <section class="card" id="example">
+            <h3>Пример:</h3>
+            <p>Разберём это на примере:</p>
+            <p>Допустим, у вас есть <b>10 мл</b> жидкости с плотностью <b>1,5 г/мл</b>. Преобразование будет таким:</p>
+            <p><b>Миллиграммы (мг)</b> = 10 мл × 1,000 × 1,5 г/мл = <b>15,000 мг</b></p>
+        </section>
+        <section class="card more-tools" id="more-tools">
+            <h2>Больше инструментов</h2>
+            <div class="tool-cards-container">
+                <a href="/mg-to-ml" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>Мг в мл</h3>
+                        <p>Конвертировать миллиграммы в миллилитры.</p>
+                    </div>
+                </a>
+                <a href="/g-to-l" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>Г в л</h3>
+                        <p>Конвертировать граммы в литры.</p>
+                    </div>
+                </a>
+                <a href="/kg-to-l" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Кг в л</h3>
+                        <p>Конвертировать килограммы в литры.</p>
+                    </div>
+                </a>
+                <a href="/l-to-g" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>Л в г</h3>
+                        <p>Конвертировать литры в граммы.</p>
+                    </div>
+                </a>
+                <a href="/l-to-kg" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>Л в кг</h3>
+                        <p>Конвертировать литры в килограммы.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-g" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>Мл в г</h3>
+                        <p>Конвертировать миллилитры в граммы.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-oz" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>Мл в унции</h3>
+                        <p>Конвертировать миллилитры в унции.</p>
+                    </div>
+                </a>
+                <a href="/oz-to-ml" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Унции в мл</h3>
+                        <p>Конвертировать унции в миллилитры.</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+        <section class="card" id="Table">
+            <h2>Таблица преобразования миллилитров в миллиграммы</h2>
+            <style>
+                :root {
+                    --bg: #ffffff;
+                    --text: #1f2937;
+                    --muted: #6b7280;
+                    --border: #e5e7eb;
+                    --stripe: #f9fafb;
+                }
+                body {
+                    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+                    color: var(--text);
+                    background: var(--bg);
+                    margin: 0;
+                }
+                h1 { font-size: 1.25rem; margin: 0 0 12px; }
+                .wrap { max-width: 1100px; margin: 0 auto; }
+                .table-card { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+                .table-scroll { max-height: 70vh; overflow: auto; }
+                table { border-collapse: separate; border-spacing: 0; width: 100%; }
+                thead th { position: sticky; top: 0; background: #f3f4f6; color: #111827; font-weight: 600; text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border); }
+                tbody td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+                tbody tr:nth-child(even) td { background: var(--stripe); }
+                th, td.num { text-align: right; }
+                th:first-child, td:first-child { text-align: center; }
+                caption { caption-side: bottom; padding: 10px; font-size: 0.875rem; color: var(--muted); }
+            </style>
+            <div class="wrap">
+                <h1>Volume to Mass Reference (mg)</h1>
+                <div class="table-card">
+                    <div class="table-scroll">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Объем (мл)</th>
+                                    <th>Вода (мг)</th>
+                                    <th>Молоко (мг)</th>
+                                    <th>Растительное масло (мг)</th>
+                                    <th>Мука общего назначения (мг)</th>
+                                    <th>Сахарный песок (мг)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>1</td><td class="num">1,000</td><td class="num">1,030</td><td class="num">880</td><td class="num">529</td><td class="num">845.35</td></tr>
+                                <tr><td>2</td><td class="num">2,000</td><td class="num">2,060</td><td class="num">1,760</td><td class="num">1,058</td><td class="num">1,691</td></tr>
+                                <tr><td>3</td><td class="num">3,000</td><td class="num">3,090</td><td class="num">2,640</td><td class="num">1,587</td><td class="num">2,536</td></tr>
+                                <tr><td>4</td><td class="num">4,000</td><td class="num">4,120</td><td class="num">3,520</td><td class="num">2,116</td><td class="num">3,381</td></tr>
+                                <tr><td>5</td><td class="num">5,000</td><td class="num">5,150</td><td class="num">4,400</td><td class="num">2,645</td><td class="num">4,227</td></tr>
+                                <tr><td>6</td><td class="num">6,000</td><td class="num">6,180</td><td class="num">5,280</td><td class="num">3,174</td><td class="num">5,072</td></tr>
+                                <tr><td>7</td><td class="num">7,000</td><td class="num">7,210</td><td class="num">6,160</td><td class="num">3,703</td><td class="num">5,917</td></tr>
+                                <tr><td>8</td><td class="num">8,000</td><td class="num">8,240</td><td class="num">7,040</td><td class="num">4,232</td><td class="num">6,763</td></tr>
+                                <tr><td>9</td><td class="num">9,000</td><td class="num">9,270</td><td class="num">7,920</td><td class="num">4,761</td><td class="num">7,608</td></tr>
+                                <tr><td>10</td><td class="num">10,000</td><td class="num">10,300</td><td class="num">8,800</td><td class="num">5,290</td><td class="num">8,454</td></tr>
+                                <tr><td>11</td><td class="num">11,000</td><td class="num">11,330</td><td class="num">9,680</td><td class="num">5,819</td><td class="num">9,299</td></tr>
+                                <tr><td>12</td><td class="num">12,000</td><td class="num">12,360</td><td class="num">10,560</td><td class="num">6,348</td><td class="num">10,144</td></tr>
+                                <tr><td>13</td><td class="num">13,000</td><td class="num">13,390</td><td class="num">11,440</td><td class="num">6,877</td><td class="num">10,990</td></tr>
+                                <tr><td>14</td><td class="num">14,000</td><td class="num">14,420</td><td class="num">12,320</td><td class="num">7,406</td><td class="num">11,835</td></tr>
+                                <tr><td>15</td><td class="num">15,000</td><td class="num">15,450</td><td class="num">13,200</td><td class="num">7,935</td><td class="num">12,680</td></tr>
+                                <tr><td>16</td><td class="num">16,000</td><td class="num">16,480</td><td class="num">14,080</td><td class="num">8,464</td><td class="num">13,526</td></tr>
+                                <tr><td>11</td><td class="num">11,000</td><td class="num">11,330</td><td class="num">9,680</td><td class="num">5,819</td><td class="num">9,299</td></tr>
+                                <tr><td>17</td><td class="num">17,000</td><td class="num">17,510</td><td class="num">14,960</td><td class="num">8,993</td><td class="num">14,371</td></tr>
+                                <tr><td>18</td><td class="num">18,000</td><td class="num">18,540</td><td class="num">15,840</td><td class="num">9,522</td><td class="num">15,216</td></tr>
+                                <tr><td>19</td><td class="num">19,000</td><td class="num">19,570</td><td class="num">16,720</td><td class="num">10,051</td><td class="num">16,062</td></tr>
+                                <tr><td>20</td><td class="num">20,000</td><td class="num">20,600</td><td class="num">17,600</td><td class="num">10,580</td><td class="num">16,907</td></tr>
+                                <tr><td>21</td><td class="num">21,000</td><td class="num">21,630</td><td class="num">18,480</td><td class="num">11,109</td><td class="num">17,752</td></tr>
+                                <tr><td>22</td><td class="num">22,000</td><td class="num">22,660</td><td class="num">19,360</td><td class="num">11,638</td><td class="num">18,598</td></tr>
+                                <tr><td>23</td><td class="num">23,000</td><td class="num">23,690</td><td class="num">20,240</td><td class="num">12,167</td><td class="num">19,443</td></tr>
+                                <tr><td>24</td><td class="num">24,000</td><td class="num">24,720</td><td class="num">21,120</td><td class="num">12,696</td><td class="num">20,288</td></tr>
+                                <tr><td>25</td><td class="num">25,000</td><td class="num">25,750</td><td class="num">22,000</td><td class="num">13,225</td><td class="num">21,134</td></tr>
+                                <tr><td>26</td><td class="num">26,000</td><td class="num">26,780</td><td class="num">22,880</td><td class="num">13,754</td><td class="num">21,979</td></tr>
+                                <tr><td>27</td><td class="num">27,000</td><td class="num">27,810</td><td class="num">23,760</td><td class="num">14,283</td><td class="num">22,824</td></tr>
+                                <tr><td>28</td><td class="num">28,000</td><td class="num">28,840</td><td class="num">24,640</td><td class="num">14,812</td><td class="num">23,670</td></tr>
+                                <tr><td>29</td><td class="num">29,000</td><td class="num">29,870</td><td class="num">25,520</td><td class="num">15,341</td><td class="num">24,515</td></tr>
+                                <tr><td>30</td><td class="num">30,000</td><td class="num">30,900</td><td class="num">26,400</td><td class="num">15,870</td><td class="num">25,361</td></tr>
+                                <tr><td>31</td><td class="num">31,000</td><td class="num">31,930</td><td class="num">27,280</td><td class="num">16,399</td><td class="num">26,206</td></tr>
+                                <tr><td>32</td><td class="num">32,000</td><td class="num">32,960</td><td class="num">28,160</td><td class="num">16,928</td><td class="num">27,051</td></tr>
+                                <tr><td>33</td><td class="num">33,000</td><td class="num">33,990</td><td class="num">29,040</td><td class="num">17,457</td><td class="num">27,897</td></tr>
+                                <tr><td>34</td><td class="num">34,000</td><td class="num">35,020</td><td class="num">29,920</td><td class="num">17,986</td><td class="num">28,742</td></tr>
+                                <tr><td>35</td><td class="num">35,000</td><td class="num">36,050</td><td class="num">30,800</td><td class="num">18,515</td><td class="num">29,587</td></tr>
+                                <tr><td>36</td><td class="num">36,000</td><td class="num">37,080</td><td class="num">31,680</td><td class="num">19,044</td><td class="num">30,433</td></tr>
+                                <tr><td>37</td><td class="num">37,000</td><td class="num">38,110</td><td class="num">32,560</td><td class="num">19,573</td><td class="num">31,278</td></tr>
+                                <tr><td>38</td><td class="num">38,000</td><td class="num">39,140</td><td class="num">33,440</td><td class="num">20,102</td><td class="num">32,123</td></tr>
+                                <tr><td>39</td><td class="num">39,000</td><td class="num">40,170</td><td class="num">34,320</td><td class="num">20,631</td><td class="num">32,969</td></tr>
+                                <tr><td>40</td><td class="num">40,000</td><td class="num">41,200</td><td class="num">35,200</td><td class="num">21,160</td><td class="num">33,814</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+<section class="card" id="faq">
+            <h2>Часто задаваемые вопросы</h2>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>В: Равно ли 1 мл 1 мг?</h4>
+                    <span class="toggle-icon">-</span>
+                </div>
+                <div class="faq-answer">
+                    <p>О: Нет, 1 мл не равен 1 мг. Преобразование из мл в мг полностью зависит от плотности вещества.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>В: Можно ли преобразовать миллилитры (мл) в миллиграммы (мг)?</h4>
+                    <span class="toggle-icon">-</span>
+                </div>
+                <div class="faq-answer">
+                    <p>О: Да, вы можете легко преобразовать мл в мг, используя приведённую выше формулу. Или воспользуйтесь нашим конвертером мл в мг для быстрого и простого преобразования.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>В: Сколько будет 50 мл в мг?</h4>
+                </div>
+                <div class="faq-answer">
+                    <p>О: Преобразование 50 мл в мг для вещества с плотностью 0,7 г/мл будет следующим:</p>
+                    <p><b>миллиграммы</b> = 50 мл × 1,000 × 0,7 г/мл = <b>35,000 мг</b></p>
+                </div>
+            </div>
+        </section>
+        <section class="card" id="reference">
+            <h2>Справочник:</h2>
+            <p>Для плотности молока:- <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7466286/">перейти</a></p>
+            <p>Для плотности растительного масла:- <a href="https://hypertextbook.com/facts/2000/IngaDorfman.shtml">перейти</a></p>
+        </section>
+    </div>
+    {% include 'footer.html' %}
+    <script>
+        const mainSelect = document.getElementById('mainSelect');
+        const medicationGroup = document.getElementById('medicationGroup');
+        const medicationSelect = document.getElementById('medicationSelect');
+        const densityGroup = document.getElementById('densityGroup');
+        const densityInput = document.getElementById('densityInput');
+        const concentrationGroup = document.getElementById('concentrationGroup');
+        const concentrationInput = document.getElementById('concentrationInput');
+        const mlInput = document.getElementById('mlInput');
+        const resultValue = document.getElementById('result-value');
+
+        // Event listener for the main dropdown
+        mainSelect.addEventListener('change', () => {
+            const selectedValue = mainSelect.value;
+            // Reset all groups and inputs
+            medicationGroup.classList.add('hidden');
+            densityGroup.classList.add('hidden');
+            concentrationGroup.classList.add('hidden');
+            densityInput.value = '';
+            concentrationInput.value = '';
+
+            if (selectedValue === 'medication') {
+                medicationGroup.classList.remove('hidden');
+            } else if (selectedValue === 'custom-liquid') {
+                densityGroup.classList.remove('hidden');
+            } else if (selectedValue !== '') {
+                // For other liquids, show density input and set value
+                densityGroup.classList.remove('hidden');
+                densityInput.value = mainSelect.options[mainSelect.selectedIndex].dataset.density;
+            }
+        });
+
+        // Event listener for the medication dropdown
+        medicationSelect.addEventListener('change', () => {
+            const selectedValue = medicationSelect.value;
+            // Reset concentration input first
+            concentrationInput.value = '';
+            concentrationGroup.classList.remove('hidden');
+
+            if (selectedValue === 'custom-medication') {
+                concentrationInput.placeholder = 'Enter custom concentration';
+            } else if (selectedValue !== '') {
+                concentrationInput.value = medicationSelect.options[medicationSelect.selectedIndex].dataset.concentration;
+            }
+        });
+
+        function convertMlToMg() {
+            const ml = parseFloat(mlInput.value);
+            let factor;
+            let calculationType;
+
+            const mainSelection = mainSelect.value;
+            const medicationSelection = medicationSelect.value;
+
+            if (mainSelection === 'medication') {
+                if (medicationSelection === '') {
+                    resultValue.innerHTML = 'Please select a medication.';
+                    resultValue.style.color = 'red';
+                    return;
+                }
+                factor = parseFloat(concentrationInput.value);
+                calculationType = 'Concentration';
+            } else { // It's a liquid or custom liquid
+                if (mainSelection === '') {
+                    resultValue.innerHTML = 'Please select an item.';
+                    resultValue.style.color = 'red';
+                    return;
+                }
+                factor = parseFloat(densityInput.value);
+                calculationType = 'Density';
+            }
+
+            if (isNaN(ml) || isNaN(factor) || ml <= 0 || factor <= 0) {
+                resultValue.innerHTML = `Please enter valid positive numbers for volume and ${calculationType}.`;
+                resultValue.style.color = 'red';
+                return;
+            }
+
+            const mg = ml * factor;
+            resultValue.innerHTML = `${ml} ml = ${mg.toLocaleString()} mg`;
+            resultValue.style.color = 'green';
+            document.getElementById('result-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    </script>
+</body>
+</html>

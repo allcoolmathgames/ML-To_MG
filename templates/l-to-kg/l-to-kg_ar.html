@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.png') }}" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow"> 
+    <title>محول من لتر إلى كيلوغرام | تحويل من لتر إلى كجم</title>
+    <meta name="description" content="استخدم محول اللتر إلى الكيلوجرام هذا لإجراء تحويلات من اللترات إلى الكيلوجرامات لمختلف المواد بناءً على كثافتها." />
+    <meta name="keywords" content="محول اللتر إلى الكيلوجرام، تحويل اللتر إلى الكيلوجرام، جدول اللتر إلى الكيلوجرام، تحويل الماء، تحويل الحليب، تحويل زيت الطهي، تحويل الدقيق، جدول قياسات المطبخ، تحويلات الخبز، جدول كتلة المكونات" />
+    <link rel="canonical" href="https://kgtoL.info/l-to-kg" />
+    <link rel="alternate" hreflang="x-default" href="https://kgtoL.info/l-to-kg" />
+    <link rel="alternate" hreflang="en" href="https://kgtoL.info/l-to-kg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <meta name="google-site-verification" content="49KC3Wnkoo8QxBc56Q5dkx-LVqsbPxtgJTBs_MG7WBU" />
+    <style>
+        /* Jo styles aapne diye the woh yahan hain, isko external CSS mein bhi move kar sakte hain */
+        /* RTL adjustments for the result section */
+        #result-section {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #e9ecef;
+            min-height: 60px;
+            position: relative;
+        }
+        #result-section .result-heading {
+            position: absolute;
+            top: 15px;
+            right: 15px; /* RTL change: left se right */
+            left: auto;
+            font-weight: 600;
+            color: var(--primary-color);
+            border-right: 3px solid var(--secondary-color); /* RTL change: left se right border */
+            border-left: none;
+            padding-right: 10px; /* RTL change: left se right padding */
+            padding-left: 0;
+            font-size: 1.1rem;
+        }
+        #result-section .result-value {
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 10px;
+            padding-top: 20px;
+            color: var(--light-text-color);
+            width: 100%;
+        }
+        .hidden {
+            display: none !important;
+        }
+        
+        /* Table styles from the original code (unchanged for now, relying on dir="rtl" for table direction) */
+        :root {
+            --bg: #ffffff;
+            --text: #1f2937;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+            --stripe: #f9fafb;
+        }
+        body {
+            font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+            color: var(--text);
+            background: var(--bg);
+            margin: 0;
+        }
+        h1 { font-size: 1.25rem; margin: 0 0 12px; }
+        .wrap { max-width: 1100px; margin: 0 auto; }
+        .table-card { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+        .table-scroll { max-height: 70vh; overflow: auto; }
+        table { border-collapse: separate; border-spacing: 0; width: 100%; }
+        thead th { position: sticky; top: 0; background: var(--border); color: #111827; font-weight: 600; text-align: center; padding: 10px 12px; border-bottom: 1px solid var(--border); }
+        tbody td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; text-align: center; }
+        tbody tr:nth-child(even) td { background: var(--stripe); }
+        /* RTL: text-align ko adjust karna zaroori hai agar table columns change ho rahe hain */
+        th, td.num { text-align: left; } 
+        th:first-child, td:first-child { text-align: center; } /* First column center */
+        caption { caption-side: bottom; padding: 10px; font-size: 0.875rem; color: var(--muted); }
+
+        /* FAQ Styling for RTL */
+        .faq-question {
+            cursor: pointer;
+            padding: 10px 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .faq-answer {
+            padding: 0 15px;
+            background-color: #f9f9f9;
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.3s ease-out;
+        }
+        .toggle-icon {
+            font-size: 1.5em;
+            font-weight: bold;
+            line-height: 1;
+        }
+    </style>
+</head>
+<body>
+    {% include 'header.html' %}
+    <header class="secondary-header">
+        <div class="container">
+            <h1>محول من لتر إلى كيلوغرام</h1>
+            <p>أدخل الحجم باللتر أدناه لحساب الكتلة بالكيلوجرام.</p>
+        </div>
+    </header>
+    <div class="container main-content">
+        <section class="card" id="tool">
+            <h2>محول لتر إلى كيلوغرام</h2>
+            <div class="tool-container" dir="rtl">
+                <div class="form-group">
+                    <label for="lInput"><b>الحجم (باللتر):</b></label>
+                    <input type="number" id="lInput" placeholder="أدخل الحجم باللتر" required>
+                </div>
+                <div class="form-group">
+                    <label for="mainSelect"><b>اختر المادة:</b></label>
+                    <select id="mainSelect">
+                        <option value="">-- اختر مادة --</option>
+                        <optgroup label="شائعة">
+                            <option value="water" data-density="1.000">الماء</option>
+                        </optgroup>
+                        <optgroup label="السكريات">
+                            <option value="granulated-sugar" data-density="0.845">سكر حبيبات</option>
+                            <option value="powdered-sugar" data-density="0.560">سكر بودرة</option>
+                            <option value="brown-sugar" data-density="0.850">سكر بني</option>
+                            <option value="raw-sugar" data-density="0.900">سكر خام</option>
+                        </optgroup>
+                        <optgroup label="الشرابات والدهانات">
+                            <option value="corn-syrup" data-density="1.380">شراب الذرة</option>
+                            <option value="honey" data-density="1.420">العسل</option>
+                            <option value="nutella" data-density="1.200">نوتيلا</option>
+                            <option value="jelly" data-density="1.300">هلام (جيلي)</option>
+                        </optgroup>
+                        <optgroup label="الطحين">
+                            <option value="all-purpose-flour" data-density="0.529">طحين متعدد الاستخدامات</option>
+                            <option value="wheat-flour" data-density="0.529">طحين القمح</option>
+                            <option value="bread-flour" data-density="0.529">طحين الخبز</option>
+                            <option value="type-00-flour" data-density="0.600">طحين نوع 00</option>
+                            <option value="cake-flour" data-density="0.480">طحين الكيك</option>
+                            <option value="rye-flour" data-density="0.460">طحين الجاودار</option>
+                        </optgroup>
+                        <optgroup label="خمائر وتوابل">
+                            <option value="baking-soda" data-density="0.960">صودا الخبز</option>
+                            <option value="baking-powder" data-density="0.800">مسحوق الخبز (بيكنج بودر)</option>
+                            <option value="cream-of-tartar" data-density="0.750">كريم التارتار</option>
+                            <option value="cinnamon" data-density="0.540">قرفة</option>
+                            <option value="garlic-powder" data-density="0.550">مسحوق الثوم</option>
+                            <option value="salt" data-density="2.160">ملح</option>
+                            <option value="spice-blends" data-density="0.550">توليفة توابل</option>
+                            <option value="cocoa-powder" data-density="0.480">مسحوق الكاكاو</option>
+                            <option value="vanilla" data-density="1.200">خلاصة الفانيليا</option>
+                        </optgroup>
+                        <optgroup label="الدهون والزيوت">
+                            <option value="cooking-oil" data-density="0.918">زيت الطهي</option>
+                            <option value="olive-oil" data-density="0.918">زيت الزيتون</option>
+                            <option value="vegetable-oil" data-density="0.918">زيت نباتي</option>
+                            <option value="butter" data-density="0.911">زبدة</option>
+                            <option value="margarine" data-density="0.940">مرغرين</option>
+                            <option value="lard" data-density="0.920">دهن الخنزير</option>
+                            <option value="mayonnaise" data-density="0.920">مايونيز</option>
+                            <option value="peanut-butter" data-density="1.060">زبدة الفول السوداني</option>
+                        </optgroup>
+                        <optgroup label="الألبان وما يتصل بها">
+                            <option value="milk" data-density="1.030">حليب</option>
+                            <option value="buttermilk" data-density="1.030">لبن رائب</option>
+                            <option value="light-cream" data-density="1.009">قشطة خفيفة</option>
+                            <option value="heavy-cream" data-density="0.994">قشطة ثقيلة</option>
+                            <option value="whipped-cream" data-density="0.480">كريمة مخفوقة</option>
+                            <option value="ice-cream" data-density="0.560">آيس كريم</option>
+                            <option value="sour-cream" data-density="1.030">قشطة حامضة</option>
+                            <option value="cottage-cheese" data-density="1.060">جبنة قريش</option>
+                            <option value="cream-cheese" data-density="1.040">جبنة كريمية</option>
+                            <option value="yogurt" data-density="1.030">زبادي</option>
+                        </optgroup>
+                        <optgroup label="المكسرات والحبوب">
+                            <option value="almonds" data-density="0.600">لوز</option>
+                            <option value="cashews" data-density="0.600">كاجو</option>
+                            <option value="peanuts" data-density="0.600">فول سوداني</option>
+                            <option value="sunflower-seeds" data-density="0.500">بذور دوار الشمس</option>
+                            <option value="barley" data-density="0.700">شعير</option>
+                            <option value="bran" data-density="0.300">نخالة</option>
+                            <option value="oats" data-density="0.450">شوفان</option>
+                            <option value="rice" data-density="0.850">أرز (غير مطبوخ)</option>
+                            <option value="rye" data-density="0.700">جاودار</option>
+                            <option value="wheat" data-density="0.800">قمح</option>
+                            <option value="breadcrumbs" data-density="0.420">فتات الخبز</option>
+                            <option value="corn-flakes" data-density="0.150">رقائق الذرة</option>
+                            <option value="cornstarch" data-density="0.500">نشا الذرة</option>
+                            <option value="rice-krispies" data-density="0.110">أرز مقرمش</option>
+                        </optgroup>
+                        <optgroup label="مكونات أخرى">
+                            <option value="dried-apple-slices" data-density="0.200">شرائح تفاح مجففة</option>
+                            <option value="carrots" data-density="0.500">جزر (مبشور)</option>
+                            <option value="corn" data-density="0.750">ذرة (حبوب)</option>
+                            <option value="kidney-beans" data-density="0.850">فاصوليا حمراء (مجففة)</option>
+                            <option value="onions" data-density="0.700">بصل (مفروم)</option>
+                            <option value="potatoes" data-density="0.750">بطاطس (مكعبات)</option>
+                            <option value="yams" data-density="0.750">يام (مكعبات)</option>
+                            <option value="bread" data-density="0.250">خبز (شرائح)</option>
+                            <option value="cake-mix" data-density="0.800">خليط كيك</option>
+                        </optgroup>
+                        <option value="custom-liquid">كثافة مخصصة (كجم/لتر)</option>
+                    </select>
+                </div>
+                <div class="form-group hidden" id="densityGroup">
+                    <label for="densityInput"><b>الكثافة (كجم/لتر):</b></label>
+                    <input type="number" id="densityInput" placeholder="أدخل الكثافة بالكجم/لتر" required>
+                </div>
+                <button class="btn" onclick="convertLToKg()">تحويل إلى كيلوغرام</button>
+            </div>
+        
+        <p style="color: red;"><b>ملاحظة:</b> تختلف الكثافة باختلاف درجة الحرارة وقد تختلف حسب المادة. يمكنك أيضًا اختيار <b>كثافة مخصصة</b> من القائمة المنسدلة لإدخال قيمتك الخاصة.</p>
+        <div id="result-section">
+            <div class="result-heading">النتيجة:</div>
+            <div class="result-value" id="result-value">ستظهر نتيجتك هنا</div>
+        </div>
+        <section class="card" id="why-choose-us">
+            <p>محول اللتر إلى الكيلوجرام أداة مفيدة لتحويل حجم المادة من اللترات إلى وزن مكافئ بالكيلوجرام. يُظهر لك محول اللتر إلى الكيلوجرام كثافة المادة المختارة لضمان دقة وكفاءة التحويل. يمكنك أيضًا استخدام <a href="https://mltomg.info/kg-to-l">محول الكيلوجرام إلى اللتر</a> لإجراء حسابات عكسية</p>
+        </section>
+        <section class="card more-tools" id="more-tools">
+            <h2>أدوات إضافية</h2>
+            <div class="tool-cards-container">
+                <a href="/mg-to-ml" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>ملغ إلى مل</h3>
+                        <p>حوّل المليغرام إلى مليلتر.</p>
+                    </div>
+                </a>
+                <a href="/g-to-l" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>غل إلى لتر</h3>
+                        <p>حوّل الغرام إلى لتر.</p>
+                    </div>
+                </a>
+                <a href="/kg-to-l" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>كغ إلى لتر</h3>
+                        <p>حوّل الكيلوغرام إلى لتر.</p>
+                    </div>
+                </a>
+                <a href="/l-to-g" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>ل إلى غ</h3>
+                        <p>حوّل اللتر إلى غرام.</p>
+                    </div>
+                </a>
+                <a href="/l-to-kg" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>ل إلى كغ</h3>
+                        <p>حوّل اللتر إلى كيلوغرام.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-g" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>مل إلى غ</h3>
+                        <p>حوّل الملليلتر إلى غرام.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-oz" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>مل إلى أونصة</h3>
+                        <p>حوّل الملليلتر إلى أونصة.</p>
+                    </div>
+                </a>
+                <a href="/oz-to-ml" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>أونصة إلى مل</h3>
+                        <p>حوّل الأونصات إلى مليلتر.</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+        <section class="card" id="conversion-info">
+            <h2>تحويل من لتر إلى كيلوجرام:</h2>
+            <p>اللتر (ℓ) يقيس الحجم، بينما الكيلوغرام (كجم) يقيس الكتلة. كلاهما يمثلان وحدتين مختلفتين، لذا لا يمكن التحويل المباشر. لإجراء التحويل، يلزم استخدام كثافة المادة.</p>
+            <h3>الصيغة:</h3>
+            <p style="text-align: center; color: red;"> الكيلوغرام = اللتر × الكثافة</p>
+            <p>يجب عليك معرفة كثافة المادة لتطبيق الصيغة.</p>
+            <h4>أمثلة:</h4>
+            <ul>
+                <li>قم بتحويل 1 لتر إلى كجم لمادة لها كثافة 1 كجم لكل لتر.</li>
+            </ul>
+            <p><b>الحل:</b></p>
+            <p>باستخدام الصيغة أعلاه سوف نقوم بحل هذا المثال:</p>
+            <p style="text-align: center; color: red;"> الكيلوغرام = 1 × 1</p>
+            <p style="text-align: center; color: red;"> الكيلوغرام = 1</p>
+            <p>حيث:</p>
+            <ul>
+                <li>1 = لتر من المادة</li>
+                <li>1 = كثافة المادة</li>
+            </ul>
+            <p>وبالتالي فإن 1 لتر من المادة التي لها كثافة 1 كجم لكل لتر يساوي 1 كيلوجرام. </p>
+            <ul>
+                <li>تحويل 5 لتر إلى كجم للمواد التي لها كثافة 1.38 كجم لكل لتر</li>
+            </ul>
+            <p><b>الحل:</b></p>
+            <p>باستخدام الصيغة أعلاه سوف نقوم بحل هذا المثال:</p>
+            <p style="text-align: center; color: red;"> الكيلوغرام = 5 × 1.38</p>
+            <p style="text-align: center; color: red;"> الكيلوغرام = 6.90</p>
+            <p>حيث:</p>
+            <ul>
+                <li>5 = لترات من المادة</li>
+                <li>1.38 = كثافة المادة</li>
+            </ul>
+            <p>وبالتالي، فإن 5 لترات من المادة التي لها كثافة 1.38 كجم لكل لتر تساوي 6.90 كيلوجرام. </p>
+        </section>
+        <section class="card" id="how-it-works">
+            <h2>حالات استخدام محول اللتر إلى الكيلوجرام من Mltomg.info</h2>
+            <p>فيما يلي بعض حالات استخدام محول اللتر إلى الكيلوجرام:</p>
+            <h3>الشحن والنقل</h3>
+            <p>يساعد تحويل اللتر إلى كيلوغرام المركبات على الالتزام بحدود الوزن الآمنة واتباع القواعد. على سبيل المثال، إذا كانت شاحنة صهريج تحمل 1000 لتر من المواد الكيميائية، فيجب تحويل الوزن إلى كيلوغرامات للتأكد من استيفائها لمتطلبات السلامة والمتطلبات القانونية للرحلة.</p>
+            <h3>الطبخ والخَبز</h3>
+            <p>تُستخدم اللترات عادةً للسوائل كالماء والحليب والزيت، بينما تُستخدم الكيلوجرامات للمواد الجافة كالدقيق والسكر. يُعد تحويل اللترات إلى الكيلوجرامات أمرًا بالغ الأهمية للحصول على النسب الصحيحة، خاصةً في الوصفات التي تتطلب قياسات دقيقة.</p>
+            <h3>العلوم والتعليم</h3>
+            <p>لإجراء التجارب المعملية أو التمارين الصفية حيث يجب تحويل الحجم (لتر) إلى كتلة (كيلوجرام).</p>
+            <h3>التسوق والشراء</h3>
+            <p>لنفترض أنك في متجر بقالة تقارن بين علامتين تجاريتين لزيت الطهي. العلامة التجارية الأولى تُباع في زجاجة سعة 2 لتر بسعر 5 دولارات، بينما تُباع العلامة التجارية الثانية في عبوة سعة 2.5 كيلوغرام بسعر 7 دولارات. لمعرفة أيهما يُقدم لك أفضل سعر، عليك تحويل اللترات إلى كيلوغرامات لمقارنة كلا الخيارين بشكل عادل.</p>
+        </section>
+        <section class="card" id="table">
+            <h2>جدول تحويل من لتر إلى كيلوجرام</h2>
+            <table border="1" cellpadding="8" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>المادة</th>
+                        <th>الكثافة (كجم/لتر)</th>
+                        <th>0.5 L (kg)</th>
+                        <th>1 L (kg)</th>
+                        <th>2 L (kg)</th>
+                        <th>5 L (kg)</th>
+                        <th>10 L (kg)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>الماء</td>
+                        <td>1.00</td>
+                        <td>0.50</td>
+                        <td>1.00</td>
+                        <td>2.00</td>
+                        <td>5.00</td>
+                        <td>10.00</td>
+                    </tr>
+                    <tr>
+                        <td>لبن</td>
+                        <td>1.03</td>
+                        <td>0.52</td>
+                        <td>1.03</td>
+                        <td>2.06</td>
+                        <td>5.15</td>
+                        <td>10.30</td>
+                    </tr>
+                    <tr>
+                        <td>زيت الطهي</td>
+                        <td>0.92</td>
+                        <td>0.46</td>
+                        <td>0.92</td>
+                        <td>1.84</td>
+                        <td>4.60</td>
+                        <td>9.20</td>
+                    </tr>
+                    <tr>
+                        <td>عسل</td>
+                        <td>1.42</td>
+                        <td>0.71</td>
+                        <td>1.42</td>
+                        <td>2.84</td>
+                        <td>7.10</td>
+                        <td>14.20</td>
+                    </tr>
+                    <tr>
+                        <td>الدقيق (شكل سائل/ملاط)</td>
+                        <td>0.59</td>
+                        <td>0.30</td>
+                        <td>0.59</td>
+                        <td>1.18</td>
+                        <td>2.95</td>
+                        <td>5.90</td>
+                    </tr>
+                    <tr>
+                        <td>محلول السكر</td>
+                        <td>0.85</td>
+                        <td>0.43</td>
+                        <td>0.85</td>
+                        <td>1.70</td>
+                        <td>4.25</td>
+                        <td>8.50</td>
+                    </tr>
+                    <tr>
+                        <td>زيت الزيتون</td>
+                        <td>0.91</td>
+                        <td>0.46</td>
+                        <td>0.91</td>
+                        <td>1.82</td>
+                        <td>4.55</td>
+                        <td>9.10</td>
+                    </tr>
+                    <tr>
+                        <td>الغازولين</td>
+                        <td>0.74</td>
+                        <td>0.37</td>
+                        <td>0.74</td>
+                        <td>1.48</td>
+                        <td>3.70</td>
+                        <td>7.40</td>
+                    </tr>
+                    <tr>
+                        <td>ديزل</td>
+                        <td>0.83</td>
+                        <td>0.42</td>
+                        <td>0.83</td>
+                        <td>1.66</td>
+                        <td>4.15</td>
+                        <td>8.30</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        <section class="card" id="faq">
+            <h2>الأسئلة الشائعة</h2>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>س: هل يمكن أن يساوي 1 لتر دائمًا 1 كيلوجرام؟</h4>
+                    <span class="toggle-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>ج: لا. الماء النقي فقط في الظروف القياسية (4 درجات مئوية) يساوي 1 لتر = 1 كيلوغرام. أما السوائل الأخرى، كالحليب والزيت والعسل، فلها كثافات مختلفة، لذا تختلف أوزانها.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>س: هل محول L إلى KG الخاص بـ mltomg.info دقيق لجميع المواد؟</h4>
+                    <span class="toggle-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>ج: نعم، بشرط استخدام الكثافة الصحيحة للمادة. ولأن الكثافة قابلة للتغير مع درجة الحرارة، تكون النتائج تقريبية في بعض الحالات. لكن فريقنا يتأكد من دقة هذا المحول بمساعدة خبراء.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+    {% include 'footer.html' %}
+    <script>
+        const mainSelect = document.getElementById('mainSelect');
+        const densityGroup = document.getElementById('densityGroup');
+        const densityInput = document.getElementById('densityInput');
+        const lInput = document.getElementById('lInput'); // Volume in Liters
+        const resultValue = document.getElementById('result-value');
+        // Event listener for dropdown change
+        mainSelect.addEventListener('change', () => {
+            const selectedValue = mainSelect.value;
+            densityGroup.classList.add('hidden');
+            densityInput.value = '';
+            if (selectedValue === 'custom-liquid') {
+                densityGroup.classList.remove('hidden');
+                densityInput.placeholder = 'أدخل الكثافة المخصصة (كجم/لتر)';
+            } else if (selectedValue !== '') {
+                densityGroup.classList.remove('hidden');
+                // Density data attribute se uthaya ja raha hai, jo ki ab kg/L mein hai.
+                densityInput.value = mainSelect.options[mainSelect.selectedIndex].dataset.density;
+            }
+        });
+        // Conversion function: Liters to Kilograms
+        function convertLToKg() {
+            const L = parseFloat(lInput.value); // Volume in Liters
+            const density = parseFloat(densityInput.value); // Density in kg/L
+            
+            if (mainSelect.value === '') {
+                resultValue.innerHTML = 'الرجاء اختيار مادة أو إدخال كثافة مخصصة.';
+                resultValue.style.color = 'red';
+                return;
+            }
+            if (isNaN(L) || isNaN(density) || L <= 0 || density <= 0) {
+                resultValue.innerHTML = `الرجاء إدخال أرقام موجبة صحيحة للحجم والكثافة.`;
+                resultValue.style.color = 'red';
+                return;
+            }
+            // Formula: Mass (kg) = Volume (L) × Density (kg/L)
+            const Kg = L * density; 
+            
+            resultValue.innerHTML = `${L} لتر = ${Kg.toFixed(4)} كجم`;
+            resultValue.style.color = 'green';
+            document.getElementById('result-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    </script>
+    <script>
+        // FAQ toggle function ko yahaan add kar diya hai
+        function toggleFAQ(element) {
+            const answer = element.nextElementSibling;
+            const icon = element.querySelector('.toggle-icon');
+            if (answer.style.maxHeight) {
+                answer.style.maxHeight = null;
+                icon.textContent = '+';
+            } else {
+                answer.style.maxHeight = answer.scrollHeight + "px";
+                icon.textContent = '-';
+            }
+        }
+    </script>
+</body>
+</html>

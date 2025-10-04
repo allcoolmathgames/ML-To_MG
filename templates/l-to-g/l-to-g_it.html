@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.png') }}" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Convertitore da litri a grammi | Conversione da L a G</title>
+    <meta name="description" content="Utilizza questo convertitore da litri a grammi per effettuare conversioni da litri a grammi per varie sostanze in base alla loro densità." />
+    <meta name="keywords" content="convertitore da litro a grammo, conversione da l a g, tabella da l a g, conversione dell'acqua, conversione del latte, conversione dell'olio da cucina, conversione della farina, tabella delle misure in cucina, conversioni per la cottura al forno, tabella delle masse degli ingredienti" />
+    <link rel="canonical" href="https://kgtoL.info/l-to-g" />
+    <link rel="alternate" hreflang="x-default" href="https://kgtoL.info/l-to-g" />
+    <link rel="alternate" hreflang="it" href="https://kgtoL.info/l-to-g" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <meta name="google-site-verification" content="49KC3Wnkoo8QxBc56Q5dkx-LVqsbPxtgJTBs_MG7WBU" />
+    <style>
+        #result-section {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #e9ecef;
+            min-height: 60px;
+            position: relative;
+        }
+        #result-section .result-heading {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-weight: 600;
+            color: var(--primary-color);
+            border-left: 3px solid var(--secondary-color);
+            padding-left: 10px;
+            font-size: 1.1rem;
+        }
+        #result-section .result-value {
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 10px;
+            padding-top: 20px;
+            color: var(--light-text-color);
+            width: 100%;
+        }
+        .hidden {
+            display: none !important;
+        }
+        :root {
+            --bg: #ffffff;
+            --text: #1f2937;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+            --stripe: #f9fafb;
+        }
+    </style>
+</head>
+<body>
+    {% include 'header.html' %}
+    <header class="secondary-header">
+        <div class="container">
+            <h1>Convertitore da litri a grammi</h1>
+            <p>Inserisci qui sotto il volume in litri per calcolare la massa in grammi.</p>
+        </div>
+    </header>
+    <div class="container main-content">
+        <section class="card" id="tool">
+            <h2>Converti Litri in Grammi</h2>
+            <div class="tool-container">
+                <div class="form-group">
+                    <label for="lInput"><b>Volume (in litri):</b></label>
+                    <input type="number" id="lInput" placeholder="Inserisci il volume in litri" required>
+                </div>
+                <div class="form-group">
+                    <label for="mainSelect"><b>Seleziona Sostanza:</b></label>
+                    <select id="mainSelect">
+                        <option value="">-- Seleziona una Sostanza --</option>
+                        <optgroup label="Comuni">
+                            <option value="water" data-density="1000">Acqua</option>
+                        </optgroup>
+                        <optgroup label="Zuccheri">
+                            <option value="granulated-sugar" data-density="845">Zucchero Semolato</option>
+                            <option value="powdered-sugar" data-density="560">Zucchero a Velo</option>
+                            <option value="brown-sugar" data-density="850">Zucchero di Canna</option>
+                            <option value="raw-sugar" data-density="900">Zucchero Grezzo</option>
+                        </optgroup>
+                        <optgroup label="Sciroppi e Spalme">
+                            <option value="corn-syrup" data-density="1380">Sciroppo di Mais</option>
+                            <option value="honey" data-density="1420">Miele</option>
+                            <option value="nutella" data-density="1200">Nutella</option>
+                            <option value="jelly" data-density="1300">Gelatina</option>
+                        </optgroup>
+                        <optgroup label="Farine">
+                            <option value="all-purpose-flour" data-density="529">Farina per Tutti gli Usi</option>
+                            <option value="wheat-flour" data-density="529">Farina di Grano</option>
+                            <option value="bread-flour" data-density="529">Farina per Pane</option>
+                            <option value="type-00-flour" data-density="600">Farina Tipo 00</option>
+                            <option value="cake-flour" data-density="480">Farina per Dolci</option>
+                            <option value="rye-flour" data-density="460">Farina di Segale</option>
+                        </optgroup>
+                        <optgroup label="Lievitanti e Spezie">
+                            <option value="baking-soda" data-density="960">Bicarbonato di Sodio</option>
+                            <option value="baking-powder" data-density="800">Lievito in Polvere</option>
+                            <option value="cream-of-tartar" data-density="750">Cremor Tartaro</option>
+                            <option value="cinnamon" data-density="540">Cannella</option>
+                            <option value="garlic-powder" data-density="550">Aglio in Polvere</option>
+                            <option value="salt" data-density="2160">Sale</option>
+                            <option value="spice-blends" data-density="550">Miscela di Spezie</option>
+                            <option value="cocoa-powder" data-density="480">Cacao in Polvere</option>
+                            <option value="vanilla" data-density="1200">Estratto di Vaniglia</option>
+                        </optgroup>
+                        <optgroup label="Grassi e Oli">
+                            <option value="cooking-oil" data-density="918">Olio da Cucina</option>
+                            <option value="olive-oil" data-density="918">Olio d'Oliva</option>
+                            <option value="vegetable-oil" data-density="918">Olio Vegetale</option>
+                            <option value="butter" data-density="911">Burro</option>
+                            <option value="margarine" data-density="940">Margarina</option>
+                            <option value="lard" data-density="920">Strutto</option>
+                            <option value="mayonnaise" data-density="920">Maionese</option>
+                            <option value="peanut-butter" data-density="1060">Burro di Arachidi</option>
+                        </optgroup>
+                        <optgroup label="Latticini e Affini">
+                            <option value="milk" data-density="1030">Latte</option>
+                            <option value="buttermilk" data-density="1030">Latte di Siero</option>
+                            <option value="light-cream" data-density="1009">Panna Leggera</option>
+                            <option value="heavy-cream" data-density="994">Panna Densa</option>
+                            <option value="whipped-cream" data-density="480">Panna Montata</option>
+                            <option value="ice-cream" data-density="560">Gelato</option>
+                            <option value="sour-cream" data-density="1030">Panna Acida</option>
+                            <option value="cottage-cheese" data-density="1060">Ricotta</option>
+                            <option value="cream-cheese" data-density="1040">Formaggio Spalmabile</option>
+                            <option value="yogurt" data-density="1030">Yogurt</option>
+                        </optgroup>
+                        <optgroup label="Noci e Cereali">
+                            <option value="almonds" data-density="600">Mandorle</option>
+                            <option value="cashews" data-density="600">Anacardi</option>
+                            <option value="peanuts" data-density="600">Arachidi</option>
+                            <option value="sunflower-seeds" data-density="500">Semi di Girasole</option>
+                            <option value="barley" data-density="700">Orzo</option>
+                            <option value="bran" data-density="300">Crusca</option>
+                            <option value="oats" data-density="450">Avena</option>
+                            <option value="rice" data-density="850">Riso (non cotto)</option>
+                            <option value="rye" data-density="700">Segale</option>
+                            <option value="wheat" data-density="800">Grano</option>
+                            <option value="breadcrumbs" data-density="420">Pangrattato</option>
+                            <option value="corn-flakes" data-density="150">Corn Flakes</option>
+                            <option value="cornstarch" data-density="500">Amido di Mais</option>
+                            <option value="rice-krispies" data-density="110">Rice Krispies</option>
+                        </optgroup>
+                        <optgroup label="Altri Ingredienti">
+                            <option value="dried-apple-slices" data-density="200">Fette di Mela Secca</option>
+                            <option value="carrots" data-density="500">Carote (grattugiate)</option>
+                            <option value="corn" data-density="750">Mais (chicchi)</option>
+                            <option value="kidney-beans" data-density="850">Fagioli Rossi (secchi)</option>
+                            <option value="onions" data-density="700">Cipolle (tritate)</option>
+                            <option value="potatoes" data-density="750">Patate (a cubetti)</option>
+                            <option value="yams" data-density="750">Ignami (a cubetti)</option>
+                            <option value="bread" data-density="250">Pane (a fette)</option>
+                            <option value="cake-mix" data-density="800">Miscela per Dolci</option>
+                        </optgroup>
+                        <option value="custom-liquid">Densità Personalizzata (g/L)</option>
+                    </select>
+                </div>
+                <div class="form-group hidden" id="densityGroup">
+                    <label for="densityInput"><b>Densità (g/L):</b></label>
+                    <input type="number" id="densityInput" placeholder="Inserisci la densità in g/L" required>
+                </div>
+                <button class="btn" onclick="convertLToG()">Converti in Grammi</button>
+            </div>
+
+        <p style="color: red;"><b>Nota:</b> La densità varia con la temperatura e può differire a seconda del materiale. Puoi anche selezionare <b>Densità Personalizzata</b> dal menu a tendina per inserire il tuo valore.</p>
+        <div id="result-section">
+            <div class="result-heading">Risultato:</div>
+            <div class="result-value" id="result-value">Il tuo risultato apparirà qui</div>
+        </div>
+        <section class="card" id="why-choose-us">
+            <p>Questo convertitore da litri a grammi (da L a G) ti aiuta a convertire rapidamente i litri in grammi in base alla densità della sostanza o del materiale.</p>
+        </section>
+        <section class="card more-tools" id="more-tools">
+            <h2>Altri Strumenti</h2>
+            <div class="tool-cards-container">
+                <a href="/mg-to-ml" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>Mg in Ml</h3>
+                        <p>Converti milligrammi in millilitri.</p>
+                    </div>
+                </a>
+                <a href="/g-to-l" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>G in L</h3>
+                        <p>Converti grammi in litri.</p>
+                    </div>
+                </a>
+                <a href="/kg-to-l" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Kg in L</h3>
+                        <p>Converti chilogrammi in litri.</p>
+                    </div>
+                </a>
+                <a href="/l-to-g" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>L in G</h3>
+                        <p>Converti litri in grammi.</p>
+                    </div>
+                </a>
+                <a href="/l-to-kg" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>L in Kg</h3>
+                        <p>Converti litri in chilogrammi.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-g" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>Ml in G</h3>
+                        <p>Converti millilitri in grammi.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-oz" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>Ml in Oz</h3>
+                        <p>Converti millilitri in once.</p>
+                    </div>
+                </a>
+                <a href="/oz-to-ml" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Oz in Ml</h3>
+                        <p>Converti once in millilitri.</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+        <section class="card" id="why-choose-us">
+            <h2>Come Convertire i Litri in Grammi</h2>
+            <p>Per convertire i litri in grammi, è necessario conoscere la densità della sostanza per cui si desidera effettuare la conversione, poiché i litri misurano il volume mentre i grammi misurano il peso.</p>
+            <h3>Formula:</h3>
+            <p style="text-align: center; color: red; font-weight: bold;">Grammi = Litri × 1000 × Densità (g/mL)</p>
+            <h4>Esempio:</h4>
+            <p>Comprendiamo la formula risolvendo un esempio: ad esempio, come convertire 2 litri di olio d'oliva in grammi.</p>
+            <p>Ora risolveremo questo esempio utilizzando la formula sopra:</p>
+            <ul>
+                <li>Grammi = 2 x 1000 x 0,918 g/ml</li>
+                <li>Grammi = 1836</li>
+            </ul>
+            <p>Quindi, 2 litri di olio d'oliva equivalgono a 1836 grammi perché la densità dell'olio d'oliva è 0,918.</p>
+        </section>
+
+        <section class="card" id="how-it-works">
+            <h2>Definizione di Litro:</h2>
+            <p>Il litro è l'unità di misura del volume ed è pari a 1.000 millilitri (mL) o 1 decimetro cubo (1 dm³). Il litro è comunemente utilizzato per misurare liquidi come acqua, latte, olio e bevande; può anche essere utilizzato per rappresentare il volume di gas e solidi.</p>
+        </section>
+        <section class="card" id="how-it-works">
+            <h2>Definizione di Grammo:</h2>
+            <p>Un grammo (g) è un'unità di massa del sistema metrico decimale, comunemente utilizzata per misurare il peso di oggetti e sostanze. Un grammo equivale a 1/1000 di chilogrammo (kg).</p>
+            <p>Viene comunemente utilizzato in cucina, nell'alimentazione, nella scienza e nella vita di tutti i giorni per misurare piccole quantità di solidi, polveri e persino liquidi (quando si considera la densità).</p>
+        </section>
+        <section class="card" id="Table">
+            <h2>Tabella di Conversione da Litri a Grammi</h2>
+            <style>
+                :root {
+                    --bg: #ffffff;
+                    --text: #1f2937;
+                    --muted: #6b7280;
+                    --border: #e5e7eb;
+                    --stripe: #f9fafb;
+                }
+                body {
+                    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+                    color: var(--text);
+                    background: var(--bg);
+                    margin: 0;
+                }
+                h1 { font-size: 1.25rem; margin: 0 0 12px; }
+                .wrap { max-width: 1100px; margin: 0 auto; }
+                .table-card { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+                .table-scroll { max-height: 70vh; overflow: auto; }
+                table { border-collapse: separate; border-spacing: 0; width: 100%; }
+                thead th { position: sticky; top: 0; background: var(--border); color: #111827; font-weight: 600; text-align: center; padding: 10px 12px; border-bottom: 1px solid var(--border); }
+                tbody td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; text-align: center; }
+                tbody tr:nth-child(even) td { background: var(--stripe); }
+                th, td.num { text-align: right; }
+                th:first-child, td:first-child { text-align: center; }
+                caption { caption-side: bottom; padding: 10px; font-size: 0.875rem; color: var(--muted); }
+            </style>
+            <div class="wrap">
+                <div class="table-card">
+                    <div class="table-scroll">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Volume (Litri)</th>
+                                    <th>Acqua (g)</th>
+                                    <th>Latte (g)</th>
+                                    <th>Olio da Cucina (g)</th>
+                                    <th>Farina per Tutti gli Usi (g)</th>
+                                    <th>Zucchero Semolato (g)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>1 L</td><td>1,000</td><td>1,030</td><td>880</td><td>529</td><td>705</td></tr>
+                                <tr><td>2 L</td><td>2,000</td><td>2,060</td><td>1,760</td><td>1,058</td><td>1,410</td></tr>
+                                <tr><td>3 L</td><td>3,000</td><td>3,090</td><td>2,640</td><td>1,587</td><td>2,115</td></tr>
+                                <tr><td>4 L</td><td>4,000</td><td>4,120</td><td>3,520</td><td>2,116</td><td>2,820</td></tr>
+                                <tr><td>5 L</td><td>5,000</td><td>5,150</td><td>4,400</td><td>2,645</td><td>3,525</td></tr>
+                                <tr><td>6 L</td><td>6,000</td><td>6,180</td><td>5,280</td><td>3,174</td><td>4,230</td></tr>
+                                <tr><td>7 L</td><td>7,000</td><td>7,210</td><td>6,160</td><td>3,703</td><td>4,935</td></tr>
+                                <tr><td>8 L</td><td>8,000</td><td>8,240</td><td>7,040</td><td>4,232</td><td>5,640</td></tr>
+                                <tr><td>9 L</td><td>9,000</td><td>9,270</td><td>7,920</td><td>4,761</td><td>6,345</td></tr>
+                                <tr><td>10 L</td><td>10,000</td><td>10,300</td><td>8,800</td><td>5,290</td><td>7,050</td></tr>
+                                <tr><td>11 L</td><td>11,000</td><td>11,330</td><td>9,680</td><td>5,819</td><td>7,755</td></tr>
+                                <tr><td>12 L</td><td>12,000</td><td>12,360</td><td>10,560</td><td>6,348</td><td>8,460</td></tr>
+                                <tr><td>13 L</td><td>13,000</td><td>13,390</td><td>11,440</td><td>6,877</td><td>9,165</td></tr>
+                                <tr><td>14 L</td><td>14,000</td><td>14,420</td><td>12,320</td><td>7,406</td><td>9,870</td></tr>
+                                <tr><td>15 L</td><td>15,000</td><td>15,450</td><td>13,200</td><td>7,935</td><td>10,575</td></tr>
+                                <tr><td>16 L</td><td>16,000</td><td>16,480</td><td>14,080</td><td>8,464</td><td>11,280</td></tr>
+                                <tr><td>17 L</td><td>17,000</td><td>17,510</td><td>14,960</td><td>8,993</td><td>11,985</td></tr>
+                                <tr><td>18 L</td><td>18,000</td><td>18,540</td><td>15,840</td><td>9,522</td><td>12,690</td></tr>
+                                <tr><td>19 L</td><td>19,000</td><td>19,570</td><td>16,720</td><td>10,051</td><td>13,395</td></tr>
+                                <tr><td>20 L</td><td>20,000</td><td>20,600</td><td>17,600</td><td>10,580</td><td>14,100</td></tr>
+                                <tr><td>21 L</td><td>21,000</td><td>21,630</td><td>18,480</td><td>11,109</td><td>14,805</td></tr>
+                                <tr><td>22 L</td><td>22,000</td><td>22,660</td><td>19,360</td><td>11,638</td><td>15,510</td></tr>
+                                <tr><td>23 L</td><td>23,000</td><td>23,690</td><td>20,240</td><td>12,167</td><td>16,215</td></tr>
+                                <tr><td>24 L</td><td>24,000</td><td>24,720</td><td>21,120</td><td>12,696</td><td>16,920</td></tr>
+                                <tr><td>25 L</td><td>25,000</td><td>25,750</td><td>22,000</td><td>13,225</td><td>17,625</td></tr>
+                                <tr><td>26 L</td><td>26,000</td><td>26,780</td><td>22,880</td><td>13,754</td><td>18,330</td></tr>
+                                <tr><td>27 L</td><td>27,000</td><td>27,810</td><td>23,760</td><td>14,283</td><td>19,035</td></tr>
+                                <tr><td>28 L</td><td>28,000</td><td>28,840</td><td>24,640</td><td>14,812</td><td>19,740</td></tr>
+                                <tr><td>29 L</td><td>29,000</td><td>29,870</td><td>25,520</td><td>15,341</td><td>20,445</td></tr>
+                                <tr><td>30 L</td><td>30,000</td><td>30,900</td><td>26,400</td><td>15,870</td><td>21,150</td></tr>
+                                <tr><td>31 L</td><td>31,000</td><td>31,930</td><td>27,280</td><td>16,399</td><td>21,855</td></tr>
+                                <tr><td>32 L</td><td>32,000</td><td>32,960</td><td>28,160</td><td>16,928</td><td>22,560</td></tr>
+                                <tr><td>33 L</td><td>33,000</td><td>33,990</td><td>29,040</td><td>17,457</td><td>23,265</td></tr>
+                                <tr><td>34 L</td><td>34,000</td><td>35,020</td><td>29,920</td><td>17,986</td><td>23,970</td></tr>
+                                <tr><td>35 L</td><td>35,000</td><td>36,050</td><td>30,800</td><td>18,515</td><td>24,675</td></tr>
+                                <tr><td>36 L</td><td>36,000</td><td>37,080</td><td>31,680</td><td>19,044</td><td>25,380</td></tr>
+                                <tr><td>37 L</td><td>37,000</td><td>38,110</td><td>32,560</td><td>19,573</td><td>26,085</td></tr>
+                                <tr><td>38 L</td><td>38,000</td><td>39,140</td><td>33,440</td><td>20,102</td><td>26,790</td></tr>
+                                <tr><td>39 L</td><td>39,000</td><td>40,170</td><td>34,320</td><td>20,631</td><td>27,495</td></tr>
+                                <tr><td>40 L</td><td>40,000</td><td>41,200</td><td>35,200</td><td>21,160</td><td>28,200</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="card" id="faq">
+            <h2>Domande Frequenti</h2>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>D: 1 litro equivale sempre a 1000 grammi?</h4>
+                    <span class="toggle-icon">-</span>
+                </div>
+                <div class="faq-answer">
+                    <p>R: Questo vale solo per l'acqua a (4°C). Per altre sostanze come latte, olio o miele, il peso di 1 litro non equivale a 1000 grammi a causa della densità.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>D: La temperatura influenza la conversione?</h4>
+                    <span class="toggle-icon">-</span>
+                </div>
+                <div class="faq-answer">
+                    <p>R: Sì, in alcuni casi. La densità dei liquidi varia leggermente con la temperatura, il che può influenzare il valore in grammi.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+    {% include 'footer.html' %}
+    <script>
+        const mainSelect = document.getElementById('mainSelect');
+        const densityGroup = document.getElementById('densityGroup');
+        const densityInput = document.getElementById('densityInput');
+        const lInput = document.getElementById('lInput');
+        const resultValue = document.getElementById('result-value');
+
+        mainSelect.addEventListener('change', () => {
+            const selectedValue = mainSelect.value;
+            densityGroup.classList.add('hidden');
+            densityInput.value = '';
+            if (selectedValue === 'custom-liquid') {
+                densityGroup.classList.remove('hidden');
+                densityInput.placeholder = 'Inserisci densità personalizzata (g/L)';
+            } else if (selectedValue !== '') {
+                densityGroup.classList.remove('hidden');
+                densityInput.value = mainSelect.options[mainSelect.selectedIndex].dataset.density;
+            }
+        });
+
+        function convertLToG() {
+            const L = parseFloat(lInput.value);
+            const density = parseFloat(densityInput.value);
+
+            if (mainSelect.value === '') {
+                resultValue.innerHTML = 'Per favore seleziona una sostanza o inserisci una densità personalizzata.';
+                resultValue.style.color = 'red';
+                return;
+            }
+            if (isNaN(L) || isNaN(density) || L <= 0 || density <= 0) {
+                resultValue.innerHTML = `Per favore inserisci numeri positivi validi per volume e densità.`;
+                resultValue.style.color = 'red';
+                return;
+            }
+            const G = L * density;
+
+            resultValue.innerHTML = `${L} L = ${G.toFixed(4)} g`;
+            resultValue.style.color = 'green';
+            document.getElementById('result-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function toggleFAQ(element) {
+            const answer = element.nextElementSibling;
+            const icon = element.querySelector('.toggle-icon');
+            if (answer.style.maxHeight) {
+                answer.style.maxHeight = null;
+                icon.textContent = '+';
+            } else {
+                answer.style.maxHeight = answer.scrollHeight + "px";
+                icon.textContent = '-';
+            }
+        }
+    </script>
+</body>
+</html>

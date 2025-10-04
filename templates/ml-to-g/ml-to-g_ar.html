@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.png') }}" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>محول مل إلى جرام (مل إلى جرام)</title>
+    <meta name="description" content="يساعدك محول المل إلى جرام هذا على تحويل أحجام السوائل أو المكونات بالمليلترات (مل) إلى الوزن بالجرام (جم) بسرعة استنادًا إلى الكثافة.">
+    <meta name="keywords" content="مل إلى جرام، محول مل إلى جرام، تحويل مل إلى جرام، جدول مل إلى جرام، تحويل الماء، تحويل الحليب، تحويل زيت الطهي، تحويل الدقيق، جدول قياسات المطبخ، تحويلات الخبز، جدول كتلة المكونات">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+    <style>
+        .card {
+            background: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #333;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        .table-wrap {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        /* Arabic support */
+        body {
+            font-family: 'Poppins', sans-serif; /* Fallback for Arabic font if needed */
+        }
+        .faq-item {
+            text-align: right; /* Adjust FAQ text alignment for Arabic */
+        }
+    </style>
+</head>
+<body>
+    {% include 'header.html' %}
+
+    <header class="secondary-header">
+        <div class="container">
+            <h1>محول مل إلى جرام (مل إلى جرام)</h1>
+            <p>يساعدك محول المل إلى جرام هذا على تحويل أحجام السوائل أو المكونات بالمليلترات (مل) إلى الوزن بالجرام (جم) بسرعة استنادًا إلى الكثافة.</p>
+        </div>
+    </header>
+
+    <div class="container main-content">
+        <section class="card" id="tool">
+            <h2>حاسبة تحويل الملليلترات إلى الجرامات</h2>
+            <div class="tool-container">
+                <div class="form-group">
+                    <label for="mlInput"><b>الحجم (بالمليلتر - مل):</b></label>
+                    <input type="number" id="mlInput" placeholder="أدخل الحجم بالمليلتر" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="liquidSelect"><b>اختر السائل:</b></label>
+                    <select id="liquidSelect">
+                        <option value="">-- اختر سائلًا --</option>
+                        <option value="1">الماء</option>
+                        <option value="0.789">الإيثانول</option>
+                        <option value="0.918">زيت الزيتون</option>
+                        <option value="1.03">الحليب</option>
+                        <option value="1.3">العسل</option>
+                        <option value="1.8">الجليسرين</option>
+                    </select>
+                </div>
+
+                <button class="btn" onclick="convertMlToG()">تحويل إلى غرام (جم)</button>
+                <div id="result"></div>
+            </div>
+        </section>
+
+        <section class="card" id="how-to-use">
+            <p>هل ترغب في تحويل الملليلترات إلى غرامات؟ يُسهّل عليك هذا المحول المجاني من مل إلى غرام على mltomg.info الأمر. سواء كنت تطبخ أو تخبز أو تُجري أبحاثًا مختبرية، ما عليك سوى إدخال القيمة بالملليلترات لتحصل على الوزن الدقيق بالغرامات. لا داعي للتخمين: هل 100 مل تساوي 100 غرام؟ تعتمد النتيجة على كثافة المكوّن، وأداتنا تُديرها لك. يمكنك أيضًا إجراء العمليات الحسابية العكسية باستخدام <a href="https://mltomg.info/g-to-ml">محول الغرام إلى مل</a> الخاص بنا.</p>
+        </section>
+
+        <section class="card more-tools" id="more-tools">
+            <h2>المزيد من الأدوات</h2>
+            <div class="tool-cards-container">
+                <a href="/mg-to-ml" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>ملجم إلى مل</h3>
+                        <p>تحويل المليغرامات إلى ملليلترات.</p>
+                    </div>
+                </a>
+                <a href="/g-to-l" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>جم إلى لتر</h3>
+                        <p>تحويل الغرامات إلى لترات.</p>
+                    </div>
+                </a>
+                <a href="/kg-to-l" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>كجم إلى لتر</h3>
+                        <p>تحويل الكيلوغرامات إلى لترات.</p>
+                    </div>
+                </a>
+                <a href="/l-to-g" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>لتر إلى جم</h3>
+                        <p>تحويل اللترات إلى غرامات.</p>
+                    </div>
+                </a>
+                <a href="/l-to-kg" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>لتر إلى كجم</h3>
+                        <p>تحويل اللترات إلى كيلوغرامات.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-g" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>مل إلى جم</h3>
+                        <p>تحويل الملليلترات إلى غرامات.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-oz" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>مل إلى أونصة</h3>
+                        <p>تحويل الملليلترات إلى أونصات.</p>
+                    </div>
+                </a>
+                <a href="/oz-to-ml" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>أونصة إلى مل</h3>
+                        <p>تحويل الأونصات إلى ملليلترات.</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+        <section class="card" id="why-choose-us">
+            <h2>تحويل مل إلى جرام:</h2>
+            <p>المليلتر (مل) هو وحدة الحجم، والغرام (غ) هو وحدة الكتلة. كلاهما كميتان فيزيائيتان مختلفتان، لذا نحتاج إلى معرفة كثافة المادة أو المادة للتحويل من المليلتر إلى الغرام.</p>
+            <h3>الصيغة:</h3>
+            <p>استخدم هذه الصيغة لإجراء التحويلات، وتأكد من أن الكثافة يجب أن تكون بوحدة (جم/مل).</p>
+            <p style="text-align: center; color: red; font-weight: bold;">غرامات (g) = ملليلتر (mL) × كثافة (g/mL)</p>
+            <h4>مثال:</h4>
+            <p>دعونا نفهم هذه الصيغة من خلال حل مثال لتحويل 10 مل من مادة ذات كثافة 1.03 (جم/مل) إلى جرام.</p>
+            <p style="text-align: center; color: red; font-weight: bold;">غرامات = 10 x 1.03</p>
+            <p style="text-align: center; color: red; font-weight: bold;">غرامات = 10.3 g</p>
+            <p>وبالتالي فإن 10 مل = 10.3 جرام للمادة التي كثافتها 1.03.</p>
+            <p>دعونا نحل مثالًا آخر لتحويل 25 مل من مادة بكثافة 0.705 (جم/مل) إلى جرام.</p>
+             <p style="text-align: center; color: red; font-weight: bold;">غرامات = 25 x 0.705</p>
+            <p style="text-align: center; color: red; font-weight: bold;">غرامات = 17.625</p>
+        </section>
+        <section class="card" id="how-it-works">
+            <h2>حالات استخدام محول المليلترات إلى جرامات من Mltomg.info</h2>
+            <h3>الطبخ والخبز</h3>
+            <p>غالبًا ما تخلط الوصفات بين الحجم والوزن. تضمن أداتنا قياس مكونات مثل الدقيق والسكر والحليب والزيت بدقة لتجنب إفساد طبقك.</p>
+            <p><b>مثال:</b> 250 mL of دقيق = 147.5 g.</p>
+            <h3>تتبع النظام الغذائي والتغذية</h3>
+            <p>عادةً ما تُظهر ملصقات الطعام الوزن بالغرام، لكن أكواب القياس تُظهر المليلترات. ولكن بمساعدة مُحوّل المليلترات إلى الغرامات، يُمكنك تحويل الحجم إلى الوزن لمعرفة الكمية التي تتناولها بدقة.</p>
+            <p><b>مثال:</b> 100 mL of زيت الزيتون = 92 g.</p>
+            <h3>مشاريع التعليم والمدارس</h3>
+            <p>إنها أيضًا أداة مفيدة جدًا للطلاب أو المعلمين عندما يقومون بمشاريع علمية أو عمل مختبري، وغالبًا ما يحتاجون إلى تغيير الحجم إلى وزن، لذا فإن محول مل إلى جرام الخاص بنا مفيد لهم.</p>
+            <h3>التصنيع والصناعة</h3>
+            <p>غالبًا ما تقيس صناعات الأغذية، والإنتاج الكيميائي، والأدوية السوائل بالملليلتر، لكنها تتطلبها بالغرام لأغراض التعبئة، ومراقبة الجودة، والاتساق. لذا، يُساعدهم هذا المحول من mltomg على إجراء تحويلات دقيقة من المليلترات إلى الغرامات.</p>
+        </section>
+        <section class="card more-tools" id="table">
+            
+        <h2>جدول تحويل ML إلى G:</h2>
+        <div class="table-wrap" role="table" aria-label="جدول تحويل المليلترات إلى غرامات">
+            <table>
+                <thead>
+                    <tr>
+                        <th>مل</th>
+                        <th>الماء (جم)</th>
+                        <th>الحليب (جم)</th>
+                        <th>زيت الطهي (جم)</th>
+                        <th>الدقيق (جم)</th>
+                        <th>السكر (جم)</th>
+                        <th>العسل (جم)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td>1.00</td><td>1.03</td><td>0.92</td><td>0.59</td><td>0.85</td><td>1.42</td></tr>
+                    <tr><td>2</td><td>2.00</td><td>2.06</td><td>1.84</td><td>1.18</td><td>1.70</td><td>2.84</td></tr>
+                    <tr><td>3</td><td>3.00</td><td>3.09</td><td>2.76</td><td>1.77</td><td>2.55</td><td>4.26</td></tr>
+                    <tr><td>4</td><td>4.00</td><td>4.12</td><td>3.68</td><td>2.36</td><td>3.40</td><td>5.68</td></tr>
+                    <tr><td>5</td><td>5.00</td><td>5.15</td><td>4.60</td><td>2.95</td><td>4.25</td><td>7.10</td></tr>
+                    <tr><td>6</td><td>6.00</td><td>6.18</td><td>5.52</td><td>3.54</td><td>5.10</td><td>8.52</td></tr>
+                    <tr><td>7</td><td>7.00</td><td>7.21</td><td>6.44</td><td>4.13</td><td>5.95</td><td>9.94</td></tr>
+                    <tr><td>8</td><td>8.00</td><td>8.24</td><td>7.36</td><td>4.72</td><td>6.80</td><td>11.36</td></tr>
+                    <tr><td>9</td><td>9.00</td><td>9.27</td><td>8.28</td><td>5.31</td><td>7.65</td><td>12.78</td></tr>
+                    <tr><td>10</td><td>10.00</td><td>10.30</td><td>9.20</td><td>5.90</td><td>8.50</td><td>14.20</td></tr>
+                    <tr><td>11</td><td>11.00</td><td>11.33</td><td>10.12</td><td>6.49</td><td>9.35</td><td>15.62</td></tr>
+                    <tr><td>12</td><td>12.00</td><td>12.36</td><td>11.04</td><td>7.08</td><td>10.20</td><td>17.04</td></tr>
+                    <tr><td>13</td><td>13.00</td><td>13.39</td><td>11.96</td><td>7.67</td><td>11.05</td><td>18.46</td></tr>
+                    <tr><td>14</td><td>14.00</td><td>14.42</td><td>12.88</td><td>8.26</td><td>11.90</td><td>19.88</td></tr>
+                    <tr><td>15</td><td>15.00</td><td>15.45</td><td>13.80</td><td>8.85</td><td>12.75</td><td>21.30</td></tr>
+                    <tr><td>16</td><td>16.00</td><td>16.48</td><td>14.72</td><td>9.44</td><td>13.60</td><td>22.72</td></tr>
+                    <tr><td>17</td><td>17.00</td><td>17.51</td><td>15.64</td><td>10.03</td><td>14.45</td><td>24.14</td></tr>
+                    <tr><td>18</td><td>18.00</td><td>18.54</td><td>16.56</td><td>10.62</td><td>15.30</td><td>25.56</td></tr>
+                    <tr><td>19</td><td>19.00</td><td>19.57</td><td>17.48</td><td>11.21</td><td>16.15</td><td>26.98</td></tr>
+                    <tr><td>20</td><td>20.00</td><td>20.60</td><td>18.40</td><td>11.80</td><td>17.00</td><td>28.40</td></tr>
+                    <tr><td>21</td><td>21.00</td><td>21.63</td><td>19.32</td><td>12.39</td><td>17.85</td><td>29.82</td></tr>
+                    <tr><td>22</td><td>22.00</td><td>22.66</td><td>20.24</td><td>12.98</td><td>18.70</td><td>31.24</td></tr>
+                    <tr><td>23</td><td>23.00</td><td>23.69</td><td>21.16</td><td>13.57</td><td>19.55</td><td>32.66</td></tr>
+                    <tr><td>24</td><td>24.00</td><td>24.72</td><td>22.08</td><td>14.16</td><td>20.40</td><td>34.08</td></tr>
+                    <tr><td>25</td><td>25.00</td><td>25.75</td><td>23.00</td><td>14.75</td><td>21.25</td><td>35.50</td></tr>
+                    <tr><td>26</td><td>26.00</td><td>26.78</td><td>23.92</td><td>15.34</td><td>22.10</td><td>36.92</td></tr>
+                    <tr><td>27</td><td>27.00</td><td>27.81</td><td>24.84</td><td>15.93</td><td>22.95</td><td>38.34</td></tr>
+                    <tr><td>28</td><td>28.00</td><td>28.84</td><td>25.76</td><td>16.52</td><td>23.80</td><td>39.76</td></tr>
+                    <tr><td>29</td><td>29.00</td><td>29.87</td><td>26.68</td><td>17.11</td><td>24.65</td><td>41.18</td></tr>
+                    <tr><td>30</td><td>30.00</td><td>30.90</td><td>27.60</td><td>17.70</td><td>25.50</td><td>42.60</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+        <section class="card" id="faq">
+            <h2>الأسئلة الشائعة</h2>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>س: هل 1 مل يساوي دائما 1 جرام؟</h4>
+                    <span class="toggle-icon">-</span>
+                </div>
+                <div class="faq-answer">
+                    <p>ج: لا. الماء فقط في درجة حرارة الغرفة يحتوي على 1 مل = 1 غرام. السوائل والمواد الصلبة الأخرى لها كثافات مختلفة، لذا يتغير التحويل.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>س: لماذا لا يمكنني استخدام نفس التحويل لجميع السوائل؟</h4>
+                    <span class="toggle-icon">-</span>
+                </div>
+                <div class="faq-answer">
+                    <p>ج: تختلف كثافة السوائل والمكونات المختلفة. على سبيل المثال:</p>
+                    <ul>
+                        <li>100 مل من الماء = <b>100 جم</b></li>
+                        <li>100 مل من الزيت = <b>92 جم</b></li>
+                        <li>100 مل من العسل = <b>142 جرام</b></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    {% include 'footer.html' %}
+<script>
+    // Note: Since the provided content did not include a custom density field in the HTML/CSS, 
+    // and the new tool labels are in Arabic, I'm adjusting the JS to directly use the 'liquidSelect' values
+    // as densities and updating the result element ID for compatibility.
+    // The previous JS assumed a 'mainSelect' and 'densityInput' which are not in the new HTML structure.
+    
+    // We will use 'liquidSelect' for density and 'mlInput' for volume.
+
+    const mlInput = document.getElementById('mlInput'); // Volume in Milliliters
+    const liquidSelect = document.getElementById('liquidSelect'); // Liquid selection
+    const resultDiv = document.getElementById('result'); // Result display div
+    
+    // Conversion function: Milliliters to Grams
+    function convertMlToG() {
+        const mL = parseFloat(mlInput.value); // Volume in Milliliters
+        const density = parseFloat(liquidSelect.value); // Density from selected option
+        
+        if (liquidSelect.value === '') {
+            resultDiv.innerHTML = 'الرجاء اختيار سائل.';
+            resultDiv.style.color = 'red';
+            return;
+        }
+
+        if (isNaN(mL) || mL <= 0) {
+            resultDiv.innerHTML = `الرجاء إدخال رقم موجب صحيح للحجم.`;
+            resultDiv.style.color = 'red';
+            return;
+        }
+
+        // Formula: Mass (g) = Volume (mL) × Density (g/mL)
+        const G = mL * density; 
+        
+        // Get the selected liquid name for better result display
+        const liquidName = liquidSelect.options[liquidSelect.selectedIndex].text;
+        
+        resultDiv.innerHTML = `نتيجة التحويل: ${mL} مل من ${liquidName} = <b>${G.toFixed(4)} غرام</b>`;
+        resultDiv.style.color = 'green';
+        
+        // Scroll to the result (if result section ID existed, but we'll scroll to the tool for simplicity)
+        document.getElementById('tool').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+</script>
+    <script>
+        // FAQ toggle function ko yahaan add kar diya hai
+        function toggleFAQ(element) {
+            const answer = element.nextElementSibling;
+            const icon = element.querySelector('.toggle-icon');
+            if (answer.style.maxHeight) {
+                answer.style.maxHeight = null;
+                icon.textContent = '+';
+            } else {
+                answer.style.maxHeight = answer.scrollHeight + "px";
+                icon.textContent = '-';
+            }
+        }
+    </script>
+</body>
+</html>

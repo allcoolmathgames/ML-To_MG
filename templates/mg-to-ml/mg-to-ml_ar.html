@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.png') }}" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>محول مليغرام إلى مليلتر | تحويل مليغرام إلى مليلتر</title>
+    <meta name="description" content="يساعدك هذا المحول من مليغرام إلى مل على تحويل الكمية من مليغرام إلى مليلتر بسهولة وسرعة. تحويلات دقيقة وبسيطة وسريعة للماء والحليب والزيت والدقيق والسكر والأدوية وغيرها.">
+    <meta name="keywords" content="ملغ إلى مل، محول ملغ إلى مل، ملليغرام إلى ملليلتر، تحويل ملغ إلى مل، ملغ إلى مل، حاسبة ملغ مل، أداة تحويل ملغ، محول ملغ إلى مل عبر الإنترنت، مخطط ملغ إلى مل، صيغة ملغ إلى مل، تحويل الأدوية، حاسبة جرعات الدواء">
+    <link rel="canonical" href="https://mltomg.info/mg-to-ml" />
+    <link rel="alternate" hreflang="x-default" href="https://mltomg.info/mg-to-ml" />
+    <link rel="alternate" hreflang="en" href="https://mltomg.info/mg-to-ml" />
+    <link rel="alternate" hreflang="ar" href="https://mltomg.info/ar/mg-to-ml" />
+    <link rel="alternate" hreflang="de" href="https://mltomg.info/de/mg-to-ml" />
+    <link rel="alternate" hreflang="es" href="https://mltomg.info/es/mg-to-ml" />
+    <link rel="alternate" hreflang="fr" href="https://mltomg.info/fr/mg-to-ml" />
+    <link rel="alternate" hreflang="it" href="https://mltomg.info/it/mg-to-ml" />
+    <link rel="alternate" hreflang="pt" href="https://mltomg.info/pt/mg-to-ml" />
+    <link rel="alternate" hreflang="ru" href="https://mltomg.info/ru/mg-to-ml" />
+    <link rel="alternate" hreflang="tr" href="https://mltomg.info/tr/mg-to-ml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+    <meta name="google-site-verification" content="49KC3Wnkoo8QxBc56Q5dkx-LVqsbPxtgJTBs_MG7WBU" />
+    <style>
+        #result-section {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #e9ecef;
+            min-height: 60px;
+            position: relative;
+        }
+        #result-section .result-heading {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-weight: 600;
+            color: var(--primary-color);
+            border-left: 3px solid var(--secondary-color);
+            padding-left: 10px;
+            font-size: 1.1rem;
+        }
+        #result-section .result-value {
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 10px;
+            padding-top: 20px;
+            color: var(--light-text-color);
+            width: 100%;
+        }
+        .hidden {
+            display: none !important;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #333;
+            padding: 6px;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        caption {
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    {% include 'header.html' %}
+    <header class="secondary-header">
+        <div class="container">
+            <h1>محول من ملغ إلى مل</h1>
+            <p>أدخل الوزن بالمليغرام أدناه لحساب الحجم بالمليلترات للسوائل والأدوية وغيرها.</p>
+        </div>
+    </header>
+    <div class="container main-content">
+        <section class="card" id="tool">
+            <h2>تحويل ملغ إلى مل</h2>
+            <div class="tool-container">
+                <div class="form-group">
+                    <label for="mgInput"><b>الوزن (بالمليغرام):</b></label>
+                    <input type="number" id="mgInput" placeholder="أدخل الوزن بالمليغرام" required>
+                </div>
+                <div class="form-group">
+                    <label for="mainSelect"><b>اختر المادة:</b></label>
+                    <select id="mainSelect">
+                        <option value="">-- اختر مادة --</option>
+                        <option value="water" data-density="1000">ماء</option>
+                        <option value="ethanol" data-density="789">إيثانول</option>
+                        <option value="olive-oil" data-density="918">زيت زيتون</option>
+                        <option value="milk" data-density="1030">حليب</option>
+                        <option value="honey" data-density="1300">عسل</option>
+                        <option value="glycerin" data-density="1800">جليسرين</option>
+                        <option value="medication">أدوية</option>
+                        <option value="custom-liquid">كثافة مخصصة</option>
+                    </select>
+                </div>
+                <div class="form-group hidden" id="medicationGroup">
+                    <label for="medicationSelect"><b>اختر الدواء:</b></label>
+                    <select id="medicationSelect">
+                        <option value="">-- اختر دواء --</option>
+                        <option value="acetaminophen" data-concentration="10">باراسيتامول (تايلنول) 10 ملغ/مل</option>
+                        <option value="amoxicillin" data-concentration="80">تعليق أموكسيسيلين 400 ملغ/5 مل</option>
+                        <option value="benadryl-oral" data-concentration="12.5">بينادريل (سائل فموي، 12.5 ملغ/5 مل)</option>
+                        <option value="benadryl-injection" data-concentration="50">بينادريل (حقن، 50 ملغ/مل أو 500 ملغ/10 مل)</option>
+                        <option value="cetirizine" data-concentration="1">سيتيريزين هيدروكلوريد 1 ملغ/مل</option>
+                        <option value="ibuprofen-oral-1" data-concentration="20">إيبوبروفين (سائل فموي، 100 ملغ/5 مل)</option>
+                        <option value="ibuprofen-oral-2" data-concentration="40">إيبوبروفين (سائل فموي، 50 ملغ/1.25 مل)</option>
+                        <option value="ibuprofen-injection-1" data-concentration="5">إيبوبروفين (حقن، 10 ملغ/2 مل)</option>
+                        <option value="ibuprofen-injection-2" data-concentration="100">إيبوبروفين (حقن، 800 ملغ/8 مل)</option>
+                        <option value="morphine" data-concentration="20">محلول كبريتات المورفين 20 ملغ/مل</option>
+                        <option value="testosterone" data-concentration="200">تستوستيرون 200 ملغ/مل</option>
+                        <option value="custom-medication">تركيز مخصص</option>
+                    </select>
+                </div>
+                <div class="form-group hidden" id="densityGroup">
+                    <label for="densityInput"><b>الكثافة (ملغ/مل):</b></label>
+                    <input type="number" id="densityInput" placeholder="أدخل الكثافة بملغ/مل" required>
+                </div>
+                <div class="form-group hidden" id="concentrationGroup">
+                    <label for="concentrationInput"><b>التركيز (ملغ/مل):</b></label>
+                    <input type="number" id="concentrationInput" placeholder="أدخل التركيز بملغ/مل" required>
+                </div>
+                <button class="btn" onclick="convertMgToMl()">تحويل إلى مل</button>
+            </div>
+
+            <p style="color: red;"><b>ملاحظة:</b> تختلف الكثافة حسب درجة الحرارة وقد تختلف حسب المادة. يمكنك أيضًا اختيار <b>كثافة مخصصة</b> من القائمة المنسدلة لإدخال قيمتك الخاصة.</p>
+            <div id="result-section">
+                <div class="result-heading">النتيجة:</div>
+                <div class="result-value" id="result-value">ستظهر النتيجة هنا</div>
+            </div>
+        </section>
+
+        <section class="card" id="intention">
+            <p>تحتاج إلى معرفة كثافة المادة التي تريد تحويلها من مليغرام إلى مليلتر. يساعدك هذا المحول من مليغرام إلى مليلتر على تحويل الكمية من مليغرام إلى مليلتر بسهولة.</p>
+        </section>
+
+        <section class="card" id="intention">
+            <h2>ما هو المليغرام؟</h2>
+            <p>في النظام الدولي للوحدات (SI)، يُعرَّف المليغرام بأنه وحدة الوزن والكتلة. ويُختصر بالرمز "ملغ". وفي حياتنا اليومية، نجد رمز المليغرام في أدوية مثل أقراص 400 ملغ.</p>
+            <p>١ مليغرام يساوي جزءًا من ألف من الغرام. ويمكننا ببساطة كتابته على النحو التالي:</p>
+            <ul>
+                <li>1 جرام = 1000 مليجرام</li>
+            </ul>
+        </section>
+
+        <section class="card" id="intention">
+            <h2>ما هو المليلتر؟</h2>
+            <p>يُستخدم المليلتر لقياس حجم السائل، ويُرمز له اختصارًا بالرمز "مل". ويمكن كتابته ببساطة على النحو التالي:</p>
+            <ul>
+                <li>1 لتر = 1000 مليلتر</li>
+            </ul>
+        </section>
+
+        <section class="card" id="how-to-use">
+            <h2>تحويل المليغرام إلى ملليلتر:</h2>
+            <p>المليغرام وحدة الكتلة، والمليلتر وحدة السائل. كلاهما كميتان فيزيائيتان مختلفتان. لذا، نحتاج إلى معرفة كمية فيزيائية إضافية للمكون لتحويل المليغرام إلى الملليلتر.</p>
+            <h3>صيغة MG إلى ML:</h3>
+            <p>لتحويل القياس من مليغرام إلى مليلتر، يجب قسمة الوزن على كثافة المكوّن أو المادة. مع ذلك، يُرجى ملاحظة أن الكثافة يجب أن تكون بالمليغرام لكل مليلتر (ملغ/مل).</p>
+            <p>إذا كانت الكثافة لديك بوحدة (جم/مل)، فاضرب الكثافة في 1000 لتحويلها إلى ملجم/مل.</p>
+            <p>يتم استخدام الصيغة التالية لتحويل ملغ إلى مل للكثافة المعطاة بوحدة جم/مل.</p>
+            <p style="text-align: center; color: red; font-weight: bold;">ملليلتر = ملليغرام / 1000 × الكثافة</p>
+            <h4>مثال:</h4>
+            <p>تحويل 1000 ملغ إلى ملليلتر لمادة ذات كثافة 0.7 جم/مل:</p>
+            <ul>
+                <li>ملليلتر = 1000 ملغ / (0.7 جم/مل × 1000) = 1.42 مل</li>
+            </ul>
+        </section>
+
+        <section class="card" id="mg-in-ml">
+            <h2>فوائد استخدام هذا المحول من MG إلى ML:</h2>
+            <h3>دقة:</h3>
+            <p>يوفر لك محول المليجرام إلى مل نتائج دقيقة مع احتمالية منخفضة لأخطاء التحويل.</p>
+            <h3>توفير الوقت:</h3>
+            <p>يُتيح لك مُحوّل المليغرام إلى مليلتر هذا توفير وقتك وجهدك من خلال الحصول على نتائج دقيقة وسريعة. لذا، وفّر وقتك باستخدام حاسبة تحويل المليغرام إلى مل.</p>
+            <h3>سهل الاستخدام:</h3>
+            <p>يُمكن لمستخدمينا فهم هذا المحول بسهولة بفضل واجهة الاستخدام البسيطة للغاية. لذا، لا تحتاج إلى أي خبرة تقنية لتحويل المليجرام إلى مل.</p>
+        </section>
+
+        <section class="card" id="drug-conversion">
+            <h2>تحويل ملغ إلى مل من الدواء/الدواء</h2>
+            <p>بالنسبة للأدوية، يُعد التركيز (ملغ/مل) أمرًا بالغ الأهمية. على عكس الماء، للأدوية تركيزات محددة. استخدم هذه الصيغة:</p>
+            <h3>صيغة:</h3>
+            <p style="text-align: center; color: red; font-weight: bold;">الحجم (مل) = الجرعة (ملغ) ÷ التركيز (ملغ/مل)</p>
+            <h4>مثال:</h4>
+            <p>إذا كان تركيز الدواء 50 ملغ/مل وتحتاج إلى 100 ملغ:</p>
+            <p><b>100 ÷ 50 = 2 مل</b></p>
+            <p><b>⚠️ إخلاء المسؤولية:</b> اتبع دائمًا ملصق الوصفة الطبية أو استشر أخصائي الرعاية الصحية بشأن تحويلات الأدوية.</p>
+        </section>
+
+        <section class="card" id="Table">
+            <h2>جدول تحويل الملليلترات إلى الملليغرامات</h2>
+            <style>
+                :root {
+                    --bg: #ffffff;
+                    --text: #1f2937;
+                    --muted: #6b7280;
+                    --border: #e5e7eb;
+                    --stripe: #f9fafb;
+                }
+                body {
+                    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+                    color: var(--text);
+                    background: var(--bg);
+                    margin: 0;
+                }
+                h1 { font-size: 1.25rem; margin: 0 0 12px; }
+                .wrap { max-width: 1100px; margin: 0 auto; }
+                .table-card { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+                .table-scroll { max-height: 70vh; overflow: auto; }
+                table { border-collapse: separate; border-spacing: 0; width: 100%; }
+                thead th { position: sticky; top: 0; background: #f3f4f6; color: #111827; font-weight: 600; text-align: center; padding: 10px 12px; border-bottom: 1px solid var(--border); }
+                tbody td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+                tbody tr:nth-child(even) td { background: var(--stripe); }
+                th, td.num { text-align: right; }
+                th:first-child, td:first-child { text-align: center; }
+                caption { caption-side: bottom; padding: 10px; font-size: 0.875rem; color: var(--muted); }
+            </style>
+            <table border="1" cellspacing="0" cellpadding="5">
+                <thead>
+                    <tr>
+                        <th>الحجم بالمليغرام</th>
+                        <th>الماء (مل)</th>
+                        <th>الحليب (مل)</th>
+                        <th>زيت الطهي (مل)</th>
+                        <th>دقيق متعدد الاستخدامات (مل)</th>
+                        <th>سكر محبب (مل)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>10 ملغ</td><td>0.01</td><td>0.009709</td><td>0.011364</td><td>0.018904</td><td>0.011829</td></tr>
+                    <tr><td>20 ملغ</td><td>0.02</td><td>0.019417</td><td>0.022727</td><td>0.037807</td><td>0.023659</td></tr>
+                    <tr><td>30 ملغ</td><td>0.03</td><td>0.029126</td><td>0.034091</td><td>0.056711</td><td>0.035488</td></tr>
+                    <tr><td>40 ملغ</td><td>0.04</td><td>0.038835</td><td>0.045455</td><td>0.075614</td><td>0.047318</td></tr>
+                    <tr><td>50 ملغ</td><td>0.05</td><td>0.048544</td><td>0.056818</td><td>0.094518</td><td>0.059147</td></tr>
+                    <tr><td>60 ملغ</td><td>0.06</td><td>0.058252</td><td>0.068182</td><td>0.113422</td><td>0.070976</td></tr>
+                    <tr><td>70 ملغ</td><td>0.07</td><td>0.067961</td><td>0.079545</td><td>0.132325</td><td>0.082806</td></tr>
+                    <tr><td>80 ملغ</td><td>0.08</td><td>0.07767</td><td>0.090909</td><td>0.151229</td><td>0.094635</td></tr>
+                    <tr><td>90 ملغ</td><td>0.09</td><td>0.087379</td><td>0.102273</td><td>0.170132</td><td>0.106465</td></tr>
+                    <tr><td>100 ملغ</td><td>0.1</td><td>0.097087</td><td>0.113636</td><td>0.189036</td><td>0.118294</td></tr>
+                    <tr><td>110 ملغ</td><td>0.11</td><td>0.106796</td><td>0.125</td><td>0.20794</td><td>0.130124</td></tr>
+                    <tr><td>120 ملغ</td><td>0.12</td><td>0.116505</td><td>0.136364</td><td>0.226843</td><td>0.141953</td></tr>
+                    <tr><td>130 ملغ</td><td>0.13</td><td>0.126214</td><td>0.147727</td><td>0.245747</td><td>0.153782</td></tr>
+                    <tr><td>140 ملغ</td><td>0.14</td><td>0.135922</td><td>0.159091</td><td>0.26465</td><td>0.165612</td></tr>
+                    <tr><td>150 ملغ</td><td>0.15</td><td>0.145631</td><td>0.170455</td><td>0.283554</td><td>0.177441</td></tr>
+                    <tr><td>160 ملغ</td><td>0.16</td><td>0.15534</td><td>0.181818</td><td>0.302457</td><td>0.189271</td></tr>
+                    <tr><td>170 ملغ</td><td>0.17</td><td>0.165049</td><td>0.193182</td><td>0.321361</td><td>0.2011</td></tr>
+                    <tr><td>180 ملغ</td><td>0.18</td><td>0.174757</td><td>0.204545</td><td>0.340265</td><td>0.212929</td></tr>
+                    <tr><td>190 ملغ</td><td>0.19</td><td>0.184466</td><td>0.215909</td><td>0.359168</td><td>0.224759</td></tr>
+                    <tr><td>200 ملغ</td><td>0.2</td><td>0.194175</td><td>0.227273</td><td>0.378072</td><td>0.236588</td></tr>
+                    <tr><td>210 ملغ</td><td>0.21</td><td>0.203883</td><td>0.238636</td><td>0.396975</td><td>0.248418</td></tr>
+                    <tr><td>220 ملغ</td><td>0.22</td><td>0.213592</td><td>0.25</td><td>0.415879</td><td>0.260247</td></tr>
+                    <tr><td>230 ملغ</td><td>0.23</td><td>0.223301</td><td>0.261364</td><td>0.434783</td><td>0.272076</td></tr>
+                    <tr><td>240 ملغ</td><td>0.24</td><td>0.23301</td><td>0.272727</td><td>0.453686</td><td>0.283906</td></tr>
+                    <tr><td>250 ملغ</td><td>0.25</td><td>0.242718</td><td>0.284091</td><td>0.47259</td><td>0.295735</td></tr>
+                    <tr><td>260 ملغ</td><td>0.26</td><td>0.252427</td><td>0.295455</td><td>0.491493</td><td>0.307565</td></tr>
+                    <tr><td>270 ملغ</td><td>0.27</td><td>0.262136</td><td>0.306818</td><td>0.510397</td><td>0.319394</td></tr>
+                    <tr><td>280 ملغ</td><td>0.28</td><td>0.271845</td><td>0.318182</td><td>0.529301</td><td>0.331224</td></tr>
+                    <tr><td>290 ملغ</td><td>0.29</td><td>0.281553</td><td>0.329545</td><td>0.548204</td><td>0.343053</td></tr>
+                    <tr><td>300 ملغ</td><td>0.3</td><td>0.291262</td><td>0.340909</td><td>0.567108</td><td>0.354882</td></tr>
+                    <tr><td>310 ملغ</td><td>0.31</td><td>0.300971</td><td>0.352273</td><td>0.586011</td><td>0.366712</td></tr>
+                    <tr><td>320 ملغ</td><td>0.32</td><td>0.31068</td><td>0.363636</td><td>0.604915</td><td>0.378541</td></tr>
+                    <tr><td>330 ملغ</td><td>0.33</td><td>0.320388</td><td>0.375</td><td>0.623819</td><td>0.390371</td></tr>
+                    <tr><td>340 ملغ</td><td>0.34</td><td>0.330097</td><td>0.386364</td><td>0.642722</td><td>0.4022</td></tr>
+                    <tr><td>350 ملغ</td><td>0.35</td><td>0.339806</td><td>0.397727</td><td>0.661626</td><td>0.414029</td></tr>
+                    <tr><td>360 ملغ</td><td>0.36</td><td>0.349515</td><td>0.409091</td><td>0.680529</td><td>0.425859</td></tr>
+                    <tr><td>370 ملغ</td><td>0.37</td><td>0.359223</td><td>0.420455</td><td>0.699433</td><td>0.437688</td></tr>
+                    <tr><td>380 ملغ</td><td>0.38</td><td>0.368932</td><td>0.431818</td><td>0.718336</td><td>0.449518</td></tr>
+                    <tr><td>390 ملغ</td><td>0.39</td><td>0.378641</td><td>0.443182</td><td>0.73724</td><td>0.461347</td></tr>
+                    <tr><td>400 ملغ</td><td>0.4</td><td>0.38835</td><td>0.454545</td><td>0.756144</td><td>0.473176</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="card more-tools" id="more-tools">
+            <h2>المزيد من الأدوات</h2>
+            <div class="tool-cards-container">
+                <a href="/mg-to-ml" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>ملغ إلى مل</h3>
+                        <p>تحويل المليغرام إلى ملليلتر.</p>
+                    </div>
+                </a>
+                <a href="/g-to-l" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>من G إلى L</h3>
+                        <p>تحويل الجرام إلى لتر.</p>
+                    </div>
+                </a>
+                <a href="/kg-to-l" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>كجم إلى لتر</h3>
+                        <p>تحويل الكيلوجرامات إلى لترات.</p>
+                    </div>
+                </a>
+                <a href="/l-to-g" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>من L إلى G</h3>
+                        <p>تحويل اللترات إلى جرامات.</p>
+                    </div>
+                </a>
+                <a href="/l-to-kg" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>ل إلى كجم</h3>
+                        <p>تحويل اللترات إلى الكيلوجرامات.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-g" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>مل إلى ج</h3>
+                        <p>تحويل الملليلترات إلى جرامات.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-oz" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>مل إلى أونصة</h3>
+                        <p>تحويل الملليلترات إلى أونصات.</p>
+                    </div>
+                </a>
+                <a href="/oz-to-ml" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>أونصة إلى مل</h3>
+                        <p>تحويل الأونصات إلى ملليلترات.</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <section class="card" id="faq">
+            <h2>الأسئلة الشائعة</h2>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>س: ما هو 50 ملغ تحويلها إلى مل؟</h4>
+                    <span class="toggle-icon">-</span>
+                </div>
+                <div class="faq-answer">
+                    <p>ج: 50 ملجم محولة إلى مل هي 0.05 مل للمواد ذات الكثافة 1000 ملجم/مل (مثل الماء).</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>س: ما هو مقدار 20 ملغ من زيت الطهي بالملليلتر؟</h4>
+                    <span class="toggle-icon">-</span>
+                </div>
+                <div class="faq-answer">
+                    <p>ج: تبلغ كثافة زيت الطهي حوالي 920 ملغ/مل. لذا، 20 ملغ = 0.021 مل.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>س: هل 1 مل يساوي 1 مل؟</h4>
+                    <span class="toggle-icon">-</span>
+                </div>
+                <div class="faq-answer">
+                    <p>ج: لا، 1 مليغرام لا يساوي 1 مل. يعتمد التحويل على كثافة المادة.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>س: هل من الممكن تحويل ملغ إلى مل؟</h4>
+                    <span class="toggle-icon">-</span>
+                </div>
+                <div class="faq-answer">
+                    <p>ج: نعم! استخدم الصيغة مل = ملغ / الكثافة (ملغ/مل) أو محولنا للحصول على نتائج سريعة.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="card" id="reference">
+            <h2>مراجع</h2>
+            <p>لكثافة الحليب: <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7466286/">NCBI</a></p>
+            <p>لكثافة زيت الطهي: <a href="https://hypertextbook.com/facts/2000/IngaDorfman.shtml">HyperTextBook</a></p>
+        </section>
+    </div>
+    {% include 'footer.html' %}
+    <script>
+        // Dropdown Logic
+        const mainSelect = document.getElementById('mainSelect');
+        const medicationGroup = document.getElementById('medicationGroup');
+        const medicationSelect = document.getElementById('medicationSelect');
+        const densityGroup = document.getElementById('densityGroup');
+        const densityInput = document.getElementById('densityInput');
+        const concentrationGroup = document.getElementById('concentrationGroup');
+        const concentrationInput = document.getElementById('concentrationInput');
+        const mgInput = document.getElementById('mgInput');
+        const resultValue = document.getElementById('result-value');
+
+        mainSelect.addEventListener('change', () => {
+            const selectedValue = mainSelect.value;
+            medicationGroup.classList.add('hidden');
+            densityGroup.classList.add('hidden');
+            concentrationGroup.classList.add('hidden');
+            densityInput.value = '';
+            concentrationInput.value = '';
+            if (selectedValue === 'medication') {
+                medicationGroup.classList.remove('hidden');
+            } else if (selectedValue === 'custom-liquid') {
+                densityGroup.classList.remove('hidden');
+            } else if (selectedValue !== '') {
+                densityGroup.classList.remove('hidden');
+                densityInput.value = mainSelect.options[mainSelect.selectedIndex].dataset.density;
+            }
+        });
+
+        medicationSelect.addEventListener('change', () => {
+            const selectedValue = medicationSelect.value;
+            concentrationInput.value = '';
+            concentrationGroup.classList.remove('hidden');
+            if (selectedValue === 'custom-medication') {
+                concentrationInput.placeholder = 'أدخل التركيز المخصص';
+            } else if (selectedValue !== '') {
+                concentrationInput.value = medicationSelect.options[medicationSelect.selectedIndex].dataset.concentration;
+            }
+        });
+
+        function convertMgToMl() {
+            const mg = parseFloat(mgInput.value);
+            let factor;
+            let calculationType;
+            const mainSelection = mainSelect.value;
+            const medicationSelection = medicationSelect.value;
+            if (mainSelection === 'medication') {
+                if (medicationSelection === '') {
+                    resultValue.innerHTML = 'الرجاء اختيار دواء.';
+                    resultValue.style.color = 'red';
+                    return;
+                }
+                factor = parseFloat(concentrationInput.value);
+                calculationType = 'التركيز';
+            } else {
+                if (mainSelection === '') {
+                    resultValue.innerHTML = 'الرجاء اختيار مادة.';
+                    resultValue.style.color = 'red';
+                    return;
+                }
+                factor = parseFloat(densityInput.value);
+                calculationType = 'الكثافة';
+            }
+            if (isNaN(mg) || isNaN(factor) || mg <= 0 || factor <= 0) {
+                resultValue.innerHTML = `الرجاء إدخال أرقام إيجابية صالحة للوزن و${calculationType}.`;
+                resultValue.style.color = 'red';
+                return;
+            }
+            const ml = mg / factor;
+            resultValue.innerHTML = `${mg} ملغ = ${ml.toFixed(2)} مل`;
+            resultValue.style.color = 'green';
+            document.getElementById('result-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // FAQ Toggle Function
+        function toggleFAQ(element) {
+            const answer = element.nextElementSibling;
+            const icon = element.querySelector('.toggle-icon');
+            if (answer.style.display === 'block') {
+                answer.style.display = 'none';
+                icon.textContent = '+';
+            } else {
+                answer.style.display = 'block';
+                icon.textContent = '-';
+            }
+        }
+    </script>
+</body>
+</html>

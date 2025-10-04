@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.png') }}" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>MG'den ML'ye Dönüştürücü | Miligramdan Mililitreye Dönüşüm</title>
+    <meta name="description" content="Bu mg - ml dönüştürücü, miktarı miligramdan mililitreye kolay ve hızlı bir şekilde dönüştürmenize yardımcı olur. Su, süt, yağ, un, şeker, ilaçlar ve daha fazlası için doğru, basit ve hızlı dönüşümler.">
+    <meta name="keywords" content="mg to ml, mg to ml converter, milligrams to milliliters, convert mg to ml, mg in ml, mg ml calculator, mg conversion tool, mg to ml online converter, mg to ml chart, mg to ml formula, medication conversion, drug dosage calculator">
+    <link rel="canonical" href="https://mltomg.info/mg-to-ml" />
+    <link rel="alternate" hreflang="x-default" href="https://mltomg.info/mg-to-ml" />
+    <link rel="alternate" hreflang="en" href="https://mltomg.info/mg-to-ml" />
+    <link rel="alternate" hreflang="ar" href="https://mltomg.info/ar/mg-to-ml" />
+    <link rel="alternate" hreflang="de" href="https://mltomg.info/de/mg-to-ml" />
+    <link rel="alternate" hreflang="es" href="https://mltomg.info/es/mg-to-ml" />
+    <link rel="alternate" hreflang="fr" href="https://mltomg.info/fr/mg-to-ml" />
+    <link rel="alternate" hreflang="it" href="https://mltomg.info/it/mg-to-ml" />
+    <link rel="alternate" hreflang="pt" href="https://mltomg.info/pt/mg-to-ml" />
+    <link rel="alternate" hreflang="ru" href="https://mltomg.info/ru/mg-to-ml" />
+    <link rel="alternate" hreflang="tr" href="https://mltomg.info/tr/mg-to-ml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+    <meta name="google-site-verification" content="49KC3Wnkoo8QxBc56Q5dkx-LVqsbPxtgJTBs_MG7WBU" />
+    <style>
+        #result-section {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #e9ecef;
+            min-height: 60px;
+            position: relative;
+        }
+        #result-section .result-heading {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-weight: 600;
+            color: var(--primary-color);
+            border-left: 3px solid var(--secondary-color);
+            padding-left: 10px;
+            font-size: 1.1rem;
+        }
+        #result-section .result-value {
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 10px;
+            padding-top: 20px;
+            color: var(--light-text-color);
+            width: 100%;
+        }
+        .hidden {
+            display: none !important;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #333;
+            padding: 6px;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        caption {
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    {% include 'header.html' %}
+    <header class="secondary-header">
+        <div class="container">
+            <h1>MG'den ML'ye Dönüştürücü</h1>
+            <p>Sıvılar, ilaçlar ve daha fazlası için hacmi mililitre cinsinden hesaplamak üzere aşağıya ağırlığı miligram cinsinden girin.</p>
+        </div>
+    </header>
+    <div class="container main-content">
+        <section class="card" id="tool">
+            <h2>MG'den ML'ye Dönüştür</h2>
+            <div class="tool-container">
+                <div class="form-group">
+                    <label for="mgInput"><b>Ağırlık (mg cinsinden):</b></label>
+                    <input type="number" id="mgInput" placeholder="Ağırlığı mg cinsinden girin" required>
+                </div>
+                <div class="form-group">
+                    <label for="mainSelect"><b>Madde Seçin:</b></label>
+                    <select id="mainSelect">
+                        <option value="">-- Madde Seçin --</option>
+                        <option value="water" data-density="1000">Su</option>
+                        <option value="ethanol" data-density="789">Etanol</option>
+                        <option value="olive-oil" data-density="918">Zeytinyağı</option>
+                        <option value="milk" data-density="1030">Süt</option>
+                        <option value="honey" data-density="1300">Bal</option>
+                        <option value="glycerin" data-density="1800">Gliserin</option>
+                        <option value="medication">İlaçlar</option>
+                        <option value="custom-liquid">Özel Yoğunluk</option>
+                    </select>
+                </div>
+                <div class="form-group hidden" id="medicationGroup">
+                    <label for="medicationSelect"><b>İlaç Seçin:</b></label>
+                    <select id="medicationSelect">
+                        <option value="">-- İlaç Seçin --</option>
+                        <option value="acetaminophen" data-concentration="10">Asetaminofen (Tylenol) 10 mg/mL</option>
+                        <option value="amoxicillin" data-concentration="80">Amoksisilin süspansiyon 400 mg/5 mL</option>
+                        <option value="benadryl-oral" data-concentration="12.5">Benadryl (Oral sıvı, 12.5 mg/5 mL)</option>
+                        <option value="benadryl-injection" data-concentration="50">Benadryl (Enjeksiyon, 50 mg/mL veya 500 mg/10 mL)</option>
+                        <option value="cetirizine" data-concentration="1">Setirizin HCL 1 mg/mL</option>
+                        <option value="ibuprofen-oral-1" data-concentration="20">İbuprofen (Oral sıvı, 100 mg/5 mL)</option>
+                        <option value="ibuprofen-oral-2" data-concentration="40">İbuprofen (Oral sıvı, 50 mg/1.25 mL)</option>
+                        <option value="ibuprofen-injection-1" data-concentration="5">İbuprofen (Enjeksiyon, 10 mg/2 mL)</option>
+                        <option value="ibuprofen-injection-2" data-concentration="100">İbuprofen (Enjeksiyon, 800 mg/8 mL)</option>
+                        <option value="morphine" data-concentration="20">Morfine sülfat solüsyonu 20 mg/mL</option>
+                        <option value="testosterone" data-concentration="200">Testosteron 200 mg/mL</option>
+                        <option value="custom-medication">Özel Konsantrasyon</option>
+                    </select>
+                </div>
+                <div class="form-group hidden" id="densityGroup">
+                    <label for="densityInput"><b>Yoğunluk (mg/mL):</b></label>
+                    <input type="number" id="densityInput" placeholder="Yoğunluğu mg/mL cinsinden girin" required>
+                </div>
+                <div class="form-group hidden" id="concentrationGroup">
+                    <label for="concentrationInput"><b>Konsantrasyon (mg/mL):</b></label>
+                    <input type="number" id="concentrationInput" placeholder="Konsantrasyonu mg/mL cinsinden girin" required>
+                </div>
+                <button class="btn" onclick="convertMgToMl()">mL'ye Dönüştür</button>
+            </div>
+
+        <p style="color: red;"><b>Not:</b> Yoğunluk, sıcaklığa göre değişir ve malzemeye göre farklılık gösterebilir. Özel yoğunluk girmek için lütfen <b>Özel Yoğunluk</b> seçeneğini kullanın.</p>
+        <div id="result-section">
+            <div class="result-heading">Sonuç:</div>
+            <div class="result-value" id="result-value">Sonuç burada görünecek</div>
+        </div>
+        <!-- Code 1 Sections Added Below -->
+        <section class="card" id="intention">
+            <p>Miligramdan mililitreye dönüştürmek istediğiniz bir maddenin yoğunluğunu bilmeniz gerekir. Bu mg - ml dönüştürücü, miktarı miligramdan mililitreye kolayca dönüştürmenize yardımcı olur.</p>
+        </section>
+         <section class="card" id="intention">
+             <h2>Miligram Nedir?</h2>
+             <p>Uluslararası birim sisteminde (SI) miligram, ağırlık ve kütle birimi olarak tanımlanabilir. "mg" sembolüyle kısaltılır. Günlük hayatımızda mg örneğine 400 mg'lık tabletler gibi ilaçlarda rastlayabiliriz.</p>
+             <p>1 miligram, bir gramın binde birine eşittir. Bunu basitçe şu şekilde yazabiliriz:</p>
+             <ul>
+                 <li>1 gram = 1000 miligram</li>
+             </ul>
+         </section>
+        <section class="card" id="intention">
+             <h2>Mililitre Nedir?</h2>
+            <p>Mililitre, sıvı hacmini ölçmek için kullanılır ve "ml" sembolüyle kısaltılır. Basitçe şu şekilde yazabiliriz:</p>
+            <ul>
+                <li>1 litre = 1000 mililitre</li>
+            </ul>
+        </section>
+        <section class="card" id="how-to-use">
+            <h2>Miligramdan Mililitreye Dönüşüm:</h2>
+            <p>Miligram kütle birimi, mililitre ise sıvı birimidir. İkisi de farklı fiziksel niceliklerdir. Dolayısıyla, miligramı mililitreye dönüştürmek için bileşenin bir fiziksel niceliğini daha bilmemiz gerekir.</p>
+            <h3>MG'den ML'ye Formül:</h3>
+            <p>Bir ölçüyü miligramdan mililitreye dönüştürmek için ağırlığı bileşenin veya malzemenin yoğunluğuna bölmeniz gerekir. Ancak, yoğunluğun mililitre başına miligram (mg/mL) cinsinden olması gerektiğini unutmayın.</p>
+            <p>Yoğunluğunuz (g/mL) ise, yoğunluğu 1.000 ile çarparak mg/mL'ye dönüştürebilirsiniz.</p>
+            <p>Yoğunluk g/mL olarak verildiğinde mg'ı ml'ye dönüştürmek için aşağıdaki formül kullanılır.</p>
+            <p style="text-align: center; color: red; font-weight: bold;">mililitre = miligram / 1,000 × yoğunluk</p>
+            <h4>Örnek:</h4>
+            <p>Yoğunluğu 0,7 g/mL olan bir madde için <b>1000 mg</b>'ı mililitreye dönüştürün:</p>
+            <ul>
+                <li>mililitre = 1000 mg / (0,7 g/mL × 1.000) = <b>1,42 mL</b></li>
+            </ul>
+        </section>
+        <section class="card" id="mg-in-ml">
+            <h2>Bu MG'den ML'ye Dönüştürücüyü Kullanmanın Faydaları:</h2>
+            <h3>Kesinlik:</h3>
+            <p>Mg - ml dönüştürücümüz, dönüştürme hatası olasılığı düşük, doğru sonuçlar sağlar.</p>
+            <h3>Zaman Tasarrufu:</h3>
+            <p>Bu miligram-mililitre dönüştürücü, doğru sonuçları hızlı bir şekilde vererek zamandan tasarruf etmenizi sağlar. Bu nedenle, mg-ml hesaplayıcısını kullanarak zamandan tasarruf edin.</p>
+            <h3>Kullanımı Kolay:</h3>
+            <p>Bu mg - ml dönüştürücü, kullanıcılarımız tarafından kolayca anlaşılabilir, çünkü dönüştürücünün arayüzünü oldukça basit hale getirdik. Bu nedenle, mg - ml dönüştürücü ile mg - ml dönüşümü yapmak için herhangi bir teknik uzmanlığa ihtiyacınız yok.</p>
+        </section>
+        <section class="card" id="drug-conversion">
+            <h2>MG'den mL'ye İlaç/İlaç Dönüşümü</h2>
+            <p>İlaçlar için konsantrasyon (mg/mL) çok önemlidir. Suyun aksine, ilaçların belirli konsantrasyonları vardır. Şu formülü kullanın:</p>
+            <h3>Formül:</h3>
+            <p style="text-align: center; color: red; font-weight: bold;">Hacim (mL) = Doz (mg) ÷ Konsantrasyon (mg/mL)</p>
+            <h4>Örnek:</h4>
+            <p>Eğer bir ilacın konsantrasyonu <b>50 mg/mL</b> ise ve <b>100 mg</b>'a ihtiyacınız varsa:</p>
+            <p><b>100 ÷ 50 = 2 mL</b></p>
+            <p><b>⚠️ Uyarı:</b> İlaç dönüşümleri için daima reçete etiketini takip edin veya bir sağlık uzmanına danışın.</p>
+        </section>
+        <section class="card" id="Table">
+            <h2>Mililitre - Miligram Dönüşüm Tablosu</h2>
+            <style>
+                :root {
+                    --bg: #ffffff;
+                    --text: #1f2937;
+                    --muted: #6b7280;
+                    --border: #e5e7eb;
+                    --stripe: #f9fafb;
+                }
+                body {
+                    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+                    color: var(--text);
+                    background: var(--bg);
+                    margin: 0;
+                }
+                h1 { font-size: 1.25rem; margin: 0 0 12px; }
+                .wrap { max-width: 1100px; margin: 0 auto; }
+                .table-card { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+                .table-scroll { max-height: 70vh; overflow: auto; }
+                table { border-collapse: separate; border-spacing: 0; width: 100%; }
+                thead th { position: sticky; top: 0; background: #f3f4f6; color: #111827; font-weight: 600; text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border); }
+                tbody td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+                tbody tr:nth-child(even) td { background: var(--stripe); }
+                th, td.num { text-align: right; }
+                th:first-child, td:first-child { text-align: center; }
+                caption { caption-side: bottom; padding: 10px; font-size: 0.875rem; color: var(--muted); }
+            </style>
+            <table border="1" cellspacing="0" cellpadding="5">
+  <thead>
+    <tr>
+      <th>Miligram Cinsinden Hacim</th>
+      <th>Su (mL)</th>
+      <th>Süt (mL)</th>
+      <th>Yemeklik Yağ (mL)</th>
+      <th>Çok Amaçlı Un (mL)</th>
+      <th>Toz Şeker (mL)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>10 mg</td><td>0.01</td><td>0.009709</td><td>0.011364</td><td>0.018904</td><td>0.011829</td></tr>
+    <tr><td>20 mg</td><td>0.02</td><td>0.019417</td><td>0.022727</td><td>0.037807</td><td>0.023659</td></tr>
+    <tr><td>30 mg</td><td>0.03</td><td>0.029126</td><td>0.034091</td><td>0.056711</td><td>0.035488</td></tr>
+    <tr><td>40 mg</td><td>0.04</td><td>0.038835</td><td>0.045455</td><td>0.075614</td><td>0.047318</td></tr>
+    <tr><td>50 mg</td><td>0.05</td><td>0.048544</td><td>0.056818</td><td>0.094518</td><td>0.059147</td></tr>
+    <tr><td>60 mg</td><td>0.06</td><td>0.058252</td><td>0.068182</td><td>0.113422</td><td>0.070976</td></tr>
+    <tr><td>70 mg</td><td>0.07</td><td>0.067961</td><td>0.079545</td><td>0.132325</td><td>0.082806</td></tr>
+    <tr><td>80 mg</td><td>0.08</td><td>0.07767</td><td>0.090909</td><td>0.151229</td><td>0.094635</td></tr>
+    <tr><td>90 mg</td><td>0.09</td><td>0.087379</td><td>0.102273</td><td>0.170132</td><td>0.106465</td></tr>
+    <tr><td>100 mg</td><td>0.1</td><td>0.097087</td><td>0.113636</td><td>0.189036</td><td>0.118294</td></tr>
+    <tr><td>110 mg</td><td>0.11</td><td>0.106796</td><td>0.125</td><td>0.20794</td><td>0.130124</td></tr>
+    <tr><td>120 mg</td><td>0.12</td><td>0.116505</td><td>0.136364</td><td>0.226843</td><td>0.141953</td></tr>
+    <tr><td>130 mg</td><td>0.13</td><td>0.126214</td><td>0.147727</td><td>0.245747</td><td>0.153782</td></tr>
+    <tr><td>140 mg</td><td>0.14</td><td>0.135922</td><td>0.159091</td><td>0.26465</td><td>0.165612</td></tr>
+    <tr><td>150 mg</td><td>0.15</td><td>0.145631</td><td>0.170455</td><td>0.283554</td><td>0.177441</td></tr>
+    <tr><td>160 mg</td><td>0.16</td><td>0.15534</td><td>0.181818</td><td>0.302457</td><td>0.189271</td></tr>
+    <tr><td>170 mg</td><td>0.17</td><td>0.165049</td><td>0.193182</td><td>0.321361</td><td>0.2011</td></tr>
+    <tr><td>180 mg</td><td>0.18</td><td>0.174757</td><td>0.204545</td><td>0.340265</td><td>0.212929</td></tr>
+    <tr><td>190 mg</td><td>0.19</td><td>0.184466</td><td>0.215909</td><td>0.359168</td><td>0.224759</td></tr>
+    <tr><td>200 mg</td><td>0.2</td><td>0.194175</td><td>0.227273</td><td>0.378072</td><td>0.236588</td></tr>
+    <tr><td>210 mg</td><td>0.21</td><td>0.203883</td><td>0.238636</td><td>0.396975</td><td>0.248418</td></tr>
+    <tr><td>220 mg</td><td>0.22</td><td>0.213592</td><td>0.25</td><td>0.415879</td><td>0.260247</td></tr>
+    <tr><td>230 mg</td><td>0.23</td><td>0.223301</td><td>0.261364</td><td>0.434783</td><td>0.272076</td></tr>
+    <tr><td>240 mg</td><td>0.24</td><td>0.23301</td><td>0.272727</td><td>0.453686</td><td>0.283906</td></tr>
+    <tr><td>250 mg</td><td>0.25</td><td>0.242718</td><td>0.284091</td><td>0.47259</td><td>0.295735</td></tr>
+    <tr><td>260 mg</td><td>0.26</td><td>0.252427</td><td>0.295455</td><td>0.491493</td><td>0.307565</td></tr>
+    <tr><td>270 mg</td><td>0.27</td><td>0.262136</td><td>0.306818</td><td>0.510397</td><td>0.319394</td></tr>
+    <tr><td>280 mg</td><td>0.28</td><td>0.271845</td><td>0.318182</td><td>0.529301</td><td>0.331224</td></tr>
+    <tr><td>290 mg</td><td>0.29</td><td>0.281553</td><td>0.329545</td><td>0.548204</td><td>0.343053</td></tr>
+    <tr><td>300 mg</td><td>0.3</td><td>0.291262</td><td>0.340909</td><td>0.567108</td><td>0.354882</td></tr>
+    <tr><td>310 mg</td><td>0.31</td><td>0.300971</td><td>0.352273</td><td>0.586011</td><td>0.366712</td></tr>
+    <tr><td>320 mg</td><td>0.32</td><td>0.31068</td><td>0.363636</td><td>0.604915</td><td>0.378541</td></tr>
+    <tr><td>330 mg</td><td>0.33</td><td>0.320388</td><td>0.375</td><td>0.623819</td><td>0.390371</td></tr>
+    <tr><td>340 mg</td><td>0.34</td><td>0.330097</td><td>0.386364</td><td>0.642722</td><td>0.4022</td></tr>
+    <tr><td>350 mg</td><td>0.35</td><td>0.339806</td><td>0.397727</td><td>0.661626</td><td>0.414029</td></tr>
+    <tr><td>360 mg</td><td>0.36</td><td>0.349515</td><td>0.409091</td><td>0.680529</td><td>0.425859</td></tr>
+    <tr><td>370 mg</td><td>0.37</td><td>0.359223</td><td>0.420455</td><td>0.699433</td><td>0.437688</td></tr>
+    <tr><td>380 mg</td><td>0.38</td><td>0.368932</td><td>0.431818</td><td>0.718336</td><td>0.449518</td></tr>
+    <tr><td>390 mg</td><td>0.39</td><td>0.378641</td><td>0.443182</td><td>0.73724</td><td>0.461347</td></tr>
+    <tr><td>400 mg</td><td>0.4</td><td>0.38835</td><td>0.454545</td><td>0.756144</td><td>0.473176</td></tr>
+  </tbody>
+</table>
+        </section>
+        <section class="card more-tools" id="more-tools">
+            <h2>Daha Fazla Araç</h2>
+            <div class="tool-cards-container">
+                <a href="/mg-to-ml" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>Mg'den Ml'ye</h3>
+                        <p>Miligramı mililitreye çevirin.</p>
+                    </div>
+                </a>
+                <a href="/g-to-l" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>G'den L'ye</h3>
+                        <p>Gramı litreye çevir.</p>
+                    </div>
+                </a>
+                <a href="/kg-to-l" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Kg'dan L'ye</h3>
+                        <p>Kilogramı litreye çevir.</p>
+                    </div>
+                </a>
+                <a href="/l-to-g" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>L'den G'ye</h3>
+                        <p>Litreyi grama çevir.</p>
+                    </div>
+                </a>
+                <a href="/l-to-kg" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>L'den Kg'ya</h3>
+                        <p>Litreyi kilograma çevir.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-g" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>Ml'den G'ye</h3>
+                        <p>Mililitreyi grama çevir.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-oz" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>Ml'den Oz'a</h3>
+                        <p>Mililitreyi onsa çevir.</p>
+                    </div>
+                </a>
+                <a href="/oz-to-ml" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Oz'dan Ml'ye</h3>
+                        <p>Onsu mililitreye çevir.</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+        <section class="card" id="faq">
+            <h2>Sıkça Sorulan Sorular</h2>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>S: 50 mg'ın mL'ye dönüşümü nedir?</h4>
+                    <span class="toggle-icon">-</span>
+                </div>
+                <div class="faq-answer">
+                    <p>A: 50 mg'ın mL'ye dönüştürülmesi, yoğunluğu 1000 mg/mL olan maddeler (örneğin su) için <b>0,05 mL</b>'dir.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>S: 20 mg yemeklik yağın mL'si kaçtır?</h4>
+                    <span class="toggle-icon">-</span>
+                </div>
+                <div class="faq-answer">
+                    <p>A: Yemeklik yağın yoğunluğu ~920 mg/mL'dir. Yani <b>20 mg = 0,021 mL</b>'dir.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>S: 1 mg 1 mL'ye eşit midir?</h4>
+                    <span class="toggle-icon">-</span>
+                </div>
+                <div class="faq-answer">
+                    <p>A: Hayır, 1 mg 1 mL'ye eşit değildir. Dönüşüm, maddenin yoğunluğuna bağlıdır.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>S: mg'ı mL'ye çevirmek mümkün müdür?</h4>
+                    <span class="toggle-icon">-</span>
+                </div>
+                <div class="faq-answer">
+                    <p>A: Evet! Hızlı sonuçlar için <b>mL = mg / yoğunluk (mg/mL)</b> formülünü veya dönüştürücümüzü kullanın.</p>
+                </div>
+            </div>
+        </section>
+        <section class="card" id="reference">
+            <h2>Referanslar</h2>
+            <p>Süt yoğunluğu için: <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7466286/">NCBI</a></p>
+            <p>Yemeklik yağ yoğunluğu için: <a href="https://hypertextbook.com/facts/2000/IngaDorfman.shtml">HyperTextBook</a></p>
+        </section>
+    </div>
+    {% include 'footer.html' %}
+    <script>
+        // Dropdown Logic (Retained from Code 2)
+        const mainSelect = document.getElementById('mainSelect');
+        const medicationGroup = document.getElementById('medicationGroup');
+        const medicationSelect = document.getElementById('medicationSelect');
+        const densityGroup = document.getElementById('densityGroup');
+        const densityInput = document.getElementById('densityInput');
+        const concentrationGroup = document.getElementById('concentrationGroup');
+        const concentrationInput = document.getElementById('concentrationInput');
+        const mgInput = document.getElementById('mgInput');
+        const resultValue = document.getElementById('result-value');
+        mainSelect.addEventListener('change', () => {
+            const selectedValue = mainSelect.value;
+            medicationGroup.classList.add('hidden');
+            densityGroup.classList.add('hidden');
+            concentrationGroup.classList.add('hidden');
+            densityInput.value = '';
+            concentrationInput.value = '';
+            if (selectedValue === 'medication') {
+                medicationGroup.classList.remove('hidden');
+            } else if (selectedValue === 'custom-liquid') {
+                densityGroup.classList.remove('hidden');
+            } else if (selectedValue !== '') {
+                densityGroup.classList.remove('hidden');
+                densityInput.value = mainSelect.options[mainSelect.selectedIndex].dataset.density;
+            }
+        });
+        medicationSelect.addEventListener('change', () => {
+            const selectedValue = medicationSelect.value;
+            concentrationInput.value = '';
+            concentrationGroup.classList.remove('hidden');
+            if (selectedValue === 'custom-medication') {
+                concentrationInput.placeholder = 'Özel konsantrasyon girin';
+            } else if (selectedValue !== '') {
+                concentrationInput.value = medicationSelect.options[medicationSelect.selectedIndex].dataset.concentration;
+            }
+        });
+        function convertMgToMl() {
+            const mg = parseFloat(mgInput.value);
+            let factor;
+            let calculationType;
+            const mainSelection = mainSelect.value;
+            const medicationSelection = medicationSelect.value;
+            if (mainSelection === 'medication') {
+                if (medicationSelection === '') {
+                    resultValue.innerHTML = 'Lütfen bir ilaç seçin.';
+                    resultValue.style.color = 'red';
+                    return;
+                }
+                factor = parseFloat(concentrationInput.value);
+                calculationType = 'konsantrasyon';
+            } else {
+                if (mainSelection === '') {
+                    resultValue.innerHTML = 'Lütfen bir madde seçin.';
+                    resultValue.style.color = 'red';
+                    return;
+                }
+                factor = parseFloat(densityInput.value);
+                calculationType = 'yoğunluk';
+            }
+            if (isNaN(mg) || isNaN(factor) || mg <= 0 || factor <= 0) {
+                resultValue.innerHTML = `Lütfen ağırlık ve ${calculationType} için geçerli pozitif sayılar girin.`;
+                resultValue.style.color = 'red';
+                return;
+            }
+            const ml = mg / factor;
+            resultValue.innerHTML = `${mg} mg = ${ml.toFixed(2)} mL`;
+            resultValue.style.color = 'green';
+            document.getElementById('result-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        // FAQ Toggle Function
+        function toggleFAQ(element) {
+            const answer = element.nextElementSibling;
+            const icon = element.querySelector('.toggle-icon');
+            if (answer.style.display === 'block') {
+                answer.style.display = 'none';
+                icon.textContent = '+';
+            } else {
+                answer.style.display = 'block';
+                icon.textContent = '-';
+            }
+        }
+    </script>
+</body>
+</html>

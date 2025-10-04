@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.png') }}" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>ML'den Gram'a Dönüştürücü (mL'den Gram'a)</title>
+    <meta name="description" content="Bu mL'den grama dönüştürücü, sıvı veya bileşen hacimlerini mililitre (mL) cinsinden, yoğunluğa bağlı olarak gram (g) cinsinden ağırlığa hızlı bir şekilde dönüştürmenize yardımcı olur.">
+    <meta name="keywords" content="ml'den grama, ml'den grama dönüştürücü, ml'den g'ye dönüştürme, ml'den g'ye tablo, su dönüşümü, süt dönüşümü, yemeklik yağ dönüşümü, un dönüşümü, mutfak ölçüm tablosu, pişirme dönüşümleri, bileşen kütle tablosu">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+    <style>
+        .card {
+            background: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #333;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        .table-wrap {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+        .faq-question {
+            cursor: pointer;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .toggle-icon {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .tool-cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        .tool-card {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            text-decoration: none;
+            color: #333;
+            transition: box-shadow 0.2s;
+        }
+        .tool-card:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .tool-icon {
+            font-size: 2em;
+            margin-right: 15px;
+        }
+        .tool-info h3 {
+            margin: 0;
+            color: #007bff;
+        }
+        .tool-info p {
+            margin: 5px 0 0;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    {% include 'header.html' %}
+
+    <header class="secondary-header">
+        <div class="container">
+            <h1>Mililitre - Gram Dönüşüm Hesaplayıcısı</h1>
+            <p>Sıvı veya bileşen hacimlerini kütleye dönüştürmek için profesyonel bir araç</p>
+        </div>
+    </header>
+
+    <div class="container main-content">
+        <section class="card" id="tool">
+            <h2>ML'den Gram'a Dönüştürücü (mL'den G'ye)</h2>
+            <div class="tool-container">
+                <div class="form-group">
+                    <label for="mlInput"><b>Hacim (mL cinsinden):</b></label>
+                    <input type="number" id="mlInput" placeholder="Hacmi mL cinsinden girin" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="liquidSelect"><b>Sıvı Seçin:</b></label>
+                    <select id="liquidSelect">
+                        <option value="">-- Bir Sıvı Seçin --</option>
+                        <option value="1">Su</option>
+                        <option value="0.789">Etanol</option>
+                        <option value="0.918">Zeytinyağı</option>
+                        <option value="1.03">Süt</option>
+                        <option value="1.3">Bal</option>
+                        <option value="1.8">Gliserin</option>
+                    </select>
+                </div>
+
+                <button class="btn" onclick="convertMlToG()">Grama Dönüştür (g)</button>
+                <div id="result" style="margin-top: 15px;"><b id="result-value"></b></div>
+            </div>
+        </section>
+
+        <section class="card" id="how-to-use">
+           <p>Mililitreyi grama mı çevirmek istiyorsunuz? mltomg.info adresindeki bu ücretsiz mL-gram dönüştürücü işinizi kolaylaştırıyor. İster yemek pişiriyor, ister fırınlıyor, ister laboratuvar çalışması yapıyor olun, değeri mL cinsinden girin ve gram cinsinden tam ağırlığı alın. Artık "100 mL, 100 grama eşit mi?" diye tahmin yürütmenize gerek yok. Sonuç, malzemenin yoğunluğuna bağlıdır ve aracımız sizin için halleder. Ayrıca <a href="https://mltomg.info/g-to-ml">gramdan ml'ye dönüştürücümüzü</a> kullanarak ters çevrimleri de yapabilirsiniz.</p>
+        </section>
+
+        <section class="card more-tools" id="more-tools">
+            <h2>Daha Fazla Araç</h2>
+            <div class="tool-cards-container">
+                <a href="/mg-to-ml" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>Mg'den Ml'ye</h3>
+                        <p>Miligramı mililitreye dönüştürün.</p>
+                    </div>
+                </a>
+                <a href="/g-to-l" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>G'den L'ye</h3>
+                        <p>Gramı litreye dönüştürün.</p>
+                    </div>
+                </a>
+                <a href="/kg-to-l" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Kg'den L'ye</h3>
+                        <p>Kilogramı litreye dönüştürün.</p>
+                    </div>
+                </a>
+                <a href="/l-to-g" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>L'den G'ye</h3>
+                        <p>Litreye grama dönüştürün.</p>
+                    </div>
+                </a>
+                <a href="/l-to-kg" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>L'den Kg'ye</h3>
+                        <p>Litreye kilograma dönüştürün.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-g" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>Ml'den G'ye</h3>
+                        <p>Mililitreyi grama dönüştürün.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-oz" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>Ml'den Oz'a</h3>
+                        <p>Mililitreyi onsa dönüştürün.</p>
+                    </div>
+                </a>
+                <a href="/oz-to-ml" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Oz'dan Ml'ye</h3>
+                        <p>Onsu mililitreye dönüştürün.</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+        <section class="card" id="why-choose-us">
+            <h2>ML'den Gram'a Dönüşüm:</h2>
+            <p>Mililitre (mL) hacim birimi, gram (G) ise kütle birimidir. Her ikisi de farklı fiziksel büyüklüklerdir, bu nedenle mililitreyi grama dönüştürmek için maddenin veya malzemenin yoğunluğunu bilmemiz gerekir.</p>
+            <h3>Formül:</h3>
+            <p>Dönüşümleri yapmak için bu formülü kullanın, yoğunluğun (g/mL) cinsinden olduğundan emin olun.</p>
+            <p style="text-align: center; color: red; font-weight: bold;">Gram (g) = Mililitre (mL) × Yoğunluk (g/mL)</p>
+            <h4>Örnek:</h4>
+            <p>Bu formülü, yoğunluğu 1,03 (g/ml) olan 10 ml maddeyi grama çeviren bir örneği çözerek anlamaya çalışalım.</p>
+            <p style="text-align: center; color: red; font-weight: bold;">Gram = 10 x 1,03</p>
+            <p style="text-align: center; color: red; font-weight: bold;">Gram = 10,3 g</p>
+            <p>Yani yoğunluğu 1,03 olan bir madde için 10 ml = 10,3 gramdır.</p>
+            <p>Yoğunluğu 0,705 (g/ml) olan 25 ml maddenin grama çevrilmesine ilişkin 1 örnek daha çözelim.</p>
+             <p style="text-align: center; color: red; font-weight: bold;">Gram = 25 x 0,705</p>
+            <p style="text-align: center; color: red; font-weight: bold;">Gram = 17.625</p>
+        </section>
+        <section class="card" id="how-it-works">
+            <h2>Mltomg.info'nun Mililitre - Gram Dönüştürücüsünün Kullanım Örnekleri</h2>
+            <h3>Pişirme ve Fırıncılık</h3>
+            <p>Tariflerde hacim ve ağırlık genellikle birbirine karışır. Aracımız, yemeğinizin mahvolmasını önlemek için un, şeker, süt veya yağ gibi malzemeleri doğru bir şekilde ölçmenizi sağlar.</p>
+            <p><b>Örnek:</b> 250 mL un = 147,5 gr.</p>
+            <h3>Diyet ve Beslenme Takibi</h3>
+            <p>Gıda etiketleri genellikle ağırlığı gram cinsinden gösterir, ancak ölçü kapları mililitre cinsinden gösterir. Ancak ml - gram dönüştürücümüzün yardımıyla hacmi ağırlığa dönüştürebilir ve böylece ne kadar yediğinizi tam olarak öğrenebilirsiniz.</p>
+            <p><b>Örnek:</b> 100 mL zeytinyağı = 92 gr.</p>
+            <h3>Eğitim ve Okul Projeleri</h3>
+            <p>Öğrenciler veya öğretmenler bilim projeleri veya laboratuvar çalışmaları yaparken hacmi ağırlığa dönüştürme ihtiyacı duydukları için bu araç onlar için de çok kullanışlıdır. Bu nedenle ml - g dönüştürücümüz onlara yardımcı olur.</p>
+            <h3>Üretim ve Sanayi</h3>
+            <p>Gıda endüstrileri, kimya üretimi ve ilaç endüstrisi sıvıları genellikle mL cinsinden ölçer, ancak paketleme, kalite kontrol ve tutarlılık için gram cinsinden ölçmeleri gerekir. Bu nedenle, mltomg dönüştürücü, mililitreden grama doğru dönüşümler yapmalarına yardımcı olur.</p>
+        </section>
+        <section class="card more-tools" id="table">
+            
+        <h2>ML'den G'ye Dönüşüm Tablosu:</h2>
+        <div class="table-wrap" role="table" aria-label="Mililiters to grams conversion">
+            <table>
+                <thead>
+                    <tr>
+                        <th>mL</th>
+                        <th>Su (g)</th>
+                        <th>Süt (g)</th>
+                        <th>Yemeklik Yağ (g)</th>
+                        <th>Un (g)</th>
+                        <th>Şeker (g)</th>
+                        <th>Bal (g)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td>1.00</td><td>1.03</td><td>0.92</td><td>0.59</td><td>0.85</td><td>1.42</td></tr>
+                    <tr><td>2</td><td>2.00</td><td>2.06</td><td>1.84</td><td>1.18</td><td>1.70</td><td>2.84</td></tr>
+                    <tr><td>3</td><td>3.00</td><td>3.09</td><td>2.76</td><td>1.77</td><td>2.55</td><td>4.26</td></tr>
+                    <tr><td>4</td><td>4.00</td><td>4.12</td><td>3.68</td><td>2.36</td><td>3.40</td><td>5.68</td></tr>
+                    <tr><td>5</td><td>5.00</td><td>5.15</td><td>4.60</td><td>2.95</td><td>4.25</td><td>7.10</td></tr>
+                    <tr><td>6</td><td>6.00</td><td>6.18</td><td>5.52</td><td>3.54</td><td>5.10</td><td>8.52</td></tr>
+                    <tr><td>7</td><td>7.00</td><td>7.21</td><td>6.44</td><td>4.13</td><td>5.95</td><td>9.94</td></tr>
+                    <tr><td>8</td><td>8.00</td><td>8.24</td><td>7.36</td><td>4.72</td><td>6.80</td><td>11.36</td></tr>
+                    <tr><td>9</td><td>9.00</td><td>9.27</td><td>8.28</td><td>5.31</td><td>7.65</td><td>12.78</td></tr>
+                    <tr><td>10</td><td>10.00</td><td>10.30</td><td>9.20</td><td>5.90</td><td>8.50</td><td>14.20</td></tr>
+                    <tr><td>11</td><td>11.00</td><td>11.33</td><td>10.12</td><td>6.49</td><td>9.35</td><td>15.62</td></tr>
+                    <tr><td>12</td><td>12.00</td><td>12.36</td><td>11.04</td><td>7.08</td><td>10.20</td><td>17.04</td></tr>
+                    <tr><td>13</td><td>13.00</td><td>13.39</td><td>11.96</td><td>7.67</td><td>11.05</td><td>18.46</td></tr>
+                    <tr><td>14</td><td>14.00</td><td>14.42</td><td>12.88</td><td>8.26</td><td>11.90</td><td>19.88</td></tr>
+                    <tr><td>15</td><td>15.00</td><td>15.45</td><td>13.80</td><td>8.85</td><td>12.75</td><td>21.30</td></tr>
+                    <tr><td>16</td><td>16.00</td><td>16.48</td><td>14.72</td><td>9.44</td><td>13.60</td><td>22.72</td></tr>
+                    <tr><td>17</td><td>17.00</td><td>17.51</td><td>15.64</td><td>10.03</td><td>14.45</td><td>24.14</td></tr>
+                    <tr><td>18</td><td>18.00</td><td>18.54</td><td>16.56</td><td>10.62</td><td>15.30</td><td>25.56</td></tr>
+                    <tr><td>19</td><td>19.00</td><td>19.57</td><td>17.48</td><td>11.21</td><td>16.15</td><td>26.98</td></tr>
+                    <tr><td>20</td><td>20.00</td><td>20.60</td><td>18.40</td><td>11.80</td><td>17.00</td><td>28.40</td></tr>
+                    <tr><td>21</td><td>21.00</td><td>21.63</td><td>19.32</td><td>12.39</td><td>17.85</td><td>29.82</td></tr>
+                    <tr><td>22</td><td>22.00</td><td>22.66</td><td>20.24</td><td>12.98</td><td>18.70</td><td>31.24</td></tr>
+                    <tr><td>23</td><td>23.00</td><td>23.69</td><td>21.16</td><td>13.57</td><td>19.55</td><td>32.66</td></tr>
+                    <tr><td>24</td><td>24.00</td><td>24.72</td><td>22.08</td><td>14.16</td><td>20.40</td><td>34.08</td></tr>
+                    <tr><td>25</td><td>25.00</td><td>25.75</td><td>23.00</td><td>14.75</td><td>21.25</td><td>35.50</td></tr>
+                    <tr><td>26</td><td>26.00</td><td>26.78</td><td>23.92</td><td>15.34</td><td>22.10</td><td>36.92</td></tr>
+                    <tr><td>27</td><td>27.00</td><td>27.81</td><td>24.84</td><td>15.93</td><td>22.95</td><td>38.34</td></tr>
+                    <tr><td>28</td><td>28.00</td><td>28.84</td><td>25.76</td><td>16.52</td><td>23.80</td><td>39.76</td></tr>
+                    <tr><td>29</td><td>29.00</td><td>29.87</td><td>26.68</td><td>17.11</td><td>24.65</td><td>41.18</td></tr>
+                    <tr><td>30</td><td>30.00</td><td>30.90</td><td>27.60</td><td>17.70</td><td>25.50</td><td>42.60</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+        <section class="card" id="faq">
+            <h2>Sıkça Sorulan Sorular</h2>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>Q: 1 mL her zaman 1 grama eşit midir?</h4>
+                    <span class="toggle-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>A: Hayır. Sadece oda sıcaklığındaki **su**nun **1 mL**'si **1 g**'dır. Diğer sıvı ve katıların yoğunlukları farklı olduğundan dönüşüm değişir.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>Q: Neden tüm sıvılar için aynı dönüşümü kullanamıyorum?</h4>
+                    <span class="toggle-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>A: Farklı sıvıların ve bileşenlerin farklı yoğunlukları vardır. Örneğin:</p>
+                    <ul>
+                        <li>100 mL su = <b>100 g</b></li>
+                        <li>100 mL yağ = <b>92 g</b> (yaklaşık)</li>
+                        <li>100 mL bal = <b>142 g</b> (yaklaşık)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    {% include 'footer.html' %}
+<script>
+    // Conversion function: Milliliters to Grams
+    function convertMlToG() {
+        const mlInput = document.getElementById('mlInput'); // Volume in Milliliters
+        const liquidSelect = document.getElementById('liquidSelect');
+        const resultValue = document.getElementById('result-value');
+        
+        const mL = parseFloat(mlInput.value); // Volume in Milliliters
+        const density = parseFloat(liquidSelect.value); // Density in g/mL (from option value)
+        const liquidName = liquidSelect.options[liquidSelect.selectedIndex].text;
+        
+        // Input validation
+        if (liquidSelect.value === '') {
+            resultValue.innerHTML = 'Lütfen bir öğe seçin.';
+            resultValue.style.color = 'red';
+            return;
+        }
+
+        if (isNaN(mL) || mL <= 0) {
+            resultValue.innerHTML = `Lütfen hacim için geçerli, pozitif bir sayı girin.`;
+            resultValue.style.color = 'red';
+            return;
+        }
+
+        // Formula: Mass (g) = Volume (mL) × Density (g/mL)
+        const G = mL * density; 
+        
+        resultValue.innerHTML = `${mL} mL ${liquidName} = <b>${G.toFixed(4)} g</b>`;
+        resultValue.style.color = 'green';
+        // Optional: Scroll to result
+        // document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+</script>
+<script>
+    // FAQ toggle function ko yahaan add kar diya hai
+    function toggleFAQ(element) {
+        const answer = element.nextElementSibling;
+        const icon = element.querySelector('.toggle-icon');
+        if (answer.style.maxHeight) {
+            answer.style.maxHeight = null;
+            icon.textContent = '+';
+        } else {
+            answer.style.maxHeight = answer.scrollHeight + "px";
+            icon.textContent = '-';
+        }
+    }
+</script>
+</body>
+</html>

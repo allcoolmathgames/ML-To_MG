@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.png') }}" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Convertisseur de litres en kilogrammes | Conversion de L en kg</title>
+    <meta name="description" content="Utilisez ce convertisseur de litres en kilogrammes pour effectuer des conversions de litres en kilogrammes pour diverses substances en fonction de leur densité." />
+    <meta name="keywords" content="Convertisseur de litres en kilogrammes, conversion de l en kg, tableau de conversion de l en kg, conversion d'eau, conversion de lait, conversion d'huile de cuisson, conversion de farine, tableau de mesures de cuisine, conversions de pâtisserie, tableau de masse des ingrédients" />
+    <link rel="canonical" href="https://kgtoL.info/l-to-kg" />
+    <link rel="alternate" hreflang="x-default" href="https://kgtoL.info/l-to-kg" />
+    <link rel="alternate" hreflang="fr" href="https://kgtoL.info/l-to-kg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <meta name="google-site-verification" content="49KC3Wnkoo8QxBc56Q5dkx-LVqsbPxtgJTBs_MG7WBU" />
+    <style>
+        #result-section {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #e9ecef;
+            min-height: 60px;
+            position: relative;
+        }
+        #result-section .result-heading {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-weight: 600;
+            color: var(--primary-color);
+            border-left: 3px solid var(--secondary-color);
+            padding-left: 10px;
+            font-size: 1.1rem;
+        }
+        #result-section .result-value {
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 10px;
+            padding-top: 20px;
+            color: var(--light-text-color);
+            width: 100%;
+        }
+        .hidden {
+            display: none !important;
+        }
+
+        :root {
+            --bg: #ffffff;
+            --text: #1f2937;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+            --stripe: #f9fafb;
+        }
+        body {
+            font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+            color: var(--text);
+            background: var(--bg);
+            margin: 0;
+        }
+        h1 { font-size: 1.25rem; margin: 0 0 12px; }
+        .wrap { max-width: 1100px; margin: 0 auto; }
+        .table-card { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+        .table-scroll { max-height: 70vh; overflow: auto; }
+        table { border-collapse: separate; border-spacing: 0; width: 100%; }
+        thead th { position: sticky; top: 0; background: var(--border); color: #111827; font-weight: 600; text-align: center; padding: 10px 12px; border-bottom: 1px solid var(--border); }
+        tbody td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; text-align: center; }
+        tbody tr:nth-child(even) td { background: var(--stripe); }
+        th, td.num { text-align: right; }
+        th:first-child, td:first-child { text-align: center; }
+        caption { caption-side: bottom; padding: 10px; font-size: 0.875rem; color: var(--muted); }
+    </style>
+</head>
+<body>
+    {% include 'header.html' %}
+    <header class="secondary-header">
+        <div class="container">
+            <h1>Convertisseur de litres en kilogrammes</h1>
+            <p>Entrez le volume en litres ci-dessous pour calculer la masse en kilogrammes.</p>
+        </div>
+    </header>
+    <div class="container main-content">
+        <section class="card" id="tool">
+            <h2>Convertir des litres en kilogrammes</h2>
+            <div class="tool-container">
+                <div class="form-group">
+                    <label for="lInput"><b>Volume (en litres) :</b></label>
+                    <input type="number" id="lInput" placeholder="Entrez le volume en litres" required>
+                </div>
+                <div class="form-group">
+                    <label for="mainSelect"><b>Sélectionner une substance :</b></label>
+                    <select id="mainSelect">
+                        <option value="">-- Sélectionner une substance --</option>
+                        <optgroup label="Commun">
+                            <option value="water" data-density="1.000">Eau</option>
+                        </optgroup>
+                        <optgroup label="Sucres">
+                            <option value="granulated-sugar" data-density="0.845">Sucre granulé</option>
+                            <option value="powdered-sugar" data-density="0.560">Sucre en poudre</option>
+                            <option value="brown-sugar" data-density="0.850">Sucre roux</option>
+                            <option value="raw-sugar" data-density="0.900">Sucre brut</option>
+                        </optgroup>
+                        <optgroup label="Sirops et tartinades">
+                            <option value="corn-syrup" data-density="1.380">Sirop de maïs</option>
+                            <option value="honey" data-density="1.420">Miel</option>
+                            <option value="nutella" data-density="1.200">Nutella</option>
+                            <option value="jelly" data-density="1.300">Gelée</option>
+                        </optgroup>
+                        <optgroup label="Farines">
+                            <option value="all-purpose-flour" data-density="0.529">Farine polyvalente</option>
+                            <option value="wheat-flour" data-density="0.529">Farine de blé</option>
+                            <option value="bread-flour" data-density="0.529">Farine à pain</option>
+                            <option value="type-00-flour" data-density="0.600">Farine type 00</option>
+                            <option value="cake-flour" data-density="0.480">Farine à gâteau</option>
+                            <option value="rye-flour" data-density="0.460">Farine de seigle</option>
+                        </optgroup>
+                        <optgroup label="Levures et épices">
+                            <option value="baking-soda" data-density="0.960">Bicarbonate de soude</option>
+                            <option value="baking-powder" data-density="0.800">Levure chimique</option>
+                            <option value="cream-of-tartar" data-density="0.750">Crème de tartre</option>
+                            <option value="cinnamon" data-density="0.540">Cannelle</option>
+                            <option value="garlic-powder" data-density="0.550">Poudre d'ail</option>
+                            <option value="salt" data-density="2.160">Sel</option>
+                            <option value="spice-blends" data-density="0.550">Mélanges d'épices</option>
+                            <option value="cocoa-powder" data-density="0.480">Poudre de cacao</option>
+                            <option value="vanilla" data-density="1.200">Extrait de vanille</option>
+                        </optgroup>
+                        <optgroup label="Graisses et huiles">
+                            <option value="cooking-oil" data-density="0.918">Huile de cuisson</option>
+                            <option value="olive-oil" data-density="0.918">Huile d'olive</option>
+                            <option value="vegetable-oil" data-density="0.918">Huile végétale</option>
+                            <option value="butter" data-density="0.911">Beurre</option>
+                            <option value="margarine" data-density="0.940">Margarine</option>
+                            <option value="lard" data-density="0.920">Saindoux</option>
+                            <option value="mayonnaise" data-density="0.920">Mayonnaise</option>
+                            <option value="peanut-butter" data-density="1.060">Beurre de cacahuète</option>
+                        </optgroup>
+                        <optgroup label="Produits laitiers">
+                            <option value="milk" data-density="1.030">Lait</option>
+                            <option value="buttermilk" data-density="1.030">Babeurre</option>
+                            <option value="light-cream" data-density="1.009">Crème légère</option>
+                            <option value="heavy-cream" data-density="0.994">Crème épaisse</option>
+                            <option value="whipped-cream" data-density="0.480">Crème fouettée</option>
+                            <option value="ice-cream" data-density="0.560">Glace</option>
+                            <option value="sour-cream" data-density="1.030">Crème aigre</option>
+                            <option value="cottage-cheese" data-density="1.060">Fromage blanc</option>
+                            <option value="cream-cheese" data-density="1.040">Fromage frais</option>
+                            <option value="yogurt" data-density="1.030">Yaourt</option>
+                        </optgroup>
+                        <optgroup label="Noix et céréales">
+                            <option value="almonds" data-density="0.600">Amandes</option>
+                            <option value="cashews" data-density="0.600">Noix de cajou</option>
+                            <option value="peanuts" data-density="0.600">Cacahuètes</option>
+                            <option value="sunflower-seeds" data-density="0.500">Graines de tournesol</option>
+                            <option value="barley" data-density="0.700">Orge</option>
+                            <option value="bran" data-density="0.300">Son</option>
+                            <option value="oats" data-density="0.450">Flocons d'avoine</option>
+                            <option value="rice" data-density="0.850">Riz (non cuit)</option>
+                            <option value="rye" data-density="0.700">Seigle</option>
+                            <option value="wheat" data-density="0.800">Blé</option>
+                            <option value="breadcrumbs" data-density="0.420">Chapelle</option>
+                            <option value="corn-flakes" data-density="0.150">Corn-flakes</option>
+                            <option value="cornstarch" data-density="0.500">Maïzena</option>
+                            <option value="rice-krispies" data-density="0.110">Rice Krispies</option>
+                        </optgroup>
+                        <optgroup label="Autres ingrédients">
+                            <option value="dried-apple-slices" data-density="0.200">Tranches de pomme séchées</option>
+                            <option value="carrots" data-density="0.500">Carottes (rapées)</option>
+                            <option value="corn" data-density="0.750">Maïs (grains)</option>
+                            <option value="kidney-beans" data-density="0.850">Haricots rouges (secs)</option>
+                            <option value="onions" data-density="0.700">Oignons (hachés)</option>
+                            <option value="potatoes" data-density="0.750">Pommes de terre (en dés)</option>
+                            <option value="yams" data-density="0.750">Patates douces (en dés)</option>
+                            <option value="bread" data-density="0.250">Pain (tranches)</option>
+                            <option value="cake-mix" data-density="0.800">Préparation pour gâteau</option>
+                        </optgroup>
+                        <option value="custom-liquid">Densité personnalisée (kg/L)</option>
+                    </select>
+                </div>
+                <div class="form-group hidden" id="densityGroup">
+                    <label for="densityInput"><b>Densité (kg/L) :</b></label>
+                    <input type="number" id="densityInput" placeholder="Entrez la densité en kg/L" required>
+                </div>
+                <button class="btn" onclick="convertLToKg()">Convertir en kilogrammes</button>
+            </div>
+
+        <p style="color: red;"><b>Remarque :</b> La densité varie avec la température et peut différer selon le matériau. Vous pouvez également sélectionner <b>Densité personnalisée</b> dans le menu déroulant pour entrer votre propre valeur.</p>
+        <div id="result-section">
+            <div class="result-heading">Résultat :</div>
+            <div class="result-value" id="result-value">Votre résultat apparaîtra ici</div>
+        </div>
+        <section class="card" id="why-choose-us">
+            <p>Le convertisseur de litres en kg est un outil pratique pour convertir le volume d'une substance ou d'un matériau (en litres) en un poids équivalent en kilogrammes. Notre convertisseur de L en Kg indique également la masse volumique de la substance ou du matériau sélectionné pour garantir la précision et l'efficacité de la conversion. Vous pouvez également utiliser notre <a href="https://mltomg.info/kg-to-l">convertisseur de kilogrammes en litres</a> pour effectuer des calculs inverses.</p>
+        </section>
+        <section class="card more-tools" id="more-tools">
+            <h2>Plus d'outils</h2>
+            <div class="tool-cards-container">
+                <a href="/mg-to-ml" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>Mg en Ml</h3>
+                        <p>Convertir des milligrammes en millilitres.</p>
+                    </div>
+                </a>
+                <a href="/g-to-l" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>G en L</h3>
+                        <p>Convertir des grammes en litres.</p>
+                    </div>
+                </a>
+                <a href="/kg-to-l" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Kg en L</h3>
+                        <p>Convertir des kilogrammes en litres.</p>
+                    </div>
+                </a>
+                <a href="/l-to-g" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>L en G</h3>
+                        <p>Convertir des litres en grammes.</p>
+                    </div>
+                </a>
+                <a href="/l-to-kg" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>L en Kg</h3>
+                        <p>Convertir des litres en kilogrammes.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-g" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>Ml en G</h3>
+                        <p>Convertir des millilitres en grammes.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-oz" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>Ml en Oz</h3>
+                        <p>Convertir des millilitres en onces.</p>
+                    </div>
+                </a>
+                <a href="/oz-to-ml" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Oz en Ml</h3>
+                        <p>Convertir des onces en millilitres.</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+        <section class="card" id="why-choose-us">
+            <h2>Conversion de litres en kg :</h2>
+            <p>Un litre (ℓ) mesure le volume, tandis qu'un kilogramme (kg) mesure la masse. Ces deux unités étant différentes, les conversions directes sont impossibles. Pour effectuer la conversion, il est obligatoire de connaître la masse volumique de la substance ou du matériau.</p>
+            <h3>Formule :</h3>
+            <p style="text-align: center; color: red;">Kilogrammes = Litres × Densité</p>
+            <p>Vous devez connaître la densité de la substance pour appliquer la formule.</p>
+            <h4>Exemples :</h4>
+            <ul>
+                <li>Convertissez 1 litre en kg pour une substance dont la densité est de 1 kg par litre.</li>
+            </ul>
+            <p><b>Solution :</b></p>
+            <p>En utilisant la formule ci-dessus, nous allons résoudre cet exemple :</p>
+            <p style="text-align: center; color: red;">Kilogrammes = 1 x 1</p>
+            <p style="text-align: center; color: red;">Kilogrammes = 1</p>
+            <p>Où</p>
+            <ul>
+                <li>1 = Litres de substance</li>
+                <li>1 = Densité de la substance</li>
+            </ul>
+            <p>Ainsi, 1 litre de substance ayant une densité de 1 kg par litre est égal à 1 kilogramme.</p>
+            <ul>
+                <li>Convertir 5 litres en kg pour une substance ayant une densité de 1,38 kg par litre</li>
+            </ul>
+            <p><b>Solution :</b></p>
+            <p>En utilisant la formule ci-dessus, nous allons résoudre cet exemple :</p>
+            <p style="text-align: center; color: red;">Kilogrammes = 5 x 1,38</p>
+            <p style="text-align: center; color: red;">Kilogrammes = 6,90</p>
+            <p>Où ;</p>
+            <ul>
+                <li>5 = Litres de substance</li>
+                <li>1,38 = Densité de la substance</li>
+            </ul>
+            <p>Ainsi, 5 litres de substance ayant une densité de 1,38 kg par litre sont égaux à 6,90 kilogrammes.</p>
+        </section>
+        <section class="card" id="how-it-works">
+            <h2>Exemples d'utilisation du convertisseur de litres en kg de Mltomg.info</h2>
+            <p>Voici quelques cas d'utilisation du convertisseur de litres en kg :</p>
+            <h3>Expédition et transport</h3>
+            <p>Convertir les litres en kg permet aux véhicules de respecter les limites de poids et la réglementation. Par exemple, si un camion-citerne transporte 1 000 litres de produits chimiques, son poids doit être converti en kilogrammes afin de vérifier qu'il respecte les exigences de sécurité et la réglementation en vigueur pour le trajet.</p>
+            <h3>Cuisine et pâtisserie</h3>
+            <p>Les litres sont généralement utilisés pour les liquides comme l'eau, le lait ou l'huile, tandis que les kilogrammes sont utilisés pour les produits secs comme la farine et le sucre. Convertir les litres en kilogrammes est important pour obtenir les bonnes proportions, surtout dans les recettes qui nécessitent des mesures précises.</p>
+            <h3>Sciences et éducation</h3>
+            <p>Pour réaliser des expériences en laboratoire ou des exercices en classe où le volume (litres) doit être converti en masse (kilogrammes).</p>
+            <h3>Shopping et achat</h3>
+            <p>Imaginez que vous soyez au supermarché et que vous compariez deux marques d'huile de cuisson. La marque 1 est vendue en bouteille de 2 litres à 5 $, tandis que la marque 2 est vendue en bidon de 2,5 kg à 7 $. Pour trouver la meilleure offre, vous devez convertir les litres en kilogrammes afin de pouvoir comparer les deux options équitablement.</p>
+        </section>
+        <section class="card" id="table">
+            <h2>Tableau de conversion de L en KG</h2>
+            <table border="1" cellpadding="8" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Substance</th>
+                        <th>Densité (kg/L)</th>
+                        <th>0.5 L (kg)</th>
+                        <th>1 L (kg)</th>
+                        <th>2 L (kg)</th>
+                        <th>5 L (kg)</th>
+                        <th>10 L (kg)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Eau</td>
+                        <td>1.00</td>
+                        <td>0.50</td>
+                        <td>1.00</td>
+                        <td>2.00</td>
+                        <td>5.00</td>
+                        <td>10.00</td>
+                    </tr>
+                    <tr>
+                        <td>Lait</td>
+                        <td>1.03</td>
+                        <td>0.52</td>
+                        <td>1.03</td>
+                        <td>2.06</td>
+                        <td>5.15</td>
+                        <td>10.30</td>
+                    </tr>
+                    <tr>
+                        <td>Huile de cuisson</td>
+                        <td>0.92</td>
+                        <td>0.46</td>
+                        <td>0.92</td>
+                        <td>1.84</td>
+                        <td>4.60</td>
+                        <td>9.20</td>
+                    </tr>
+                    <tr>
+                        <td>Miel</td>
+                        <td>1.42</td>
+                        <td>0.71</td>
+                        <td>1.42</td>
+                        <td>2.84</td>
+                        <td>7.10</td>
+                        <td>14.20</td>
+                    </tr>
+                    <tr>
+                        <td>Farine (forme liquide/boue)</td>
+                        <td>0.59</td>
+                        <td>0.30</td>
+                        <td>0.59</td>
+                        <td>1.18</td>
+                        <td>2.95</td>
+                        <td>5.90</td>
+                    </tr>
+                    <tr>
+                        <td>Solution de sucre</td>
+                        <td>0.85</td>
+                        <td>0.43</td>
+                        <td>0.85</td>
+                        <td>1.70</td>
+                        <td>4.25</td>
+                        <td>8.50</td>
+                    </tr>
+                    <tr>
+                        <td>Huile d'olive</td>
+                        <td>0.91</td>
+                        <td>0.46</td>
+                        <td>0.91</td>
+                        <td>1.82</td>
+                        <td>4.55</td>
+                        <td>9.10</td>
+                    </tr>
+                    <tr>
+                        <td>Essence</td>
+                        <td>0.74</td>
+                        <td>0.37</td>
+                        <td>0.74</td>
+                        <td>1.48</td>
+                        <td>3.70</td>
+                        <td>7.40</td>
+                    </tr>
+                    <tr>
+                        <td>Diesel</td>
+                        <td>0.83</td>
+                        <td>0.42</td>
+                        <td>0.83</td>
+                        <td>1.66</td>
+                        <td>4.15</td>
+                        <td>8.30</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        <section class="card" id="faq">
+            <h2>Questions fréquemment posées</h2>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>Q : 1 litre peut-il toujours être égal à 1 kilogramme ?</h4>
+                    <span class="toggle-icon">-</span>
+                </div>
+                <div class="faq-answer">
+                    <p>R : Non. Seule l'eau pure aux conditions normales (4 °C) a une masse volumique de 1 litre = 1 kilogramme. D'autres liquides, comme le lait, l'huile ou le miel, ont des densités différentes, leur poids peut donc varier.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>Q : Le convertisseur L en KG de mltomg.info est-il précis pour toutes les substances ?</h4>
+                    <span class="toggle-icon">-</span>
+                </div>
+                <div class="faq-answer">
+                    <p>R : Oui, à condition d'utiliser la densité correcte de la substance. La densité pouvant varier avec la température, les résultats sont parfois approximatifs. Notre équipe garantit toutefois la précision de ce convertisseur avec l'aide d'experts.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+    {% include 'footer.html' %}
+    <script>
+        const mainSelect = document.getElementById('mainSelect');
+        const densityGroup = document.getElementById('densityGroup');
+        const densityInput = document.getElementById('densityInput');
+        const lInput = document.getElementById('lInput');
+        const resultValue = document.getElementById('result-value');
+
+        mainSelect.addEventListener('change', () => {
+            const selectedValue = mainSelect.value;
+            densityGroup.classList.add('hidden');
+            densityInput.value = '';
+            if (selectedValue === 'custom-liquid') {
+                densityGroup.classList.remove('hidden');
+                densityInput.placeholder = 'Entrez la densité en kg/L';
+            } else if (selectedValue !== '') {
+                densityGroup.classList.remove('hidden');
+                densityInput.value = mainSelect.options[mainSelect.selectedIndex].dataset.density;
+            }
+        });
+
+        function convertLToKg() {
+            const L = parseFloat(lInput.value);
+            const density = parseFloat(densityInput.value);
+
+            if (mainSelect.value === '') {
+                resultValue.innerHTML = 'Veuillez sélectionner une substance ou entrer une densité personnalisée.';
+                resultValue.style.color = 'red';
+                return;
+            }
+            if (isNaN(L) || isNaN(density) || L <= 0 || density <= 0) {
+                resultValue.innerHTML = `Veuillez entrer des nombres positifs valides pour le volume et la densité.`;
+                resultValue.style.color = 'red';
+                return;
+            }
+
+            const Kg = L * density;
+
+            resultValue.innerHTML = `${L} L = ${Kg.toFixed(4)} kg`;
+            resultValue.style.color = 'green';
+            document.getElementById('result-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function toggleFAQ(element) {
+            const answer = element.nextElementSibling;
+            const icon = element.querySelector('.toggle-icon');
+            if (answer.style.maxHeight) {
+                answer.style.maxHeight = null;
+                icon.textContent = '+';
+            } else {
+                answer.style.maxHeight = answer.scrollHeight + "px";
+                icon.textContent = '-';
+            }
+        }
+    </script>
+</body>
+</html>

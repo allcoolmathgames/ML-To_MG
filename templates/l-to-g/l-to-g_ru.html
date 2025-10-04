@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.png') }}" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Конвертер литров в граммы | Конвертация л в г</title>
+    <meta name="description" content="Используйте этот конвертер литров в граммы для перевода литров в граммы для различных веществ в зависимости от их плотности." />
+    <meta name="keywords" content="Переводчик литров в граммы, перевод л в г, таблица перевода л в г, перевод воды, перевод молока, перевод растительного масла, перевод муки, таблица кухонных измерений, переводы для выпечки, таблица массы ингредиентов" />
+    <link rel="canonical" href="https://kgtoL.info/l-to-g" />
+    <link rel="alternate" hreflang="x-default" href="https://kgtoL.info/l-to-g" />
+    <link rel="alternate" hreflang="ru" href="https://kgtoL.info/l-to-g" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <meta name="google-site-verification" content="49KC3Wnkoo8QxBc56Q5dkx-LVqsbPxtgJTBs_MG7WBU" />
+    <style>
+        #result-section {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #e9ecef;
+            min-height: 60px;
+            position: relative;
+        }
+        #result-section .result-heading {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-weight: 600;
+            color: var(--primary-color);
+            border-left: 3px solid var(--secondary-color);
+            padding-left: 10px;
+            font-size: 1.1rem;
+        }
+        #result-section .result-value {
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 10px;
+            padding-top: 20px;
+            color: var(--light-text-color);
+            width: 100%;
+        }
+        .hidden {
+            display: none !important;
+        }
+        :root {
+            --bg: #ffffff;
+            --text: #1f2937;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+            --stripe: #f9fafb;
+        }
+    </style>
+</head>
+<body>
+    {% include 'header.html' %}
+    <header class="secondary-header">
+        <div class="container">
+            <h1>Конвертер литров в граммы</h1>
+            <p>Введите объем в литрах ниже, чтобы рассчитать массу в граммах.</p>
+        </div>
+    </header>
+    <div class="container main-content">
+        <section class="card" id="tool">
+            <h2>Конвертер литров в граммы</h2>
+            <div class="tool-container">
+                <div class="form-group">
+                    <label for="lInput"><b>Объем (в литрах):</b></label>
+                    <input type="number" id="lInput" placeholder="Введите объем в литрах" required>
+                </div>
+                <div class="form-group">
+                    <label for="mainSelect"><b>Выберите вещество:</b></label>
+                    <select id="mainSelect">
+                        <option value="">-- Выберите вещество --</option>
+                        <optgroup label="Общие">
+                            <option value="water" data-density="1000">Вода</option>
+                        </optgroup>
+                        <optgroup label="Сахара">
+                            <option value="granulated-sugar" data-density="845">Сахарный песок</option>
+                            <option value="powdered-sugar" data-density="560">Сахарная пудра</option>
+                            <option value="brown-sugar" data-density="850">Коричневый сахар</option>
+                            <option value="raw-sugar" data-density="900">Сырой сахар</option>
+                        </optgroup>
+                        <optgroup label="Сиропы и пасты">
+                            <option value="corn-syrup" data-density="1380">Кукурузный сироп</option>
+                            <option value="honey" data-density="1420">Мёд</option>
+                            <option value="nutella" data-density="1200">Нутелла</option>
+                            <option value="jelly" data-density="1300">Желе</option>
+                        </optgroup>
+                        <optgroup label="Мука">
+                            <option value="all-purpose-flour" data-density="529">Мука общего назначения</option>
+                            <option value="wheat-flour" data-density="529">Пшеничная мука</option>
+                            <option value="bread-flour" data-density="529">Хлебная мука</option>
+                            <option value="type-00-flour" data-density="600">Мука типа 00</option>
+                            <option value="cake-flour" data-density="480">Мука для тортов</option>
+                            <option value="rye-flour" data-density="460">Ржаная мука</option>
+                        </optgroup>
+                        <optgroup label="Разрыхлители и специи">
+                            <option value="baking-soda" data-density="960">Пищевая сода</option>
+                            <option value="baking-powder" data-density="800">Разрыхлитель</option>
+                            <option value="cream-of-tartar" data-density="750">Винный камень</option>
+                            <option value="cinnamon" data-density="540">Корица</option>
+                            <option value="garlic-powder" data-density="550">Чеснок порошковый</option>
+                            <option value="salt" data-density="2160">Соль</option>
+                            <option value="spice-blends" data-density="550">Смеси специй</option>
+                            <option value="cocoa-powder" data-density="480">Какао-порошок</option>
+                            <option value="vanilla" data-density="1200">Ванильный экстракт</option>
+                        </optgroup>
+                        <optgroup label="Жиры и масла">
+                            <option value="cooking-oil" data-density="918">Растительное масло</option>
+                            <option value="olive-oil" data-density="918">Оливковое масло</option>
+                            <option value="vegetable-oil" data-density="918">Растительное масло</option>
+                            <option value="butter" data-density="911">Сливочное масло</option>
+                            <option value="margarine" data-density="940">Маргарин</option>
+                            <option value="lard" data-density="920">Смалец</option>
+                            <option value="mayonnaise" data-density="920">Майонез</option>
+                            <option value="peanut-butter" data-density="1060">Арахисовое масло</option>
+                        </optgroup>
+                        <optgroup label="Молочные продукты">
+                            <option value="milk" data-density="1030">Молоко</option>
+                            <option value="buttermilk" data-density="1030">Пахта</option>
+                            <option value="light-cream" data-density="1009">Сливки легкие</option>
+                            <option value="heavy-cream" data-density="994">Сливки тяжелые</option>
+                            <option value="whipped-cream" data-density="480">Взбитые сливки</option>
+                            <option value="ice-cream" data-density="560">Мороженое</option>
+                            <option value="sour-cream" data-density="1030">Сметана</option>
+                            <option value="cottage-cheese" data-density="1060">Творог</option>
+                            <option value="cream-cheese" data-density="1040">Сливочный сыр</option>
+                            <option value="yogurt" data-density="1030">Йогурт</option>
+                        </optgroup>
+                        <optgroup label="Орехи и зерна">
+                            <option value="almonds" data-density="600">Миндаль</option>
+                            <option value="cashews" data-density="600">Кешью</option>
+                            <option value="peanuts" data-density="600">Арахис</option>
+                            <option value="sunflower-seeds" data-density="500">Семечки подсолнечника</option>
+                            <option value="barley" data-density="700">Ячмень</option>
+                            <option value="bran" data-density="300">Отруби</option>
+                            <option value="oats" data-density="450">Овсянка</option>
+                            <option value="rice" data-density="850">Рис (сухой)</option>
+                            <option value="rye" data-density="700">Рожь</option>
+                            <option value="wheat" data-density="800">Пшеница</option>
+                            <option value="breadcrumbs" data-density="420">Панировочные сухари</option>
+                            <option value="corn-flakes" data-density="150">Кукурузные хлопья</option>
+                            <option value="cornstarch" data-density="500">Кукурузный крахмал</option>
+                            <option value="rice-krispies" data-density="110">Рисовые хлопья</option>
+                        </optgroup>
+                        <optgroup label="Другие ингредиенты">
+                            <option value="dried-apple-slices" data-density="200">Сушеные яблочные дольки</option>
+                            <option value="carrots" data-density="500">Морковь (натертая)</option>
+                            <option value="corn" data-density="750">Кукуруза (зерна)</option>
+                            <option value="kidney-beans" data-density="850">Фасоль красная (сухая)</option>
+                            <option value="onions" data-density="700">Лук (нарезанный)</option>
+                            <option value="potatoes" data-density="750">Картофель (кубиками)</option>
+                            <option value="yams" data-density="750">Батат (кубиками)</option>
+                            <option value="bread" data-density="250">Хлеб (ломтиками)</option>
+                            <option value="cake-mix" data-density="800">Смесь для торта</option>
+                        </optgroup>
+                        <option value="custom-liquid">Пользовательская плотность (г/л)</option>
+                    </select>
+                </div>
+                <div class="form-group hidden" id="densityGroup">
+                    <label for="densityInput"><b>Плотность (г/л):</b></label>
+                    <input type="number" id="densityInput" placeholder="Введите плотность в г/л" required>
+                </div>
+                <button class="btn" onclick="convertLToG()">Конвертировать в граммы</button>
+            </div>
+
+        <p style="color: red;"><b>Примечание:</b> Плотность зависит от температуры и может различаться для разных материалов. Вы также можете выбрать <b>Пользовательская плотность</b> из выпадающего списка, чтобы ввести своё значение.</p>
+        <div id="result-section">
+            <div class="result-heading">Результат:</div>
+            <div class="result-value" id="result-value">Ваш результат появится здесь</div>
+        </div>
+        <section class="card" id="why-choose-us">
+            <p>Этот конвертер литров в граммы (л в г) поможет вам быстро преобразовать литры в граммы на основе плотности вещества или материала.</p>
+        </section>
+        <section class="card more-tools" id="more-tools">
+            <h2>Дополнительные инструменты</h2>
+            <div class="tool-cards-container">
+                <a href="/mg-to-ml" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>Мг в мл</h3>
+                        <p>Перевести миллиграммы в миллилитры.</p>
+                    </div>
+                </a>
+                <a href="/g-to-l" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>Г в л</h3>
+                        <p>Перевести граммы в литры.</p>
+                    </div>
+                </a>
+                <a href="/kg-to-l" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Кг в л</h3>
+                        <p>Перевести килограммы в литры.</p>
+                    </div>
+                </a>
+                <a href="/l-to-g" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>Л в г</h3>
+                        <p>Перевести литры в граммы.</p>
+                    </div>
+                </a>
+                <a href="/l-to-kg" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>Л в кг</h3>
+                        <p>Перевести литры в килограммы.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-g" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>Мл в г</h3>
+                        <p>Перевести миллилитры в граммы.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-oz" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>Мл в унции</h3>
+                        <p>Перевести миллилитры в унции.</p>
+                    </div>
+                </a>
+                <a href="/oz-to-ml" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Унции в мл</h3>
+                        <p>Перевести унции в миллилитры.</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+        <section class="card" id="why-choose-us">
+            <h2>Как перевести литры в граммы</h2>
+            <p>Чтобы перевести литры в граммы, вам необходимо знать плотность вещества, для которого вы хотите выполнить преобразование, поскольку литры измеряют объем, а граммы — вес.</p>
+            <h3>Формула:</h3>
+            <p style="text-align: center; color: red; font-weight: bold;">Граммы = Литры × 1000 × Плотность (г/мл)</p>
+            <h4>Пример:</h4>
+            <p>Давайте разберем формулу, решив пример: например, как перевести 2 литра оливкового масла в граммы.</p>
+            <p>Теперь решим этот пример, используя приведенную выше формулу:</p>
+            <ul>
+                <li>Граммы = 2 x 1000 x 0,918 г/мл</li>
+                <li>Граммы = 1836</li>
+            </ul>
+            <p>Итак, 2 литра оливкового масла равны 1836 граммам, поскольку плотность оливкового масла составляет 0,918.</p>
+
+        </section>
+
+        <section class="card" id="how-it-works">
+            <h2>Определение литра:</h2>
+            <p>Литр — единица измерения объёма, равная 1000 миллилитрам (мл) или 1 кубическому дециметру (1 дм³). Литр обычно используется для измерения объёма жидкостей, таких как вода, молоко, масло и напитки; он также может использоваться для измерения объёма газов и твёрдых тел.</p>
+        </section>
+        <section class="card" id="how-it-works">
+            <h2>Определение грамма:</h2>
+            <p>Грамм (г) — единица массы в метрической системе, обычно используемая для измерения веса предметов и веществ. Один грамм равен 1/1000 килограмма (кг).</p>
+            <p>Его широко используют в кулинарии, питании, науке и повседневной жизни для измерения небольших количеств твердых веществ, порошков и даже жидкостей (если учитывается плотность).</p>
+
+        </section>
+        <section class="card" id="Table">
+    <h2>Таблица перевода литров в граммы</h2>
+    <style>
+        :root {
+            --bg: #ffffff;
+            --text: #1f2937;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+            --stripe: #f9fafb;
+        }
+        body {
+            font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+            color: var(--text);
+            background: var(--bg);
+            margin: 0;
+        }
+        h1 { font-size: 1.25rem; margin: 0 0 12px; }
+        .wrap { max-width: 1100px; margin: 0 auto; }
+        .table-card { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+        .table-scroll { max-height: 70vh; overflow: auto; }
+        table { border-collapse: separate; border-spacing: 0; width: 100%; }
+        thead th { position: sticky; top: 0; background: var(--border); color: #111827; font-weight: 600; text-align: center; padding: 10px 12px; border-bottom: 1px solid var(--border); }
+        tbody td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; text-align: center; }
+        tbody tr:nth-child(even) td { background: var(--stripe); }
+        th, td.num { text-align: right; }
+        th:first-child, td:first-child { text-align: center; }
+        caption { caption-side: bottom; padding: 10px; font-size: 0.875rem; color: var(--muted); }
+    </style>
+    <div class="wrap">
+        <div class="table-card">
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Объем (литры)</th>
+                            <th>Вода (г)</th>
+                            <th>Молоко (г)</th>
+                            <th>Растительное масло (г)</th>
+                            <th>Мука общего назначения (г)</th>
+                            <th>Сахарный песок (г)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1 L</td><td>1,000</td><td>1,030</td><td>880</td><td>529</td><td>705</td></tr>
+                        <tr><td>2 L</td><td>2,000</td><td>2,060</td><td>1,760</td><td>1,058</td><td>1,410</td></tr>
+                        <tr><td>3 L</td><td>3,000</td><td>3,090</td><td>2,640</td><td>1,587</td><td>2,115</td></tr>
+                        <tr><td>4 L</td><td>4,000</td><td>4,120</td><td>3,520</td><td>2,116</td><td>2,820</td></tr>
+                        <tr><td>5 L</td><td>5,000</td><td>5,150</td><td>4,400</td><td>2,645</td><td>3,525</td></tr>
+                        <tr><td>6 L</td><td>6,000</td><td>6,180</td><td>5,280</td><td>3,174</td><td>4,230</td></tr>
+                        <tr><td>7 L</td><td>7,000</td><td>7,210</td><td>6,160</td><td>3,703</td><td>4,935</td></tr>
+                        <tr><td>8 L</td><td>8,000</td><td>8,240</td><td>7,040</td><td>4,232</td><td>5,640</td></tr>
+                        <tr><td>9 L</td><td>9,000</td><td>9,270</td><td>7,920</td><td>4,761</td><td>6,345</td></tr>
+                        <tr><td>10 L</td><td>10,000</td><td>10,300</td><td>8,800</td><td>5,290</td><td>7,050</td></tr>
+                        <tr><td>11 L</td><td>11,000</td><td>11,330</td><td>9,680</td><td>5,819</td><td>7,755</td></tr>
+                        <tr><td>12 L</td><td>12,000</td><td>12,360</td><td>10,560</td><td>6,348</td><td>8,460</td></tr>
+                        <tr><td>13 L</td><td>13,000</td><td>13,390</td><td>11,440</td><td>6,877</td><td>9,165</td></tr>
+                        <tr><td>14 L</td><td>14,000</td><td>14,420</td><td>12,320</td><td>7,406</td><td>9,870</td></tr>
+                        <tr><td>15 L</td><td>15,000</td><td>15,450</td><td>13,200</td><td>7,935</td><td>10,575</td></tr>
+                        <tr><td>16 L</td><td>16,000</td><td>16,480</td><td>14,080</td><td>8,464</td><td>11,280</td></tr>
+                        <tr><td>17 L</td><td>17,000</td><td>17,510</td><td>14,960</td><td>8,993</td><td>11,985</td></tr>
+                        <tr><td>18 L</td><td>18,000</td><td>18,540</td><td>15,840</td><td>9,522</td><td>12,690</td></tr>
+                        <tr><td>19 L</td><td>19,000</td><td>19,570</td><td>16,720</td><td>10,051</td><td>13,395</td></tr>
+                        <tr><td>20 L</td><td>20,000</td><td>20,600</td><td>17,600</td><td>10,580</td><td>14,100</td></tr>
+                        <tr><td>21 L</td><td>21,000</td><td>21,630</td><td>18,480</td><td>11,109</td><td>14,805</td></tr>
+                        <tr><td>22 L</td><td>22,000</td><td>22,660</td><td>19,360</td><td>11,638</td><td>15,510</td></tr>
+                        <tr><td>23 L</td><td>23,000</td><td>23,690</td><td>20,240</td><td>12,167</td><td>16,215</td></tr>
+                        <tr><td>24 L</td><td>24,000</td><td>24,720</td><td>21,120</td><td>12,696</td><td>16,920</td></tr>
+                        <tr><td>25 L</td><td>25,000</td><td>25,750</td><td>22,000</td><td>13,225</td><td>17,625</td></tr>
+                        <tr><td>26 L</td><td>26,000</td><td>26,780</td><td>22,880</td><td>13,754</td><td>18,330</td></tr>
+                        <tr><td>27 L</td><td>27,000</td><td>27,810</td><td>23,760</td><td>14,283</td><td>19,035</td></tr>
+                        <tr><td>28 L</td><td>28,000</td><td>28,840</td><td>24,640</td><td>14,812</td><td>19,740</td></tr>
+                        <tr><td>29 L</td><td>29,000</td><td>29,870</td><td>25,520</td><td>15,341</td><td>20,445</td></tr>
+                        <tr><td>30 L</td><td>30,000</td><td>30,900</td><td>26,400</td><td>15,870</td><td>21,150</td></tr>
+                        <tr><td>31 L</td><td>31,000</td><td>31,930</td><td>27,280</td><td>16,399</td><td>21,855</td></tr>
+                        <tr><td>32 L</td><td>32,000</td><td>32,960</td><td>28,160</td><td>16,928</td><td>22,560</td></tr>
+                        <tr><td>33 L</td><td>33,000</td><td>33,990</td><td>29,040</td><td>17,457</td><td>23,265</td></tr>
+                        <tr><td>34 L</td><td>34,000</td><td>35,020</td><td>29,920</td><td>17,986</td><td>23,970</td></tr>
+                        <tr><td>35 L</td><td>35,000</td><td>36,050</td><td>30,800</td><td>18,515</td><td>24,675</td></tr>
+                        <tr><td>36 L</td><td>36,000</td><td>37,080</td><td>31,680</td><td>19,044</td><td>25,380</td></tr>
+                        <tr><td>37 L</td><td>37,000</td><td>38,110</td><td>32,560</td><td>19,573</td><td>26,085</td></tr>
+                        <tr><td>38 L</td><td>38,000</td><td>39,140</td><td>33,440</td><td>20,102</td><td>26,790</td></tr>
+                        <tr><td>39 L</td><td>39,000</td><td>40,170</td><td>34,320</td><td>20,631</td><td>27,495</td></tr>
+                        <tr><td>40 L</td><td>40,000</td><td>41,200</td><td>35,200</td><td>21,160</td><td>28,200</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+        <section class="card" id="faq">
+    <h2>Часто задаваемые вопросы</h2>
+    <div class="faq-item">
+        <div class="faq-question" onclick="toggleFAQ(this)">
+            <h4>В: Всегда ли 1 литр равен 1000 граммам?</h4>
+            <span class="toggle-icon">-</span>
+        </div>
+        <div class="faq-answer">
+            <p>О: Это справедливо только для воды при температуре 4°C. Для других веществ, таких как молоко, масло или мёд, вес 1 литра не равен 1000 граммам из-за плотности.</p>
+        </div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-question" onclick="toggleFAQ(this)">
+            <h4>В: Влияет ли температура на конверсию?</h4>
+            <span class="toggle-icon">-</span>
+        </div>
+        <div class="faq-answer">
+            <p>О: Да, в некоторых случаях. Плотность жидкостей немного меняется с температурой, что может влиять на вес в граммах.</p>
+        </div>
+    </div>
+</section>
+    </div>
+    {% include 'footer.html' %}
+    <script>
+        const mainSelect = document.getElementById('mainSelect');
+        const densityGroup = document.getElementById('densityGroup');
+        const densityInput = document.getElementById('densityInput');
+        const lInput = document.getElementById('lInput');
+        const resultValue = document.getElementById('result-value');
+        // Event listener for dropdown change
+        mainSelect.addEventListener('change', () => {
+            const selectedValue = mainSelect.value;
+            densityGroup.classList.add('hidden');
+            densityInput.value = '';
+            if (selectedValue === 'custom-liquid') {
+                densityGroup.classList.remove('hidden');
+                densityInput.placeholder = 'Введите плотность в г/л';
+            } else if (selectedValue !== '') {
+                densityGroup.classList.remove('hidden');
+                densityInput.value = mainSelect.options[mainSelect.selectedIndex].dataset.density;
+            }
+        });
+        // Conversion function
+        function convertLToG() {
+            const L = parseFloat(lInput.value);
+            const density = parseFloat(densityInput.value);
+
+            if (mainSelect.value === '') {
+                resultValue.innerHTML = 'Пожалуйста, выберите вещество или введите пользовательскую плотность.';
+                resultValue.style.color = 'red';
+                return;
+            }
+            if (isNaN(L) || isNaN(density) || L <= 0 || density <= 0) {
+                resultValue.innerHTML = `Пожалуйста, введите корректные положительные числа для объема и плотности.`;
+                resultValue.style.color = 'red';
+                return;
+            }
+            const G = L * density;
+
+            resultValue.innerHTML = `${L} л = ${G.toFixed(4)} г`;
+            resultValue.style.color = 'green';
+            document.getElementById('result-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    </script>
+    <script>
+        function toggleFAQ(element) {
+            const answer = element.nextElementSibling;
+            const icon = element.querySelector('.toggle-icon');
+            if (answer.style.maxHeight) {
+                answer.style.maxHeight = null;
+                icon.textContent = '+';
+            } else {
+                answer.style.maxHeight = answer.scrollHeight + "px";
+                icon.textContent = '-';
+            }
+        }
+    </script>
+</body>
+</html>

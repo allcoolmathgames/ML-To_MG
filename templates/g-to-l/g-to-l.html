@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.png') }}" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="index, follow">
+    <title>Grams to Liters Converter ( G to L )</title>
+    <meta name="description" content="Easily convert grams to liters with our online grams to liters converter/calculator. Grams to liters conversion chart also given." />
+    <meta name="keywords" content="grams to liters, grams to liters converter, convert grams to liters, g to L calculator, cooking conversions, chemistry converter, weight to volume, grams to liters tool, grams into liters online" />
+    <link rel="canonical" href="https://mltomg.info/g-to-l" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+    <meta name="google-site-verification" content="49KC3Wnkoo8QxBc56Q5dkx-LVqsbPxtgJTBs_MG7WBU" />
+    <style>
+        /* General styling for the tool sections */
+        .card {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        .tool-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .form-group label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+        .btn {
+            background-color: #007bff;
+            color: #fff;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+        .result-section {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .result-heading {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 0.5rem;
+        }
+        .result-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #28a745;
+        }
+
+        .error-message {
+            color: #dc3545;
+        }
+        /* Table styles */
+        .table-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+            margin-top: 2rem;
+        }
+        .table-scroll {
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        thead {
+            position: sticky;
+            top: 0;
+            background-color: #f3f4f6;
+            z-index: 10;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        th {
+            font-weight: 600;
+            color: #111827;
+        }
+        tbody tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+
+        .notes-column {
+            font-style: italic;
+            color: #6b7280;
+        }
+        .col-center {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    {% include 'header.html' %}
+    <header class="secondary-header">
+        <div class="container">
+            <h1>Grams to Liters Converter</h1>
+            <p>Use this grams to liters converter to make g to l conversions by just making a single click.</p>
+        </div>
+    </header>
+    <div class="container main-content">
+        <section class="card" id="tool">
+            <h2>Convert Grams To Liters</h2>
+            <div class="tool-container">
+                <div class="form-group">
+                    <label for="gInput"><b>Mass (in g):</b></label>
+                    <input type="number" id="gInput" placeholder="Enter mass in g" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="liquidSelect"><b>Select Liquid:</b></label>
+                    <select id="liquidSelect">
+                        <option value="">-- Select a Liquid --</option>
+                        <option value="1">Water</option>
+                        <option value="0.789">Ethanol</option>
+                        <option value="0.918">Olive Oil</option>
+                        <option value="1.03">Milk</option>
+                        <option value="1.3">Honey</option>
+                        <option value="1.8">Glycerin</option>
+                    </select>
+                </div>
+                <button class="btn" onclick="convertGToL()">Convert to L</button>
+                <div class="result-section">
+                    <div class="result-heading">Result:</div>
+                    <div class="result-value" id="result-value">Your result will show here</div>
+                </div>
+            </div>
+        </section>
+        <section class="card" id="why-choose-us">
+            <p>Use this grams to liters converter to convert grams of any substance into liters by just making a single click. This gram to liter converter tool makes it easier to handle cooking, science, and daily measurement needs.</p>
+        </section>
+        <section class="card" id="how-to-use">
+            <h2>What is Gram to Liter Conversion?</h2>
+            <p>Gram to liter (g to l) conversion is the process of converting substance weight (measured in grams) into its volume (measured in liters). Since grams measure mass and liters measure volume, the conversion depends on the density of the substance because different substances have different densities. For example, 1000 grams of water is equal to 1 liter because water density is 1 g/ml. But in the same case of oil or flour or any other substance which does not have a density of 1 g/ml, the measurements will be changed.</p>
+            <h3>Formula:</h3>
+            <p>To convert grams to liters, you have to divide the weight by the density of the substance. Note that the density must be in grams per liter (g/l).</p>
+            <p>If the density is in grams per milliliter (g/ml), then you have to multiply the density by 1000 to convert it into grams per liter (g/l). Here is a basic formula for a substance which has a density in g/ml to make a conversion.</p>
+            <p style="text-align: center; font-weight: bold; color: red;">liters = grams / 1,000 × density</p>
+            <h4>Example:</h4>
+            <p><b>Convert 600 grams of milk with a density of 1.03 into liters.</b></p>
+            <p>As we know the formula of this conversion, we can solve this example by using the same formula:</p>
+            <ul>
+                <li>Liters = 600 / 1000 x 1.03</li>
+            </ul>
+            <p>Where:</p>
+            <p>Grams of Milk = 600</p>
+            <p>Density of Milk = 1.03</p>
+            <p>Answer: 0.58</p>
+            <p>So, 600 grams of milk equals 0.58 L.</p>
+        </section>
+        <section class="card" id="table">
+            <h2>Gram to Liter Conversion Table</h2>
+            <div class="table-card">
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th><span>Weight in Grams</span></th>
+                                <th class="col-center"><span>Water</span></th>
+                                <th class="col-center"><span>Milk</span></th>
+                                <th class="col-center"><span>Cooking Oil</span></th>
+                                <th class="col-center"><span>All Purpose Flour</span></th>
+                                <th class="col-center"><span>Granulated Sugar</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td data-label="Weight in Grams">10 g</td>
+                                <td data-label="Water" class="col-center">0.01 L</td>
+                                <td data-label="Milk" class="col-center">0.009709 L</td>
+                                <td data-label="Cooking Oil" class="col-center">0.011364 L</td>
+                                <td data-label="All Purpose Flour" class="col-center">0.018904 L</td>
+                                <td data-label="Granulated Sugar" class="col-center">0.014184 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Weight in Grams">20 g</td>
+                                <td data-label="Water" class="col-center">0.02 L</td>
+                                <td data-label="Milk" class="col-center">0.019417 L</td>
+                                <td data-label="Cooking Oil" class="col-center">0.022727 L</td>
+                                <td data-label="All Purpose Flour" class="col-center">0.037807 L</td>
+                                <td data-label="Granulated Sugar" class="col-center">0.028369 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Weight in Grams">30 g</td>
+                                <td data-label="Water" class="col-center">0.03 L</td>
+                                <td data-label="Milk" class="col-center">0.029126 L</td>
+                                <td data-label="Cooking Oil" class="col-center">0.034091 L</td>
+                                <td data-label="All Purpose Flour" class="col-center">0.056711 L</td>
+                                <td data-label="Granulated Sugar" class="col-center">0.042553 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Weight in Grams">40 g</td>
+                                <td data-label="Water" class="col-center">0.04 L</td>
+                                <td data-label="Milk" class="col-center">0.038835 L</td>
+                                <td data-label="Cooking Oil" class="col-center">0.045455 L</td>
+                                <td data-label="All Purpose Flour" class="col-center">0.075614 L</td>
+                                <td data-label="Granulated Sugar" class="col-center">0.056738 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Weight in Grams">50 g</td>
+                                <td data-label="Water" class="col-center">0.05 L</td>
+                                <td data-label="Milk" class="col-center">0.048544 L</td>
+                                <td data-label="Cooking Oil" class="col-center">0.056818 L</td>
+                                <td data-label="All Purpose Flour" class="col-center">0.094518 L</td>
+                                <td data-label="Granulated Sugar" class="col-center">0.070922 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Weight in Grams">60 g</td>
+                                <td data-label="Water" class="col-center">0.06 L</td>
+                                <td data-label="Milk" class="col-center">0.058252 L</td>
+                                <td data-label="Cooking Oil" class="col-center">0.068182 L</td>
+                                <td data-label="All Purpose Flour" class="col-center">0.113422 L</td>
+                                <td data-label="Granulated Sugar" class="col-center">0.085106 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Weight in Grams">70 g</td>
+                                <td data-label="Water" class="col-center">0.07 L</td>
+                                <td data-label="Milk" class="col-center">0.067961 L</td>
+                                <td data-label="Cooking Oil" class="col-center">0.079545 L</td>
+                                <td data-label="All Purpose Flour" class="col-center">0.132325 L</td>
+                                <td data-label="Granulated Sugar" class="col-center">0.099291 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Weight in Grams">80 g</td>
+                                <td data-label="Water" class="col-center">0.08 L</td>
+                                <td data-label="Milk" class="col-center">0.07767 L</td>
+                                <td data-label="Cooking Oil" class="col-center">0.090909 L</td>
+                                <td data-label="All Purpose Flour" class="col-center">0.151229 L</td>
+                                <td data-label="Granulated Sugar" class="col-center">0.113475 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Weight in Grams">90 g</td>
+                                <td data-label="Water" class="col-center">0.09 L</td>
+                                <td data-label="Milk" class="col-center">0.087379 L</td>
+                                <td data-label="Cooking Oil" class="col-center">0.102273 L</td>
+                                <td data-label="All Purpose Flour" class="col-center">0.170132 L</td>
+                                <td data-label="Granulated Sugar" class="col-center">0.12766 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Weight in Grams">100 g</td>
+                                <td data-label="Water" class="col-center">0.1 L</td>
+                                <td data-label="Milk" class="col-center">0.097087 L</td>
+                                <td data-label="Cooking Oil" class="col-center">0.113636 L</td>
+                                <td data-label="All Purpose Flour" class="col-center">0.189036 L</td>
+                                <td data-label="Granulated Sugar" class="col-center">0.141844 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Weight in Grams">110 g</td>
+                                <td data-label="Water" class="col-center">0.11 L</td>
+                                <td data-label="Milk" class="col-center">0.106796 L</td>
+                                <td data-label="Cooking Oil" class="col-center">0.125 L</td>
+                                <td data-label="All Purpose Flour" class="col-center">0.20794 L</td>
+                                <td data-label="Granulated Sugar" class="col-center">0.156028 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Weight in Grams">120 g</td>
+                                <td data-label="Water" class="col-center">0.12 L</td>
+                                <td data-label="Milk" class="col-center">0.116505 L</td>
+                                <td data-label="Cooking Oil" class="col-center">0.136364 L</td>
+                                <td data-label="All Purpose Flour" class="col-center">0.226843 L</td>
+                                <td data-label="Granulated Sugar" class="col-center">0.170213 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Weight in Grams">130 g</td>
+                                <td data-label="Water" class="col-center">0.13 L</td>
+                                <td data-label="Milk" class="col-center">0.126214 L</td>
+                                <td data-label="Cooking Oil" class="col-center">0.147727 L</td>
+                                <td data-label="All Purpose Flour" class="col-center">0.245747 L</td>
+                                <td data-label="Granulated Sugar" class="col-center">0.184397 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Weight in Grams">140 g</td>
+                                <td data-label="Water" class="col-center">0.14 L</td>
+                                <td data-label="Milk" class="col-center">0.135922 L</td>
+                                <td data-label="Cooking Oil" class="col-center">0.159091 L</td>
+                                <td data-label="All Purpose Flour" class="col-center">0.26465 L</td>
+                                <td data-label="Granulated Sugar" class="col-center">0.198582 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Weight in Grams">150 g</td>
+                                <td data-label="Water" class="col-center">0.15 L</td>
+                                <td data-label="Milk" class="col-center">0.145631 L</td>
+                                <td data-label="Cooking Oil" class="col-center">0.170455 L</td>
+                                <td data-label="All Purpose Flour" class="col-center">0.283554 L</td>
+                                <td data-label="Granulated Sugar" class="col-center">0.212766 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Weight in Grams">160 g</td>
+                                <td data-label="Water" class="col-center">0.16 L</td>
+                                <td data-label="Milk" class="col-center">0.15534 L</td>
+                                <td data-label="Cooking Oil" class="col-center">0.181818 L</td>
+                                <td data-label="All Purpose Flour" class="col-center">0.302457 L</td>
+                                <td data-label="Granulated Sugar" class="col-center">0.22695 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Weight in Grams">170 g</td>
+                                <td data-label="Water" class="col-center">0.17 L</td>
+                                <td data-label="Milk" class="col-center">0.165049 L</td>
+                                <td data-label="Cooking Oil" class="col-center">0.193182 L</td>
+                                <td data-label="All Purpose Flour" class="col-center">0.321361 L</td>
+                                <td data-label="Granulated Sugar" class="col-center">0.241135 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Weight in Grams">180 g</td>
+                                <td data-label="Water" class="col-center">0.18 L</td>
+                                <td data-label="Milk" class="col-center">0.174757 L</td>
+                                <td data-label="Cooking Oil" class="col-center">0.204545 L</td>
+                                <td data-label="All Purpose Flour" class="col-center">0.340265 L</td>
+                                <td data-label="Granulated Sugar" class="col-center">0.255319 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Weight in Grams">190 g</td>
+                                <td data-label="Water" class="col-center">0.19 L</td>
+                                <td data-label="Milk" class="col-center">0.184466 L</td>
+                                <td data-label="Cooking Oil" class="col-center">0.215909 L</td>
+                                <td data-label="All Purpose Flour" class="col-center">0.359168 L</td>
+                                <td data-label="Granulated Sugar" class="col-center">0.269504 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Weight in Grams">200 g</td>
+                                <td data-label="Water" class="col-center">0.2 L</td>
+                                <td data-label="Milk" class="col-center">0.194175 L</td>
+                                <td data-label="Cooking Oil" class="col-center">0.227273 L</td>
+                                <td data-label="All Purpose Flour" class="col-center">0.378072 L</td>
+                                <td data-label="Granulated Sugar" class="col-center">0.283688 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Weight in Grams">210 g</td>
+                                <td data-label="Water" class="col-center">0.21 L</td>
+                                <td data-label="Milk" class="col-center">0.203883 L</td>
+                                <td data-label="Cooking Oil" class="col-center">0.238636 L</td>
+                                <td data-label="All Purpose Flour" class="col-center">0.396975 L</td>
+                                <td data-label="Granulated Sugar" class="col-center">0.297872 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Weight in Grams">220 g</td>
+                                <td data-label="Water" class="col-center">0.22 L</td>
+                                <td data-label="Milk" class="col-center">0.213592 L</td>
+                                <td data-label="Cooking Oil" class="col-center">0.25 L</td>
+                                <td data-label="All Purpose Flour" class="col-center">0.415879 L</td>
+                                <td data-label="Granulated Sugar" class="col-center">0.312057 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Weight in Grams">230 g</td>
+                                <td data-label="Water" class="col-center">0.23 L</td>
+                                <td data-label="Milk" class="col-center">0.223301 L</td>
+                                <td data-label="Cooking Oil" class="col-center">0.261364 L</td>
+                                <td data-label="All Purpose Flour" class="col-center">0.434783 L</td>
+                                <td data-label="Granulated Sugar" class="col-center">0.326241 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Weight in Grams">240 g</td>
+                                <td data-label="Water" class="col-center">0.24 L</td>
+                                <td data-label="Milk" class="col-center">0.23301 L</td>
+                                <td data-label="Cooking Oil" class="col-center">0.272727 L</td>
+                                <td data-label="All Purpose Flour" class="col-center">0.453686 L</td>
+                                <td data-label="Granulated Sugar" class="col-center">0.340426 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Weight in Grams">250 g</td>
+                                <td data-label="Water" class="col-center">0.25 L</td>
+                                <td data-label="Milk" class="col-center">0.242718 L</td>
+                                <td data-label="Cooking Oil" class="col-center">0.284091 L</td>
+                                <td data-label="All Purpose Flour" class="col-center">0.47259 L</td>
+                                <td data-label="Granulated Sugar" class="col-center">0.35461 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Weight in Grams">260 g</td>
+                                <td data-label="Water" class="col-center">0.26 L</td>
+                                <td data-label="Milk" class="col-center">0.252427 L</td>
+                                <td data-label="Cooking Oil" class="col-center">0.295455 L</td>
+                                <td data-label="All Purpose Flour" class="col-center">0.491493 L</td>
+                                <td data-label="Granulated Sugar" class="col-center">0.368794 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Weight in Grams">270 g</td>
+                                <td data-label="Water" class="col-center">0.27 L</td>
+                                <td data-label="Milk" class="col-center">0.262136 L</td>
+                                <td data-label="Cooking Oil" class="col-center">0.306818 L</td>
+                                <td data-label="All Purpose Flour" class="col-center">0.510397 L</td>
+                                <td data-label="Granulated Sugar" class="col-center">0.382979 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Weight in Grams">280 g</td>
+                                <td data-label="Water" class="col-center">0.28 L</td>
+                                <td data-label="Milk" class="col-center">0.271845 L</td>
+                                <td data-label="Cooking Oil" class="col-center">0.318182 L</td>
+                                <td data-label="All Purpose Flour" class="col-center">0.529301 L</td>
+                                <td data-label="Granulated Sugar" class="col-center">0.397163 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Weight in Grams">290 g</td>
+                                <td data-label="Water" class="col-center">0.29 L</td>
+                                <td data-label="Milk" class="col-center">0.281553 L</td>
+                                <td data-label="Cooking Oil" class="col-center">0.329545 L</td>
+                                <td data-label="All Purpose Flour" class="col-center">0.548204 L</td>
+                                <td data-label="Granulated Sugar" class="col-center">0.411348 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Weight in Grams">300 g</td>
+                                <td data-label="Water" class="col-center">0.3 L</td>
+                                <td data-label="Milk" class="col-center">0.291262 L</td>
+                                <td data-label="Cooking Oil" class="col-center">0.340909 L</td>
+                                <td data-label="All Purpose Flour" class="col-center">0.567108 L</td>
+                                <td data-label="Granulated Sugar" class="col-center">0.425532 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Weight in Grams">310 g</td>
+                                <td data-label="Water" class="col-center">0.31 L</td>
+                                <td data-label="Milk" class="col-center">0.300971 L</td>
+                                <td data-label="Cooking Oil" class="col-center">0.352273 L</td>
+                                <td data-label="All Purpose Flour" class="col-center">0.586011 L</td>
+                                <td data-label="Granulated Sugar" class="col-center">0.439716 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Weight in Grams">320 g</td>
+                                <td data-label="Water" class="col-center">0.32 L</td>
+                                <td data-label="Milk" class="col-center">0.31068 L</td>
+                                <td data-label="Cooking Oil" class="col-center">0.363636 L</td>
+                                <td data-label="All Purpose Flour" class="col-center">0.604915 L</td>
+                                <td data-label="Granulated Sugar" class="col-center">0.453901 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Weight in Grams">330 g</td>
+                                <td data-label="Water" class="col-center">0.33 L</td>
+                                <td data-label="Milk" class="col-center">0.320388 L</td>
+                                <td data-label="Cooking Oil" class="col-center">0.375 L</td>
+                                <td data-label="All Purpose Flour" class="col-center">0.623819 L</td>
+                                <td data-label="Granulated Sugar" class="col-center">0.468085 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Weight in Grams">340 g</td>
+                                <td data-label="Water" class="col-center">0.34 L</td>
+                                <td data-label="Milk" class="col-center">0.330097 L</td>
+                                <td data-label="Cooking Oil" class="col-center">0.386364 L</td>
+                                <td data-label="All Purpose Flour" class="col-center">0.642722 L</td>
+                                <td data-label="Granulated Sugar" class="col-center">0.48227 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Weight in Grams">350 g</td>
+                                <td data-label="Water" class="col-center">0.35 L</td>
+                                <td data-label="Milk" class="col-center">0.339806 L</td>
+                                <td data-label="Cooking Oil" class="col-center">0.397727 L</td>
+                                <td data-label="All Purpose Flour" class="col-center">0.661626 L</td>
+                                <td data-label="Granulated Sugar" class="col-center">0.496454 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Weight in Grams">360 g</td>
+                                <td data-label="Water" class="col-center">0.36 L</td>
+                                <td data-label="Milk" class="col-center">0.349515 L</td>
+                                <td data-label="Cooking Oil" class="col-center">0.409091 L</td>
+                                <td data-label="All Purpose Flour" class="col-center">0.680529 L</td>
+                                <td data-label="Granulated Sugar" class="col-center">0.510638 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Weight in Grams">370 g</td>
+                                <td data-label="Water" class="col-center">0.37 L</td>
+                                <td data-label="Milk" class="col-center">0.359223 L</td>
+                                <td data-label="Cooking Oil" class="col-center">0.420455 L</td>
+                                <td data-label="All Purpose Flour" class="col-center">0.699433 L</td>
+                                <td data-label="Granulated Sugar" class="col-center">0.524823 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Weight in Grams">380 g</td>
+                                <td data-label="Water" class="col-center">0.38 L</td>
+                                <td data-label="Milk" class="col-center">0.368932 L</td>
+                                <td data-label="Cooking Oil" class="col-center">0.431818 L</td>
+                                <td data-label="All Purpose Flour" class="col-center">0.718336 L</td>
+                                <td data-label="Granulated Sugar" class="col-center">0.539007 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Weight in Grams">390 g</td>
+                                <td data-label="Water" class="col-center">0.39 L</td>
+                                <td data-label="Milk" class="col-center">0.378641 L</td>
+                                <td data-label="Cooking Oil" class="col-center">0.443182 L</td>
+                                <td data-label="All Purpose Flour" class="col-center">0.73724 L</td>
+                                <td data-label="Granulated Sugar" class="col-center">0.553191 L</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Weight in Grams">400 g</td>
+                                <td data-label="Water" class="col-center">0.4 L</td>
+                                <td data-label="Milk" class="col-center">0.38835 L</td>
+                                <td data-label="Cooking Oil" class="col-center">0.454545 L</td>
+                                <td data-label="All Purpose Flour" class="col-center">0.756144 L</td>
+                                <td data-label="Granulated Sugar" class="col-center">0.567376 L</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="note">Note: conversions assume typical densities — actual volumes may vary with temperature and product variation.</div>
+            </div>
+        </section>
+        <section class="card" id="use-cases">
+            <h2>Use Cases of Grams to Liter Converter</h2>
+            <h3>1. Cooking & Baking</h3>
+            <ul>
+                <li>Many recipes use grams, but your daily life measuring tools, like jugs or cups, are marked in liters or milliliters. So, this g to l converter helps you to take measurements for recipes with ease.</li>
+                <li>Example: A recipe asks for 200 g of milk, but your jug is marked in mL/L. You convert grams to liters with the help of our converter to measure correctly.</li>
+            </ul>
+            <h3>Shopping & Price Comparison</h3>
+            <ul>
+                <li>In everyday life we use many products like oil, juices, and sauces sold in liters, but most of the products are sold in grams.</li>
+                <li>Example: One brand sells 1 L of juice, another sells 950 g of juice. So this g to l converter helps you to compare prices fairly.</li>
+            </ul>
+            <h3>Daily Water Intake</h3>
+            <ul>
+                <li>Doctors recommend that you intake water in liters (e.g., drink 2 L a day).</li>
+                <li>Your bottle may show grams or mL. With the help of this converter, you know that 2000 g of water = 2 L of water.</li>
+            </ul>
+            <h3>DIY, Cleaning & Household Work</h3>
+            <ul>
+                <li>In everyday life, we often use household cleaners like detergents, window cleaners, and other liquids that may show mass or volume differently.</li>
+                <li>Example: A detergent instruction says "use 50 g per liter of water". You need a quick overview to prepare the right mix.</li>
+            </ul>
+            <h3>Pharmacy & Medicine</h3>
+            <ul>
+                <li>Medicines and syrups usually show the amount of drug in milligrams (mg) or grams (g), but we actually measure them in milliliters (mL) or liters (L).</li>
+                <li>For example, if a syrup label says 500 mg in every 5 mL, you need to convert it to know the exact amount of syrup to take for the right dose.</li>
+            </ul>
+        </section>
+        <section class="card" id="what-is-density">
+            <h2>What is Density?</h2>
+            <p>Density is the relationship between mass and volume. It tells us how heavy something is for its size.</p>
+            <h3>Formula Of Density:</h3>
+            <p style="text-align: center; font-weight: bold; color: red;">Density = Mass / Volume</p>
+            <p><b>Units:</b> g/cm³ or g/L</p>
+        </section>
+        <section class="card" id="density-chart">
+            <h2>Density Chart For Different Substances</h2>
+            <div class="table-card">
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Substance</th>
+                                <th class="density col-center">Density (g/mL)</th>
+                                <th class="density col-center">Density (g/L)</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td data-label="Substance">Water</td>
+                                <td data-label="Density (g/mL)" class="col-center">1.00</td>
+                                <td data-label="Density (g/L)" class="col-center">1000</td>
+                                <td data-label="Notes">Standard reference</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Substance">Milk</td>
+                                <td data-label="Density (g/mL)" class="col-center">1.03</td>
+                                <td data-label="Density (g/L)" class="col-center">1030</td>
+                                <td data-label="Notes">Slightly heavier than water</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Substance">Oil (vegetable)</td>
+                                <td data-label="Density (g/mL)" class="col-center">0.92</td>
+                                <td data-label="Density (g/L)" class="col-center">920</td>
+                                <td data-label="Notes">Lighter than water, floats</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Substance">Honey</td>
+                                <td data-label="Density (g/mL)" class="col-center">1.42</td>
+                                <td data-label="Density (g/L)" class="col-center">1420</td>
+                                <td data-label="Notes">Much heavier than water</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Substance">Alcohol (Ethanol)</td>
+                                <td data-label="Density (g/mL)" class="col-center">0.79</td>
+                                <td data-label="Density (g/L)" class="col-center">790</td>
+                                <td data-label="Notes">Lighter than water</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Substance">Air</td>
+                                <td data-label="Density (g/mL)" class="col-center">0.0012</td>
+                                <td data-label="Density (g/L)" class="col-center">1.2</td>
+                                <td data-label="Notes">Very light compared to liquids</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Substance">Ice</td>
+                                <td data-label="Density (g/mL)" class="col-center">0.92</td>
+                                <td data-label="Density (g/L)" class="col-center">920</td>
+                                <td data-label="Notes">Lighter than water → floats</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Substance">Iron (solid)</td>
+                                <td data-label="Density (g/mL)" class="col-center">7.87</td>
+                                <td data-label="Density (g/L)" class="col-center">7870</td>
+                                <td data-label="Notes">Very dense metal</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Substance">Gold (solid)</td>
+                                <td data-label="Density (g/mL)" class="col-center">19.32</td>
+                                <td data-label="Density (g/L)" class="col-center">19,320</td>
+                                <td data-label="Notes">Extremely dense metal</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        <section class="card more-tools" id="more-tools">
+            <h2>More Tools</h2>
+            <div class="tool-cards-container">
+                <a href="/mg-to-ml" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>Mg to Ml</h3>
+                        <p>Convert milligrams to milliliters.</p>
+                    </div>
+                </a>
+                <a href="/g-to-l" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>G to L</h3>
+                        <p>Convert grams to liters.</p>
+                    </div>
+                </a>
+                <a href="/kg-to-l" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Kg to L</h3>
+                        <p>Convert kilograms to liters.</p>
+                    </div>
+                </a>
+                <a href="/l-to-g" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>L to G</h3>
+                        <p>Convert liters to grams.</p>
+                    </div>
+                </a>
+                <a href="/l-to-kg" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>L to Kg</h3>
+                        <p>Convert liters to kilograms.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-g" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>Ml to G</h3>
+                        <p>Convert milliliters to grams.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-oz" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>Ml to Oz</h3>
+                        <p>Convert milliliters to ounces.</p>
+                    </div>
+                </a>
+                <a href="/oz-to-ml" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Oz to Ml</h3>
+                        <p>Convert ounces to milliliters.</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+        <section class="card" id="faq">
+            <h2>FAQs</h2>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h3>Q1: Can we directly convert grams to liters?</h3>
+                    <span class="toggle-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>A: No, direct conversion is not possible. You always need density to correctly convert grams into liters, because every substance has a different density, since grams measure mass and liters measure volume.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h3>Q2: How to convert cooking ingredients from grams to liters?</h3>
+                    <span class="toggle-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>A: To convert cooking ingredients from grams to liters, you have to know the density of each substance. Once you know the density, use the above formula mentioned in the article before to make the conversion.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h3>Q3: What units do grams and liters measure?</h3>
+                    <span class="toggle-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>A: Grams measure mass (weight), while liters measure volume (space).</p>
+                    <ul>
+                        <li><b>Gram:</b> How heavy something is.</li>
+                        <li><b>Liter:</b> How much space something occupies.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+    {% include 'footer.html' %}
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Conversion function
+            function convertGToL() {
+                const gInput = document.getElementById('gInput');
+                const liquidSelect = document.getElementById('liquidSelect');
+                const resultValue = document.getElementById('result-value');
+
+                const g = parseFloat(gInput.value);
+                const density = parseFloat(liquidSelect.value);
+
+                // Input validation
+                if (liquidSelect.value === '') {
+                    resultValue.innerHTML = '<span class="error-message">Please select a liquid.</span>';
+                    return;
+                }
+                if (isNaN(g) || g <= 0) {
+                    resultValue.innerHTML = '<span class="error-message">Please enter a valid positive mass in grams.</span>';
+                    return;
+                }
+
+                // Calculation
+                const L = g / (density * 1000);
+                // Display result
+                resultValue.innerHTML = `${g} g = <strong>${L.toFixed(4)} L</strong>`;
+                resultValue.style.color = '#28a745';
+            }
+
+            // Bind the conversion function to the button click
+            document.querySelector('.btn').addEventListener('click', convertGToL);
+
+            // FAQ toggle logic
+            function toggleFAQ(element) {
+                const faqItem = element.closest('.faq-item');
+                const answer = faqItem.querySelector('.faq-answer');
+                const toggleIcon = faqItem.querySelector('.toggle-icon');
+
+                faqItem.classList.toggle('active');
+                if (faqItem.classList.contains('active')) {
+                    answer.style.display = 'block';
+                    toggleIcon.textContent = '-';
+                } else {
+                    answer.style.display = 'none';
+                    toggleIcon.textContent = '+';
+                }
+            }
+
+            // Attach FAQ toggle to all questions
+            const faqQuestions = document.querySelectorAll('.faq-question');
+            faqQuestions.forEach(question => {
+                question.addEventListener('click', function() {
+                    toggleFAQ(this);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

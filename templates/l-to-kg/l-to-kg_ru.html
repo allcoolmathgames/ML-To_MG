@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.png') }}" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Конвертер литров в килограммы | Конвертация литров в килограммы</title>
+    <meta name="description" content="Используйте этот конвертер литров в килограммы для перевода литров в килограммы для различных веществ в зависимости от их плотности." />
+    <meta name="keywords" content="Переводчик литров в килограммы, перевод л в кг, таблица л в кг, перевод воды, перевод молока, перевод растительного масла, перевод муки, таблица кухонных измерений, переводы для выпечки, таблица масс ингредиентов" />
+    <link rel="canonical" href="https://kgtoL.info/l-to-kg" />
+    <link rel="alternate" hreflang="x-default" href="https://kgtoL.info/l-to-kg" />
+    <link rel="alternate" hreflang="ru" href="https://kgtoL.info/l-to-kg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <meta name="google-site-verification" content="49KC3Wnkoo8QxBc56Q5dkx-LVqsbPxtgJTBs_MG7WBU" />
+    <style>
+        /* Jo styles aapne diye the woh yahan hain, isko external CSS mein bhi move kar sakte hain */
+        #result-section {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #e9ecef;
+            min-height: 60px;
+            position: relative;
+        }
+        #result-section .result-heading {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-weight: 600;
+            color: var(--primary-color);
+            border-left: 3px solid var(--secondary-color);
+            padding-left: 10px;
+            font-size: 1.1rem;
+        }
+        #result-section .result-value {
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 10px;
+            padding-top: 20px;
+            color: var(--light-text-color);
+            width: 100%;
+        }
+        .hidden {
+            display: none !important;
+        }
+
+        /* Table styles from the original code */
+        :root {
+            --bg: #ffffff;
+            --text: #1f2937;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+            --stripe: #f9fafb;
+        }
+        body {
+            font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+            color: var(--text);
+            background: var(--bg);
+            margin: 0;
+        }
+        h1 { font-size: 1.25rem; margin: 0 0 12px; }
+        .wrap { max-width: 1100px; margin: 0 auto; }
+        .table-card { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+        .table-scroll { max-height: 70vh; overflow: auto; }
+        table { border-collapse: separate; border-spacing: 0; width: 100%; }
+        thead th { position: sticky; top: 0; background: var(--border); color: #111827; font-weight: 600; text-align: center; padding: 10px 12px; border-bottom: 1px solid var(--border); }
+        tbody td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; text-align: center; }
+        tbody tr:nth-child(even) td { background: var(--stripe); }
+        th, td.num { text-align: right; }
+        th:first-child, td:first-child { text-align: center; }
+        caption { caption-side: bottom; padding: 10px; font-size: 0.875rem; color: var(--muted); }
+    </style>
+</head>
+<body>
+    {% include 'header.html' %}
+    <header class="secondary-header">
+        <div class="container">
+            <h1>Конвертер литров в килограммы</h1>
+            <p>Введите объем в литрах ниже, чтобы рассчитать массу в килограммах.</p>
+        </div>
+    </header>
+    <div class="container main-content">
+        <section class="card" id="tool">
+            <h2>Конвертер литров в килограммы</h2>
+            <div class="tool-container">
+                <div class="form-group">
+                    <label for="lInput"><b>Объем (в литрах):</b></label>
+                    <input type="number" id="lInput" placeholder="Введите объем в литрах" required>
+                </div>
+                <div class="form-group">
+                    <label for="mainSelect"><b>Выберите вещество:</b></label>
+                    <select id="mainSelect">
+                        <option value="">-- Выберите вещество --</option>
+                        <optgroup label="Общие">
+                            <option value="water" data-density="1.000">Вода</option>
+                        </optgroup>
+                        <optgroup label="Сахара">
+                            <option value="granulated-sugar" data-density="0.845">Сахарный песок</option>
+                            <option value="powdered-sugar" data-density="0.560">Пудра сахарная</option>
+                            <option value="brown-sugar" data-density="0.850">Коричневый сахар</option>
+                            <option value="raw-sugar" data-density="0.900">Сырой сахар</option>
+                        </optgroup>
+                        <optgroup label="Сиропы и пасты">
+                            <option value="corn-syrup" data-density="1.380">Кукурузный сироп</option>
+                            <option value="honey" data-density="1.420">Мёд</option>
+                            <option value="nutella" data-density="1.200">Нутелла</option>
+                            <option value="jelly" data-density="1.300">Желе</option>
+                        </optgroup>
+                        <optgroup label="Мука">
+                            <option value="all-purpose-flour" data-density="0.529">Мука универсальная</option>
+                            <option value="wheat-flour" data-density="0.529">Пшеничная мука</option>
+                            <option value="bread-flour" data-density="0.529">Мука хлебопекарная</option>
+                            <option value="type-00-flour" data-density="0.600">Мука тип 00</option>
+                            <option value="cake-flour" data-density="0.480">Мука для тортов</option>
+                            <option value="rye-flour" data-density="0.460">Ржаная мука</option>
+                        </optgroup>
+                        <optgroup label="Разрыхлители и специи">
+                            <option value="baking-soda" data-density="0.960">Пищевая сода</option>
+                            <option value="baking-powder" data-density="0.800">Разрыхлитель</option>
+                            <option value="cream-of-tartar" data-density="0.750">Винный камень</option>
+                            <option value="cinnamon" data-density="0.540">Корица</option>
+                            <option value="garlic-powder" data-density="0.550">Чеснок порошковый</option>
+                            <option value="salt" data-density="2.160">Соль</option>
+                            <option value="spice-blends" data-density="0.550">Смеси специй</option>
+                            <option value="cocoa-powder" data-density="0.480">Какао-порошок</option>
+                            <option value="vanilla" data-density="1.200">Ванильный экстракт</option>
+                        </optgroup>
+                        <optgroup label="Жиры и масла">
+                            <option value="cooking-oil" data-density="0.918">Растительное масло</option>
+                            <option value="olive-oil" data-density="0.918">Оливковое масло</option>
+                            <option value="vegetable-oil" data-density="0.918">Растительное масло</option>
+                            <option value="butter" data-density="0.911">Сливочное масло</option>
+                            <option value="margarine" data-density="0.940">Маргарин</option>
+                            <option value="lard" data-density="0.920">Смалец</option>
+                            <option value="mayonnaise" data-density="0.920">Майонез</option>
+                            <option value="peanut-butter" data-density="1.060">Арахисовое масло</option>
+                        </optgroup>
+                        <optgroup label="Молочные продукты">
+                            <option value="milk" data-density="1.030">Молоко</option>
+                            <option value="buttermilk" data-density="1.030">Пахта</option>
+                            <option value="light-cream" data-density="1.009">Сливки лёгкие</option>
+                            <option value="heavy-cream" data-density="0.994">Сливки тяжёлые</option>
+                            <option value="whipped-cream" data-density="0.480">Взбитые сливки</option>
+                            <option value="ice-cream" data-density="0.560">Мороженое</option>
+                            <option value="sour-cream" data-density="1.030">Сметана</option>
+                            <option value="cottage-cheese" data-density="1.060">Творог</option>
+                            <option value="cream-cheese" data-density="1.040">Сливочный сыр</option>
+                            <option value="yogurt" data-density="1.030">Йогурт</option>
+                        </optgroup>
+                        <optgroup label="Орехи и злаки">
+                            <option value="almonds" data-density="0.600">Миндаль</option>
+                            <option value="cashews" data-density="0.600">Кешью</option>
+                            <option value="peanuts" data-density="0.600">Арахис</option>
+                            <option value="sunflower-seeds" data-density="0.500">Семечки подсолнечника</option>
+                            <option value="barley" data-density="0.700">Ячмень</option>
+                            <option value="bran" data-density="0.300">Отруби</option>
+                            <option value="oats" data-density="0.450">Овёс</option>
+                            <option value="rice" data-density="0.850">Рис (неварёный)</option>
+                            <option value="rye" data-density="0.700">Рожь</option>
+                            <option value="wheat" data-density="0.800">Пшеница</option>
+                            <option value="breadcrumbs" data-density="0.420">Панировочные сухари</option>
+                            <option value="corn-flakes" data-density="0.150">Кукурузные хлопья</option>
+                            <option value="cornstarch" data-density="0.500">Кукурузный крахмал</option>
+                            <option value="rice-krispies" data-density="0.110">Рисовые хлопья</option>
+                        </optgroup>
+                        <optgroup label="Другие ингредиенты">
+                            <option value="dried-apple-slices" data-density="0.200">Сушёные яблочные дольки</option>
+                            <option value="carrots" data-density="0.500">Морковь (тёртая)</option>
+                            <option value="corn" data-density="0.750">Кукуруза (зёрна)</option>
+                            <option value="kidney-beans" data-density="0.850">Фасоль красная (сухая)</option>
+                            <option value="onions" data-density="0.700">Лук (нарезанный)</option>
+                            <option value="potatoes" data-density="0.750">Картофель (кубиками)</option>
+                            <option value="yams" data-density="0.750">Батат (кубиками)</option>
+                            <option value="bread" data-density="0.250">Хлеб (ломтиками)</option>
+                            <option value="cake-mix" data-density="0.800">Смесь для торта</option>
+                        </optgroup>
+                        <option value="custom-liquid">Пользовательская плотность (кг/л)</option>
+                    </select>
+                </div>
+                <div class="form-group hidden" id="densityGroup">
+                    <label for="densityInput"><b>Плотность (кг/л):</b></label>
+                    <input type="number" id="densityInput" placeholder="Введите плотность в кг/л" required>
+                </div>
+                <button class="btn" onclick="convertLToKg()">Конвертировать в килограммы</button>
+            </div>
+
+        <p style="color: red;"><b>Примечание:</b> Плотность зависит от температуры и может различаться для разных материалов. Вы также можете выбрать <b>Пользовательская плотность</b> в выпадающем списке, чтобы ввести своё значение.</p>
+        <div id="result-section">
+            <div class="result-heading">Результат:</div>
+            <div class="result-value" id="result-value">Ваш результат появится здесь</div>
+        </div>
+        <section class="card" id="why-choose-us">
+            <p>Конвертер литров в килограммы — это полезный инструмент для перевода объёма вещества или материала из литров в эквивалентную массу в килограммах. Наш конвертер литров в килограммы также показывает плотность выбранного вещества или материала, что гарантирует точность и эффективность преобразования. Вы также можете использовать наш <a href="https://mltomg.info/kg-to-l">конвертер килограммов в литры</a> для обратных расчётов.</p>
+        </section>
+        <section class="card more-tools" id="more-tools">
+            <h2>Другие инструменты</h2>
+            <div class="tool-cards-container">
+                <a href="/mg-to-ml" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>Мг в мл</h3>
+                        <p>Перевести миллиграммы в миллилитры.</p>
+                    </div>
+                </a>
+                <a href="/g-to-l" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>Г в л</h3>
+                        <p>Перевести граммы в литры.</p>
+                    </div>
+                </a>
+                <a href="/kg-to-l" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Кг в л</h3>
+                        <p>Перевести килограммы в литры.</p>
+                    </div>
+                </a>
+                <a href="/l-to-g" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>Л в г</h3>
+                        <p>Перевести литры в граммы.</p>
+                    </div>
+                </a>
+                <a href="/l-to-kg" class="tool-card">
+                    <div class="tool-icon">⚖️</div>
+                    <div class="tool-info">
+                        <h3>Л в кг</h3>
+                        <p>Перевести литры в килограммы.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-g" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-info">
+                        <h3>Мл в г</h3>
+                        <p>Перевести миллилитры в граммы.</p>
+                    </div>
+                </a>
+                <a href="/ml-to-oz" class="tool-card">
+                    <div class="tool-icon">🧪</div>
+                    <div class="tool-info">
+                        <h3>Мл в унции</h3>
+                        <p>Перевести миллилитры в унции.</p>
+                    </div>
+                </a>
+                <a href="/oz-to-ml" class="tool-card">
+                    <div class="tool-icon">🫙</div>
+                    <div class="tool-info">
+                        <h3>Унции в мл</h3>
+                        <p>Перевести унции в миллилитры.</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+        <section class="card" id="why-choose-us">
+            <h2>Перевод литров в килограммы:</h2>
+            <p>Литр (л) измеряет объём, а килограмм (кг) — массу. Эти единицы измерения разные, поэтому прямой перевод невозможен. Для перевода необходимо указать плотность вещества или материала.</p>
+            <h3>Формула:</h3>
+            <p style="text-align: center; color: red;"> Килограммы = Литры × Плотность</p>
+            <p>Чтобы применить формулу, необходимо знать плотность вещества.</p>
+            <h4>Примеры:</h4>
+            <ul>
+            <li>Переведите 1 литр в кг для вещества, плотность которого составляет 1 кг на литр.</li>
+            </ul>
+            <p><b>Решение:</b></p>
+            <p>Используя приведенную выше формулу, решим этот пример:</p>
+            <p style="text-align: center; color: red;"> Килограммы = 1 x 1</p>
+            <p style="text-align: center; color: red;"> Килограммы = 1</p>
+            <p>Где</p>
+            <ul>
+                <li>1 = Литры вещества</li>
+                <li>1 = Плотность вещества</li>
+            </ul>
+            <p>Итак, 1 литр вещества, имеющего плотность 1 кг на литр, равен 1 килограмму. </p>
+            <ul>
+                <li>Перевести 5 литров в кг для вещества, плотность которого составляет 1,38 кг на литр</li>
+
+            </ul>
+            <p><b>Решение:</b></p>
+            <p>Используя приведенную выше формулу, решим этот пример:</p>
+            <p style="text-align: center; color: red;"> Килограммы = 5 x 1,38</p>
+            <p style="text-align: center; color: red;"> Килограммы = 6,90</p>
+            <p>Где;</p>
+            <ul>
+                <li>5 = Литров вещества</li>
+                <li>1,38 = Плотность вещества</li>
+            </ul>
+            <p>Итак, 5 литров вещества, имеющего плотность 1,38 кг/л, равны 6,90 килограмма. </p>
+        </section>
+        <section class="card" id="how-it-works">
+            <h2>Примеры использования конвертера литров в килограммы от Mltomg.info</h2>
+            <p>Вот некоторые примеры использования конвертера литров в килограммы:</p>
+           <h3>Доставка и транспортировка</h3>
+            <p>Перевод литров в килограммы помогает транспортным средствам соблюдать допустимый вес и правила. Например, если автоцистерна перевозит 1000 литров химикатов, вес необходимо перевести в килограммы, чтобы убедиться в его соответствии требованиям безопасности и нормативным требованиям для данной перевозки.</p>
+            <h3>Приготовление пищи и выпечка</h3>
+            <p>Литры обычно используются для жидкостей, таких как вода, молоко или масло, а килограммы — для сухих продуктов, таких как мука и сахар. Пересчёт литров в килограммы важен для получения правильных пропорций, особенно в рецептах, требующих точных измерений.</p>
+            <h3>Наука и образование</h3>
+            <p>Для проведения лабораторных экспериментов или аудиторных занятий, где объем (литры) необходимо преобразовать в массу (килограммы).</p>
+            <h3>Покупки и покупки</h3>
+            <p>Предположим, вы в продуктовом магазине сравниваете два бренда растительного масла. Бренд 1 продаётся в двухлитровой бутылке за 5 долларов, а Бренд 2 — в 2,5-килограммовой ёмкости за 7 долларов. Чтобы определить, какой вариант выгоднее, нужно перевести литры в килограммы, чтобы можно было сравнивать цены.</p>
+        </section>
+        <section class="card" id="table">
+            <h2>Таблица перевода л в кг</h2>
+            <table border="1" cellpadding="8" cellspacing="0">
+  <thead>
+    <tr>
+      <th>Вещество</th>
+      <th>Плотность (кг/л)</th>
+      <th>0.5 Л (кг)</th>
+      <th>1 Л (кг)</th>
+      <th>2 Л (кг)</th>
+      <th>5 Л (кг)</th>
+      <th>10 Л (кг)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Вода</td>
+      <td>1.00</td>
+      <td>0.50</td>
+      <td>1.00</td>
+      <td>2.00</td>
+      <td>5.00</td>
+      <td>10.00</td>
+    </tr>
+    <tr>
+      <td>Молоко</td>
+      <td>1.03</td>
+      <td>0.52</td>
+      <td>1.03</td>
+      <td>2.06</td>
+      <td>5.15</td>
+      <td>10.30</td>
+    </tr>
+    <tr>
+      <td>Растительное масло</td>
+      <td>0.92</td>
+      <td>0.46</td>
+      <td>0.92</td>
+      <td>1.84</td>
+      <td>4.60</td>
+      <td>9.20</td>
+    </tr>
+    <tr>
+      <td>Мед</td>
+      <td>1.42</td>
+      <td>0.71</td>
+      <td>1.42</td>
+      <td>2.84</td>
+      <td>7.10</td>
+      <td>14.20</td>
+    </tr>
+    <tr>
+      <td>Мука (жидкая форма/суспензия)</td>
+      <td>0.59</td>
+      <td>0.30</td>
+      <td>0.59</td>
+      <td>1.18</td>
+      <td>2.95</td>
+      <td>5.90</td>
+    </tr>
+    <tr>
+      <td>Сахарный раствор</td>
+      <td>0.85</td>
+      <td>0.43</td>
+      <td>0.85</td>
+      <td>1.70</td>
+      <td>4.25</td>
+      <td>8.50</td>
+    </tr>
+    <tr>
+      <td>Оливковое масло</td>
+      <td>0.91</td>
+      <td>0.46</td>
+      <td>0.91</td>
+      <td>1.82</td>
+      <td>4.55</td>
+      <td>9.10</td>
+    </tr>
+    <tr>
+      <td>Бензин</td>
+      <td>0.74</td>
+      <td>0.37</td>
+      <td>0.74</td>
+      <td>1.48</td>
+      <td>3.70</td>
+      <td>7.40</td>
+    </tr>
+    <tr>
+      <td>Дизель</td>
+      <td>0.83</td>
+      <td>0.42</td>
+      <td>0.83</td>
+      <td>1.66</td>
+      <td>4.15</td>
+      <td>8.30</td>
+    </tr>
+  </tbody>
+</table>
+        </section>
+        <section class="card" id="faq">
+            <h2>Часто задаваемые вопросы</h2>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>В: Всегда ли 1 литр равен 1 килограмму?</h4>
+                    <span class="toggle-icon">-</span>
+                </div>
+                <div class="faq-answer">
+                    <p>О: Нет. 1 литр = 1 килограмму имеет только чистая вода при стандартных условиях (4°C). Другие жидкости, такие как молоко, масло или мёд, имеют разную плотность, поэтому их вес будет разным.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h4>В: Является ли конвертер L в KG на mltomg.info точным для всех веществ?</h4>
+                    <span class="toggle-icon">-</span>
+                </div>
+                <div class="faq-answer">
+                    <p>О: Да, при условии использования правильной плотности вещества. Поскольку плотность может меняться в зависимости от температуры, результаты в некоторых случаях могут быть приблизительными. Но наша команда гарантирует точность этого конвертера с помощью экспертов.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+    {% include 'footer.html' %}
+    <script>
+        const mainSelect = document.getElementById('mainSelect');
+        const densityGroup = document.getElementById('densityGroup');
+        const densityInput = document.getElementById('densityInput');
+        const lInput = document.getElementById('lInput'); // Volume in Liters
+        const resultValue = document.getElementById('result-value');
+        // Event listener for dropdown change
+        mainSelect.addEventListener('change', () => {
+            const selectedValue = mainSelect.value;
+            densityGroup.classList.add('hidden');
+            densityInput.value = '';
+            if (selectedValue === 'custom-liquid') {
+                densityGroup.classList.remove('hidden');
+                densityInput.placeholder = 'Введите плотность в кг/л';
+            } else if (selectedValue !== '') {
+                densityGroup.classList.remove('hidden');
+                // Density data attribute se uthaya ja raha hai, jo ki ab kg/L mein hai.
+                densityInput.value = mainSelect.options[mainSelect.selectedIndex].dataset.density;
+            }
+        });
+        // Conversion function: Liters to Kilograms
+        function convertLToKg() {
+            const L = parseFloat(lInput.value); // Volume in Liters
+            const density = parseFloat(densityInput.value); // Density in kg/L
+
+            if (mainSelect.value === '') {
+                resultValue.innerHTML = 'Пожалуйста, выберите вещество или введите пользовательскую плотность.';
+                resultValue.style.color = 'red';
+                return;
+            }
+            if (isNaN(L) || isNaN(density) || L <= 0 || density <= 0) {
+                resultValue.innerHTML = `Пожалуйста, введите корректные положительные числа для объема и плотности.`;
+                resultValue.style.color = 'red';
+                return;
+            }
+            // Formula: Mass (kg) = Volume (L) × Density (kg/L)
+            const Kg = L * density;
+
+            resultValue.innerHTML = `${L} л = ${Kg.toFixed(4)} кг`;
+            resultValue.style.color = 'green';
+            document.getElementById('result-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    </script>
+    <script>
+        // FAQ toggle function ko yahaan add kar diya hai
+        function toggleFAQ(element) {
+            const answer = element.nextElementSibling;
+            const icon = element.querySelector('.toggle-icon');
+            if (answer.style.maxHeight) {
+                answer.style.maxHeight = null;
+                icon.textContent = '+';
+            } else {
+                answer.style.maxHeight = answer.scrollHeight + "px";
+                icon.textContent = '-';
+            }
+        }
+    </script>
+</body>
+</html>
